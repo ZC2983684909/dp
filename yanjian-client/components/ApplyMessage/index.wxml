@@ -1,0 +1,27 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessage">
+  <view class="mask">
+    <view class="box" style="height:{{applyNum?'683rpx':'598rpx'}}">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/1.png'):''}}" mode="" wx:if="{{showBg==='地球'}}" />
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/3.png'):''}}" mode="" wx:if="{{showBg==='月亮'}}" />
+      <view class="content">
+        <view class="title">{{title}}</view>
+        <view class="money">
+          <text class="m1">￥{{num}}</text>
+          <!-- <text class="m2">元</text> -->
+        </view>
+        <view class="other">
+          <block wx:if="{{applyNum}}">
+            <image src="{{imgBaseURL?(imgBaseURL+'/images/31.png'):''}}" mode="" />
+            <text>{{applyNumMsg}}</text>
+          </block>
+        </view>
+        <view class="con">{{message}}</view>
+        <view class="btn" bind:tap="btn1">{{btnStr1}}</view>
+        <view class="btn2" bind:tap="close">{{btnStr2}}</view>
+
+      </view>
+    </view>
+
+  </view>
+</view>

@@ -1,0 +1,51 @@
+<scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+  <empty wx:if="{{!list.length}}"></empty>
+  <view wx:else class="con">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="pull" wx:if="{{isPull}}">
+      <van-icon name="down" />
+    </view>
+    <view class="list">
+      <view class="item" wx:for="{{list}}" wx:key="index" data-item="{{item}}" bind:tap="itemTap">
+        <image class="photo" src="{{item.photo}}" mode="aspectFill" />
+        <view class="c">
+          <view class="xs" catch:tap="showSimilarityTip">
+            <view class="str">相似度</view>
+            <view class="num">{{item.similarity}}%</view>
+          </view>
+          <view class="tagBox">
+            <view class="auth" wx:if="{{item.idAuth==3}}">
+              <image class="ico" src="{{imgBaseURL?(imgBaseURL+'/images/rzgl.svg'):''}}" mode="" />
+              <text>已实名</text>
+            </view>
+            <view class="tag" wx:if="{{item.isNew}}">新人</view>
+          </view>
+          <view class="name">
+            <view class="n">{{item.nickName}}</view>
+            <view wx:if="{{item.activeStatus!=4}}" class="online {{item.activeStatus==1?'online1':item.activeStatus==2?'online2':item.activeStatus==3?'online3':''}}">● {{item.activeStatus==1?'在线':item.activeStatus==2?'刚刚活跃':item.activeStatus==3?'最近活跃':''}}</view>
+          </view>
+          <view class="other">
+            <view class="desc">
+              <text wx:if="{{item.age}}">{{item.age}}岁</text>
+              <text class="line" wx:if="{{item.city}}">/</text>
+              <text class="city" wx:if="{{item.city}}">{{item.city}}</text>
+              <text class="line" wx:if="{{item.distanceFormat}}">/</text>
+              <text wx:if="{{item.distanceFormat}}">{{item.distanceFormat}}</text>
+            </view>
+
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{isLoadingMore}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="noMore" wx:else>
+      <!-- 暂无更多 -->
+    </view>
+
+  </view>
+</scroll-view>

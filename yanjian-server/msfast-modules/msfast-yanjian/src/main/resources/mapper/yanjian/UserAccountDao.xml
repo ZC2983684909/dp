@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.UserAccountDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.UserAccountEntity" id="userAccountMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="amount" column="amount"/>
+        <result property="userId" column="user_id"/>
+        <result property="source" column="source"/>
+        <result property="sourceId" column="source_id"/>
+        <result property="remarks" column="remarks"/>
+    </resultMap>
+
+    <select id="getBalance" resultType="decimal">
+        select IFNULL(sum(amount),0)
+        from user_account
+        where user_id = #{userId}
+    </select>
+
+    <select id="accountPage" resultType="com.wxmblog.yanjian.common.rest.response.front.pay.BalancePageResponse">
+        select
+        id,
+        amount,
+        remarks,
+        create_time
+        from user_account
+        where user_id = #{ownerId}
+        order by create_time desc
+    </select>
+</mapper>

@@ -1,0 +1,67 @@
+<!--pages_register/register/authCenter/index.wxml-->
+<view class="authCenter">
+  <view class="top">
+    <image src="{{imgBaseURL?(imgBaseURL+'/images/1169.svg'):''}}" alt=""/>
+
+    <view style="margin-top: {{top}}px;">
+      <van-icon class="ico"  name="arrow-left" size="42rpx" bind:tap="back" />
+      </view>
+      <view class="txt">
+      <view class="t1">为什么要认证?</view>
+      <view class="t2">完成认证越多，越容易获得对方的青睐哦~</view>
+      </view>
+  </view>
+  <view class="con">
+    <view class="item">
+    <image wx:if="{{status.idAuth==3}}" class="authIco" src="{{imgBaseURL?(imgBaseURL+'/images/1170.svg'):''}}" mode=""/>
+      <view class="l">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/6.svg'):''}}" mode="" />
+        <view class="str">
+          <view class="title">实名认证
+          </view>
+          <view class="tip">
+            <text>接口由腾讯与公安部第三所研发，本平台仅调用验证个人身份</text>
+          </view>
+        </view>
+      </view>
+      <view class="btn" wx:if="{{status.idAuth==1}}" bind:tap="goPage" data-path="/pages_register/register3/index?type=身份认证">
+        立即认证
+      </view>
+      <view class="txt" wx:if="{{status.idAuth==3}}" bind:tap="goPage" data-path="/pages_register/register3/index?type=重新认证">{{status.idAuth==2?'认证中':(status.idAuth==3?'已认证':'')}}</view>
+      <view class="nobtn" wx:if="{{status.idAuth==2||status.idAuth==4||status.idAuth==5}}" bind:tap="goPage" data-path="/pages_register/register3/index?type=身份认证">
+        认证失败，重新认证
+      </view>
+    </view>
+    <view class="item">
+      <image wx:if="{{status.photoAuth==3}}" class="authIco" src="{{imgBaseURL?(imgBaseURL+'/images/1170.svg'):''}}" mode=""/>
+      <view class="l">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/999.svg'):''}}" mode="" />
+        <view class="str">
+          <view class="title">头像认证
+          </view>
+          <view class="tip">
+            <text>接口由腾讯云研发，本平台仅调用确保头像（相册封面）为用户本人</text>
+          </view>
+        </view>
+      </view>
+      <view class="btn" wx:if="{{status.photoAuth==1}}" bind:tap="photoAuthFn">
+        立即认证
+      </view>
+      <view class="txt" wx:if="{{status.photoAuth==3}}">{{status.photoAuth==2?'认证中':(status.photoAuth==3?'已认证':'')}}</view>
+      <view class="nobtn" wx:if="{{status.photoAuth==2||status.photoAuth==4||status.photoAuth==5}}" bind:tap="photoAuthFn">
+        需更换个人主页照片
+      </view>
+    </view>
+   
+    <view class="bottomTip">
+      颜见承诺100%保障你的隐私信息安全
+    </view>
+  </view>
+  <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:close="onClose" bind:cancel="onClose" bind:select="onSelect" />
+
+  <my-message wx:if="{{showMsg}}" title="提示" message="提交成功" btnStr="确定" bind:onConfirm="onConfirmMsg" bind:onClose="onCloseMsg"></my-message>
+
+  <my-fotter-btn wx:if="{{type==2}}" bind:tap="submit">提交</my-fotter-btn>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>
+<wxs src="../../utils/formatterStatus.wxs" module="register4" />

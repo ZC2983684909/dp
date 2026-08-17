@@ -1,0 +1,15 @@
+<view class="circle-of-friends">
+  <van-nav-bar title="朋友圈" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft" />
+  <scroll-view scroll-y="true" class="content">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <block wx:else>
+      <block wx:for="{{list}}" wx:key="id">
+        <dynamic-item info="{{item}}" bgColor="#fff" />
+      </block>
+      <empty wx:if="{{!list.length}}" msg="暂无动态" />
+    </block>
+  </scroll-view>
+  <my-http-message class="httpMessage" />
+</view>

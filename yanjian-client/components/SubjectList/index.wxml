@@ -1,0 +1,7 @@
+<!--components/SubjectList/index.wxml-->
+<view class="labels"  style="{{style}}">
+    <view class="label" wx:for="{{subjectList}}" wx:key="index" bind:tap="goDetail" data-id="{{item.id}}">
+    <!-- 因为修改话题颜色为蓝色，这个图标是黑的，隐藏掉用#代替 -->
+    <!-- <image src="{{imgBaseURL?(imgBaseURL+'/images/1147.svg'):''}}" mode=""/> -->
+    #{{item.title}}</view>
+  </view>

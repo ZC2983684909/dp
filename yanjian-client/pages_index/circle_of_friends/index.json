@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "dynamic-item": "/components/DynamicItem/index",
+    "empty": "/components/Empty/index",
+    "my-http-message": "/components/MyHttpMessage/index"
+  }
+}

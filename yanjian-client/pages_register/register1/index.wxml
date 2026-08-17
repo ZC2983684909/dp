@@ -1,0 +1,57 @@
+<!--pages_register/register/register1/index.wxml-->
+<view class="register1">
+  <van-nav-bar custom-class="navbar" title="" border="{{false}}" left-arrow bind:click-left="onClickLeft" />
+  <view class="form">
+    <view class="tit">账号注册</view>
+    <view class="item">
+      <view class="label">耶！这个昵称很有你的风格！</view>
+      <view class="con">
+        <van-field value="{{ userInfo.nickName}}" placeholder="请输入用户名" border="{{false}}" clearable="{{ true }}" bind:change="onChange1" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">设置生日（年龄大于18岁）</view>
+      <view class="con" bind:tap="changeshow">
+        <view class="c">
+          <text class="c1">{{year}}</text>
+          <text class="c2">年</text>
+          <text class="c1">{{month}}</text>
+          <text class="c2">月</text>
+          <text class="c1">{{day}}</text>
+          <text class="c2">日</text>
+        </view>
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">填写你的微信号</view>
+      <view class="con">
+        <van-field value="{{ userInfo.wechat }}" placeholder="请输入微信号" border="{{false}}" clearable="{{ true }}" bind:change="onChange2" />
+      </view>
+    </view>
+    <view class="item2">
+      <view class="label">
+        <text>是否直接解锁微信</text>
+          <image bind:tap="showTip" src="{{imgBaseURL?(imgBaseURL+'/images/1228.svg'):''}}" mode="" />
+      </view>
+      <view class="con">
+        <van-switch checked="{{ form.wechatOpen }}" active-color="#2B2B2B" inactive-color="#E2E2E2" size="40rpx" bind:change="onChangeSwitch" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">邀请码（非必填）</view>
+      <view class="con">
+        <van-field value="{{ userInfo.registrationNo }}" placeholder="请输入邀请码" border="{{false}}" clearable="{{ true }}" bind:change="onChange3" />
+      </view>
+    </view>
+  </view>
+  <van-action-sheet show="{{ show }}">
+    <van-datetime-picker type="date" bind:cancel="onClose" value="{{ currentDate }}" bind:confirm="onConfirm" min-date="{{ minDate }}" formatter="{{ formatter }}" />
+  </van-action-sheet>
+  <van-dialog use-slot title="是否直接解锁微信" show="{{ showTip }}" confirm-button-color="#6E95E1">
+    <view class="vandialogtip">
+      <view>直接解锁微信时他人无需向你发起申请即可直接解锁微信号，不直接解锁微信时他人需向你发起申请，待你同意后才可解锁你的微信。</view>
+    </view>
+  </van-dialog>
+  <my-fotter-btn openType="{{!isGetPhone&&isValidate?'getPhoneNumber':''}}" bind:getPhoneNumber="getPhoneNumber" bind:tap="{{!isGetPhone&&isValidate?'':'nextStep'}}">下一步</my-fotter-btn>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

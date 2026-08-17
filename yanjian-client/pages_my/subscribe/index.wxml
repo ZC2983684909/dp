@@ -1,0 +1,8 @@
+<!--pages_my/subscribe/index.wxml-->
+<view class="subscribe">
+  <van-nav-bar custom-class="navbar" title="消息订阅" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <view class="content">
+    <image src="{{img}}" mode="widthFix" 	show-menu-by-longpress/>
+  </view>
+
+</view>

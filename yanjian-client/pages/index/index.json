@@ -1,0 +1,14 @@
+{
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-tree-select": "@vant/weapp/tree-select/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "IndexScroll": "/components/IndexScroll/index",
+    "my-vip-dialog": "/components/MyVipDialog/index",
+    "my-http-message": "/components/MyHttpMessage/index",
+    "empty": "/components/Empty/index"
+  }
+}

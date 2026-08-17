@@ -1,0 +1,147 @@
+<!-- pages_my/invite_friends/index.wxml -->
+<view class="invite_friends" style="height: {{scrollHeight+'px'}};">
+  <van-nav-bar custom-class="navbar" title="邀请好友" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+    <view class="content">
+      <image class="img1" src="{{imgBaseURL?(imgBaseURL+'/images/422.png'):''}}" mode="" />
+      <image class="img2" src="{{imgBaseURL?(imgBaseURL+'/images/yqhy.png'):''}}" mode="" />
+      <view class="tip">邀请的好友在平台任意消费可获得{{prizeRatioVal.addVip}}%现金奖励，用户消费后解锁你或你邀请的用户均可获得{{prizeRatioVal.myWechat}}%现金奖励</view>
+      <view class="bt" data-path="/pages_my/invite_friends_rules/index" bind:tap="goPage">
+        奖励规则说明
+        <van-icon name="arrow" />
+      </view>
+      <view class="fxtx">
+        <view class="tit">分销提现</view>
+        <view class="t1">
+          可提现金额
+          <image bind:tap="showTipFn" src="{{imgBaseURL?(imgBaseURL+'/images/1228.svg'):''}}" mode="" />
+        </view>
+        <view class="num">￥{{info.withdrawAbleAmount}}</view>
+        <view class="b" bind:tap="getMoney">立即提现</view>
+        <view class="st">
+          <view class="item">
+            <view class="t">
+              待提现金额
+              <image bind:tap="showTipFn2" src="{{imgBaseURL?(imgBaseURL+'/images/1228.svg'):''}}" mode="" />
+            </view>
+            <view class="v">￥{{info.waitAmount}}</view>
+          </view>
+          <view class="item">
+            <view class="t">累计推广金额</view>
+            <view class="v">￥{{info.amount}}</view>
+          </view>
+          <view class="item" data-path="/pages_my/withdrawal_record/index" bind:tap="goPage">
+            <view class="t">已提现金额</view>
+            <view class="v">￥{{info.withdrawAmount}}</view>
+          </view>
+        </view>
+        <view class="txjl" data-path="/pages_my/withdrawal_record/index" bind:tap="goPage">
+          提现记录
+        </view>
+      </view>
+      <view class="yyq">
+        <view class="tit" data-path="/pages_my/invited_user_list/index" bind:tap="goPage">
+          已邀请用户{{info.inviteCount>0?(info.inviteCount):''}}
+          <van-icon name="arrow" />
+        </view>
+        <view class="val">
+          <view class="label">邀请码</view>
+          <view class="code">{{info.distributionCode}}</view>
+          <view class="b" bind:tap="copy">复制</view>
+        </view>
+      </view>
+      <view class="jl" wx:for="{{list}}" wx:key="index">
+        <view class="ava">
+          <image src="{{item.avatar}}" mode="aspectFill" />
+        </view>
+        <view class="r">
+          <view class="r1">
+            <view class="r11">
+              <image wx:if="{{item.reason==1}}" src="{{imgBaseURL?(imgBaseURL+'/images/16525.png'):''}}" mode="" />
+              <image wx:if="{{item.reason==2}}" src="{{imgBaseURL?(imgBaseURL+'/images/16509.svg'):''}}" mode="" />
+              <image wx:if="{{item.reason==3||item.reason==4}}" src="{{imgBaseURL?(imgBaseURL+'/images/1176.svg'):''}}" mode="" />
+              <image wx:if="{{item.reason==5||item.reason==6}}" src="{{imgBaseURL?(imgBaseURL+'/images/16568.svg'):''}}" mode="" />
+              <text>{{item.reason==1?'颜币充值':item.reason==2?'VIP充值':item.reason==3?'被解锁微信':item.reason==4?'邀请用户被解锁微信':item.reason==5?'被私信':item.reason==6?'邀请用户被私信':''}}</text>
+            </view>
+            <view class="r12">
+              <view class="l">奖励金额：¥{{item.amount}}</view>
+            </view>
+          </view>
+          <view class="r2">
+            <view class="r21">奖励比例：{{item.ratio}}%</view>
+            <view class="r22">消费金额：¥{{item.payAmount}}</view>
+          </view>
+          <view class="r3">
+            <view class="r31">{{item.createTime}}</view>
+            </view>
+        </view>
+      </view>
+    </view>
+    <view class="loading" wx:if="{{isLoadingMore}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="noMore" wx:else>
+      <!-- 暂无更多 -->
+    </view>
+  </scroll-view>
+  <!-- 分享海报 -->
+  <view class="paster" wx:if="{{showPoster}}" catch:tap="closePaster">
+    <view class="content2">
+      <view class="con2">
+        <image class="posterUrl" src="{{posterUrl}}" mode="aspectFill"/>
+        <view class="conn">
+          <view class="l">
+            <view class="t">颜见小程序</view>
+            <view class="d1">实名认证 真人真颜</view>
+            <view class="d2">线下陪伴 兴趣社交</view>
+            <view class="d3">长按扫码 立即体验</view>
+          </view>
+          <image class="code" src="{{miniCode}}" mode=""/>
+        </view>
+      </view>
+      <view class="bc" catch:tap="savePoster">保存至相册</view>
+    </view>
+  </view>
+  <view class="btnn">
+    <button class="btn" bind:tap="shareFn" disabled="{{!info.distributionCode}}">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1176_2.svg'):''}}" mode="" />
+      分享给微信好友
+    </button>
+  </view>
+  <!-- 点击分享选择 -->
+  <van-action-sheet show="{{ showSheet }}" cancel-text="取消" bind:cancel="onClose" bind:close="onClose" >
+    <view class="sheetContent">
+      <view class="item" bind:tap="onSelect">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1373.png'):''}}" mode="" />
+      <view>生成海报</view>
+      </view>
+      <view class="item">
+      <button open-type="share">
+
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1372.png'):''}}" mode="" />
+      <view>分享给好友</view>
+      </button>
+
+      </view>
+
+    </view>
+  </van-action-sheet>
+
+<van-dialog use-slot title="提示" show="{{ showTip }}" confirm-button-color="#6E95E1">
+  <view class="vandialogtip">
+    <view>可提现金额：可以直接提现的金额，分销奖励时间大于T+3的金额。</view>
+  </view>
+</van-dialog>
+
+<van-dialog use-slot title="提示" show="{{ showTip2 }}" confirm-button-color="#6E95E1">
+  <view class="vandialogtip">
+    <view>待提现金额：全部分销奖励的金额，其中奖励时间小于T+3的部分暂时无法提现，需等待T+3之后才可以提现。</view>
+  </view>
+</van-dialog>
+
+  <!-- 屏蔽用户弹窗 -->
+  <my-message wx:if="{{isShow}}" title="获取奖励方式" message="{{message}}" btnStr="确定" showBg="地球" bind:onClose="close" bind:onConfirm="confirm"></my-message>
+  <my-http-message class="httpMessage"></my-http-message>
+  <!-- 隐藏的canvas用于生成图片 -->
+  <canvas canvas-id="posterCanvas" style="position: absolute; left: -9999px; top: -9999px; width: 375px; height: 600px;"></canvas>
+</view>

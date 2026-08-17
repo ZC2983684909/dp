@@ -1,0 +1,78 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessage">
+  <view class="mask">
+    <view class="box">
+      <view class="con1">
+        <image class="bg1" src="{{imgBaseURL?(imgBaseURL+'/images/1354.png'):''}}" mode="" />
+        <image class="tit" src="{{imgBaseURL?(imgBaseURL+'/images/ktVIP.png'):''}}" mode="" />
+        <view class="subTit">超值6项特权</view>
+      </view>
+
+      <view class="con2">
+        <image class="vip" src="{{imgBaseURL?(imgBaseURL+'/images/VIP22x.png'):''}}" mode="" />
+        <swiper indicator-dots current="{{current}}">
+        <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper6.png'):''}}" mode="aspectFit" />
+              <view class="tit1">解锁微信</view>
+              <view class="tit2">每天赠送5次，免费解锁用户微信</view>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper1.png'):''}}" mode="aspectFit" />
+              <view class="tit1">主动私聊</view>
+              <view class="tit2">每天赠送5次，免费主动私聊用户</view>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper4.png'):''}}" mode="aspectFit" />
+              <view class="tit1">精准筛选</view>
+              <view class="tit2">设置精准条件，精确匹配</view>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper3.png'):''}}" mode="aspectFit" />
+              <view class="tit1">谁看过我</view>
+              <view class="tit2">对你感兴趣的人是谁，不错过每一个ta</view>
+            </view>
+          </swiper-item>
+          <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper2.png'):''}}" mode="aspectFit" />
+              <view class="tit1">更多推荐</view>
+              <view class="tit2">无限查看全部用户资料，把握更多机会</view>
+            </view>
+          </swiper-item>
+          
+          
+          <swiper-item>
+            <view class="c">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/vipSwiper5.png'):''}}" mode="aspectFit" />
+              <view class="tit1">查看原相机</view>
+              <view class="tit2">查看用户原相机视频，了解更真实的ta</view>
+            </view>
+          </swiper-item>
+          
+        </swiper>
+        <view class="list">
+          <view class="item" wx:for="{{vipPrice}}" wx:key="index">
+            <view class="tag">{{item.month}}个月</view>
+            <view class="m">
+              <view class="m1">￥</view>
+              <view class="m2">{{item.price}}</view>
+            </view>
+            <view class="t">{{item.unitPrice}}元/月</view>
+          </view>
+        </view>
+        <view class="btn" bind:tap="goVipOpen">立即开通</view>
+      </view>
+      <view class="close" wx:if="{{showClose}}" bind:tap="onClose">
+        <van-icon name="cross" color="#fff" />
+      </view>
+    </view>
+  </view>
+
+</view>

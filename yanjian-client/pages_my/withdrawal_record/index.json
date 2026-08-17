@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "apply-user-list-com":"../components/ApplyUserListCom/index",
+    "see-hello-msg":"/components/SeeHelloMsg/index",
+    "van-loading": "@vant/weapp/loading/index"
+  }
+}

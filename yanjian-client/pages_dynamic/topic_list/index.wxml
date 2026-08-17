@@ -1,0 +1,39 @@
+<!-- pages_dynamic/topic_list/index.wxml -->
+<view class="topic_list">
+    <van-nav-bar custom-class="navbar" custom-style="background-color: #f5f5f5" z-index="{{99}}" title="话题" fixed placeholder left-arrow border="{{false}}" bind:click-left="onClickLeft"></van-nav-bar>
+    <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+        <empty wx:if="{{!list.length}}"></empty>
+        <block wx:else>
+            <view class="loading" wx:if="{{isLoading}}">
+                <view class="topLoad">
+                    <van-loading color="#1989fa" />
+                </view>
+            </view>
+            <view class="pull" wx:if="{{isPull}}">
+                <van-icon name="down" />
+            </view>
+            <view class="content">
+                <view class="item" wx:for="{{list}}" wx:key="index" bind:tap="goPage" data-path="/pages_dynamic/topic_detail/index" data-id="{{item.id}}">
+                    <image src="{{item.img}}" mode="aspectFill" />
+                    <view class="con">
+                        <view class="tit">
+                            <image src="{{imgBaseURL?(imgBaseURL+'/images/1147.svg'):''}}" mode="" />
+                            {{item.title}}
+                        </view>
+                        <view class="desc">{{item.descriptionInfo}}</view>
+                        <view class="num">
+                            <view class="n">{{item.visitCountDesc}}浏览</view>
+                            <!-- <view class="line"></view>
+                            <view class="n">{{item.discussCountDesc}}讨论</view> -->
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <view class="loading" wx:if="{{isLoadingMore}}">
+                <van-loading color="#1989fa" />
+            </view>
+            <view class="noMore" wx:else>暂无更多</view>
+        </block>
+    </scroll-view>
+    <my-http-message class="httpMessage"></my-http-message>
+</view>

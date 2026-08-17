@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "van-progress": "@vant/weapp/progress/index",
+    "my-message": "/components/MyMessage/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-dialog": "@vant/weapp/dialog/index"
+  }
+}

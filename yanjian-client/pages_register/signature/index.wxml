@@ -1,0 +1,16 @@
+<!--pages_register/register/signature/index.wxml-->
+<view class="signature">
+  <van-nav-bar custom-class="navbar" title="自我描述" border="{{false}}" bind:click-left="back" left-arrow />
+  <view class="form">
+    <view class="desc">
+      <view>可以从以下几个方面进行介绍：</view>
+      <view>兴趣爱好、性格特点；</view>
+      <view>生活习惯、想要探索的新领域；</view>
+      <view>理想的生活是什么样；</view>
+    </view>
+    <van-field value="{{ userInfo.selfDescription }}" placeholder="点击此处开始编辑【至少20字】" border="{{ false }}" type="textarea" input-class="iptClass {{type==1?'iptClass2':''}}" bind:change="onChange" />
+    <my-fotter-btn bind:btnTap="submit">提交</my-fotter-btn>
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+
+</view>

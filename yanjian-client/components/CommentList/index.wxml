@@ -1,0 +1,75 @@
+<!--components/CommentList/index.wxml-->
+<view class="comment">
+  <view class="title">评论区</view>
+  <empty wx:if="{{!comment.length}}" msg="还没有人评论" height="40vh" />
+  <view class="item" wx:for="{{comment}}" wx:key="id">
+    <view class="l">
+      <image class="ava" bind:tap="goPage" data-anonymous="{{item.anonymous}}" data-id="{{item.userId}}" src="{{item.headPortrait||imgBaseURL&&(imgBaseURL+'/images/1171.svg')}}" mode="aspectFill" />
+    </view>
+    <view class="r">
+      <view class="t">
+        <view class="info">
+          <view class="name">
+            <text bind:tap="goPage" data-anonymous="{{item.anonymous}}" data-id="{{item.userId}}">{{item.nickName}}</text> 
+            <block wx:if="{{item.anonymous==='false'}}">
+              <image class="gender" wx:if="{{item.gender=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/1001.svg'):''}}" alt="" />
+              <image class="gender" wx:else src="{{imgBaseURL?(imgBaseURL+'/images/1002.svg'):''}}" alt="" />
+            </block>
+            <view class="mainTag" wx:if="{{item.isOwner}}">作者</view>
+          </view>
+          <view class="other" wx:if="{{item.information}}">{{item.information}}</view>
+        </view>
+        <view class="e" bind:tap="article" data-item="{{item}}">
+          <image wx:if="{{!item.isLike}}" src="{{imgBaseURL?(imgBaseURL+'/images/1003.svg'):''}}" mode="" />
+          <image wx:else src="{{imgBaseURL?(imgBaseURL+'/images/1004.svg'):''}}" mode="" />
+          <text wx:if="{{item.likeCount>0}}">{{item.likeCount}}</text>
+        </view>
+      </view>
+      <view class="hfC" wx:if="{{item.commentId}}">
+        <!-- <view class="c1">
+          <view class="t">回复</view>
+          <view class="n">{{item.replyNickName}}</view>
+        </view> -->
+        <view class="c2">
+          <view class="content" data-item="{{item}}" bind:tap="reply">
+          {{item.content}}</view>
+          <view class="hf">
+            <view class="l">
+              <text class="time">{{item.time}}</text>
+              <text data-item="{{item}}" bind:tap="reply">回复</text>
+            </view>
+            <view class="dots" data-item="{{item}}" bind:tap="edit">
+              <view class="dot"></view>
+              <view class="dot"></view>
+              <view class="dot"></view>
+            </view>
+          </view>
+        </view>
+        <view class="c3">
+          <view class="line"></view>
+          <view class="c3c">
+          <text bind:tap="goPage" data-anonymous="{{item.anonymous}}" data-id="{{item.replyUserId}}">{{item.replyNickName}}：</text>{{item.replyContent}}</view>
+        </view>
+      </view>
+      <view class="c" wx:else>
+        <view class="cc">
+          <view class="content" data-item="{{item}}" bind:tap="reply">{{item.content}}</view>
+          <view class="hf">
+            <view class="l">
+              <text class="time">{{item.time}}</text>
+              <text data-item="{{item}}" bind:tap="reply">回复</text>
+            </view>
+            <view class="dots" data-item="{{item}}" bind:tap="edit">
+              <view class="dot"></view>
+              <view class="dot"></view>
+              <view class="dot"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+
+  </view>
+</view>

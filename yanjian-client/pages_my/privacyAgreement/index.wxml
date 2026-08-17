@@ -1,0 +1,8 @@
+<view class="privacyAgreement">
+  <van-nav-bar custom-class="navbar" title="隐私保护政策" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <view class="content">
+    <rich-text nodes="{{text}}"></rich-text>
+
+    
+  </view>
+</view>

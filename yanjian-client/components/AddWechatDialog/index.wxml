@@ -1,0 +1,29 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessageBox">
+  <view class="mask">
+    <view class="box" style="height: {{height}};">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/dialogbg.png'):''}}" mode="aspectFill" />
+      <view class="content">
+        <view class="title">{{title}}</view>
+        <view class="wechat">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/1176.png'):''}}" mode="" />
+        <text>{{weChat}}</text>
+        </view>
+        <view class="con">
+          <rich-text nodes="{{message}}" />
+        </view>
+        <view class="foterTip">
+        <view>警惕诈骗！禁止在本平台从事色情、暴力、传销等违法活动，违者将被永久封禁处理！</view>
+        </view>
+        <button class="btn" data-weChat="{{weChat}}" bind:tap="onConfirm">
+          <view class="btnName">{{btnStr}}</view>
+        </button>
+        
+      </view>
+      <view class="close" wx:if="{{showClose}}" bind:tap="onClose">
+        <van-icon name="cross" color="#fff" />
+      </view>
+    </view>
+  </view>
+
+</view>

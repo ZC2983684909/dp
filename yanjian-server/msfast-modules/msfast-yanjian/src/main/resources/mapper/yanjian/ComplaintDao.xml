@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.ComplaintDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.ComplaintEntity" id="complaintMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="complaintId" column="complaint_id"/>
+        <result property="content" column="content"/>
+        <result property="img" column="img" typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+
+</mapper>

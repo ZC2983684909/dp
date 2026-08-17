@@ -1,0 +1,126 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/index",
+    "pages/message/index",
+    "pages/my/index",
+    "pages/web_view/index",
+    "pages/dynamic/index"
+  ],
+  "subPackages": [
+    {
+      "root": "pages_index",
+      "pages": [
+        "screen/index",
+        "screen_list/index",
+        "friend_detail/index",
+        "dynamic_detail/index",
+        "circle_of_friends/index",
+        "post_moments/index",
+        "report/index"
+      ]
+    },
+    {
+      "root": "pages_my",
+      "pages": [
+        "data_edit/index",
+        "userAgreement/index",
+        "privacyAgreement/index",
+        "privacy_set/index",
+        "applay_num/index",
+        "rulesAndPenalties/index",
+        "about/index",
+        "sponsorship_platform/index",
+        "aboutUsSub/index",
+        "login_reward/index",
+        "invite_friends/index",
+        "invite_friends_rules/index",
+        "open_vip/index",
+        "invited_user_list/index",
+        "withdrawal_record/index",
+        "recharge_list/index",
+        "subscribe/index"
+      ]
+    },
+    {
+      "root": "pages_dynamic",
+      "pages": [
+        "topic_list/index",
+        "topic_detail/index"
+      ]
+    },
+    {
+      "root": "pages_message",
+      "pages": [
+        "IM/index"
+      ]
+    },
+    {
+      "root": "pages_register",
+      "pages": [
+        "register1/index" ,
+        "register2/index" ,
+        "register3/index" ,
+        "select_tag/index",
+        "select_sex/index" ,
+        "signature/index",
+        "authCenter/index"
+      ]
+    }
+  ],
+  "tabBar": {
+    "color": "#2B2B2B",
+    "selectedColor": "#2B2B2B",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/tabbar/index.png",
+        "selectedIconPath": "/static/tabbar/index_select.png"
+      },
+      {
+        "pagePath": "pages/dynamic/index",
+        "text": "动态",
+        "iconPath": "/static/tabbar/dynamic.png",
+        "selectedIconPath": "/static/tabbar/dynamic_select.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "/static/tabbar/message.png",
+        "selectedIconPath": "/static/tabbar/message_select.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "/static/tabbar/my.png",
+        "selectedIconPath": "/static/tabbar/my_select.png"
+      }
+    ]
+  },
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json",
+  "requiredPrivateInfos": [
+    "getLocation"
+  ],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于附近人推荐"
+    }
+  },
+  "usingComponents": {
+    "van-nav-bar": "@vant/weapp/nav-bar/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "my-message": "/components/MyMessage/index",
+    "my-fotter-btn": "/components/MyFotterBtn/index",
+    "my-http-message": "/components/MyHttpMessage/index",
+    "empty": "/components/Empty/index"
+  }
+}

@@ -1,0 +1,26 @@
+<!--pages/login/index.wxml-->
+<view class="login">
+  <van-nav-bar custom-class="navbar" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <image class="bg" src="{{imgBaseURL?(imgBaseURL+'/images/400.png'):''}}" mode="aspectFit"/>
+
+  <view class="b">
+    <van-button custom-class="btn" color="#2B2B2B"  round type="info" bind:tap="tapLogin" > 
+      <view class="btncon">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/5.png'):''}}" mode="" />
+        <view class="btnStr">微信快捷登录</view>
+      </view>
+    </van-button>
+    <van-button wx:if="{{isDev}}" custom-class="btn" color="#777777" round bind:tap="goPage" data-path="/pages_register/register1/index">
+      开发环境快捷注册
+    </van-button>
+    <view class="foo">
+      <van-checkbox icon-size="28rpx" checked-color="#2B2B2B" value="{{checked }}" bind:change="onChange">
+        <text>我已阅读并同意</text>
+        <text>《</text><text class="l" data-path="/pages_my/userAgreement/index" catch:tap="goPage">用户协议</text><text>》</text>
+        <text>和</text>
+        <text>《</text><text class="l" data-path="/pages_my/privacyAgreement/index" catch:tap="goPage">隐私协议</text><text>》</text>
+      </van-checkbox>
+    </view>
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

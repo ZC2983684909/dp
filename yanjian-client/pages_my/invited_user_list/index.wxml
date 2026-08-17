@@ -1,0 +1,49 @@
+<!--pages_my/apply_user_list/index.wxml-->
+<view class="apply_user_list">
+  <van-nav-bar custom-class="navbar" z-index="{{99}}" title="已邀请用户" fixed placeholder left-arrow border="{{false}}" bind:click-left="back">
+  </van-nav-bar>
+
+  <view class="content" style="height: {{scrollHeight+'px'}}">
+    <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+  <empty wx:if="{{!list.length}}"></empty>
+  <view wx:else class="con">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="pull" wx:if="{{isPull}}">
+      <van-icon name="down" />
+    </view>
+    <view class="list">
+      <view class="item" wx:for="{{list}}" wx:key="index" data-item="{{item}}" bind:tap="itemTap">
+        <view class="ava">
+          <image src="{{item.avatar}}" mode="aspectFill" />
+        </view>
+       
+        <view class="r">
+          <view class="l">
+          <view class="name-container">
+            <view class="name">{{item.nickName}}</view>
+          </view>
+          <view class="sex {{item.sex=='男'?'sex1':'sex2'}}">
+              <image wx:if="{{item.sex=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/16478_2.svg'):''}}" mode="" />
+              <image wx:else src="{{imgBaseURL?(imgBaseURL+'/images/16477.svg'):''}}" mode="" />
+            </view>
+          </view>
+          <view class="time">{{item.createTime}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{isLoadingMore}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="noMore" wx:else>
+      暂无更多
+    </view>
+  </view>
+ 
+</scroll-view>
+      
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "apply-message":"/components/ApplyMessage/index",
+    "van-dialog": "@vant/weapp/dialog/index"
+  }
+}

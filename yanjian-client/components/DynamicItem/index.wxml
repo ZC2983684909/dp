@@ -1,0 +1,91 @@
+<!-- components/DynamicItem/index.wxml -->
+<view class="DynamicItem">
+  <view class="t">
+    <view class="l">
+      <image class="ava" catch:tap="goPage" data-path="/pages_index/friend_detail/index" src="{{info.headPortrait}}" mode="aspectFill" />
+      <view class="info">
+        <view class="name">
+          {{info.nickName}}
+          <image class="gender" wx:if="{{info.gender=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/1001.svg'):''}}" alt="" />
+          <image class="gender" wx:else src="{{imgBaseURL?(imgBaseURL+'/images/1002.svg'):''}}" alt="" />
+        </view>
+        <view class="other" wx:if="{{info.information}}">{{info.information}}</view>
+      </view>
+    </view>
+    <view class="rbox">
+      <view class="rr">
+        <!-- <view class="r" wx:if="{{userId==info.userId||!isList}}" bind:tap="edit"> -->
+        <view class="r"  bind:tap="edit">
+          <view class="dots">
+            <view class="dot"></view>
+            <view class="dot"></view>
+            <view class="dot"></view>
+          </view>
+        </view>
+      </view>
+      <view class="t">{{info.time}}</view>
+    </view>
+  </view>
+  <view class="c" catch:tap="{{isList?'goPage':''}}" data-path="/pages_index/dynamic_detail/index">
+    <expand-text text="{{info.content}}" isShowMore="{{isShowMore}}" bgColor="{{bgColor}}"></expand-text>
+  </view>
+  <block wx:if="{{info.type=='image'}}">
+    <view class="imgs {{xs.computedClassImgs(info.img.length)}}" wx:if="{{info.img.length}}">
+      <block wx:for="{{info.img}}" wx:key="index2" wx:for-index="index2" wx:for-item="item2">
+        <image class="{{xs.computedClass(info.img.length)}}" lazy-load src="{{item2}}" mode="{{info.img.length==1?'widthFix':'aspectFill'}}" data-index="{{index2}}" data-imgs="{{info.img}}" data-type="image" bind:tap="preview" />
+      </block>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="imgs {{xs.computedClassImgs(info.img.length)}}" wx:if="{{info.img.length}}">
+      <view class="conn" wx:for="{{info.img}}" wx:key="index2" wx:for-index="index2" wx:for-item="item2">
+        <video class="{{xs.computedClass(info.img.length)}}" src="{{item2}}" object-fit="cover" show-center-play-btn="{{false}}" controls="{{false}}" data-index="{{index2}}" data-imgs="{{info.img}}" data-type="video" bind:tap="preview"></video>
+        <view class="play" data-index="{{index2}}" data-imgs="{{info.img}}" data-type="video" bind:tap="preview">
+          <van-icon name="play-circle-o" size="70rpx" color="#fff" />
+        </view>
+      </view>
+    </view>
+  </block>
+  <subject-list subjectList="{{info.subjectList}}" bind:detail="topicDetail"></subject-list>
+  <view class="b" >
+    <view class="l" catch:tap="goPage" data-path="/pages_index/dynamic_detail/index">
+      <text wx:if="{{info.city}}">IP {{info.city}}</text>
+    </view>
+    <view class="r" wx:if="{{showMsgAndArt}}">
+      <view class="s" bind:tap="share">
+        <button open-type="share">
+          <!-- <van-icon name="share-o" size="36rpx" /> -->
+          <image class="pl" src="{{imgBaseURL?(imgBaseURL+'/images/380-3x.png'):''}}" mode="" />
+        </button>
+      </view>
+      <view class="e" catch:tap="article">
+        <article isLike="{{info.isLike}}"></article>
+        <text wx:if="{{info.likeCount>0}}">{{info.likeCount}}</text>
+        <text class="mint" wx:else>赞</text>
+      </view>
+      <view class="m" catch:tap="goPage" data-path="/pages_index/dynamic_detail/index">
+        <image class="pl" src="{{imgBaseURL?(imgBaseURL+'/images/1005.svg'):''}}" mode="" />
+        <text wx:if="{{info.commentCount>0}}">{{info.commentCount}}</text>
+        <text class="mint" wx:else>评论</text>
+      </view>
+    </view>
+  </view>
+  <wxs module="xs">
+    // 根据图片张数计算图片的class
+    module.exports.computedClass = function (num) {
+      if (num == 1) {
+        return "img1"
+      } else if (num == 2 || num == 4) {
+        return "img2"
+      } else if (num > 4) {
+        return ''
+      }
+    }
+    module.exports.computedClassImgs = function (num) {
+      if (num == 2 || num == 4) {
+        return "imgs2"
+      }
+      return ''
+    }
+  </wxs>
+</view>

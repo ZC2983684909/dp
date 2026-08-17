@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "empty": "/components/Empty/index",
+    "van-loading": "@vant/weapp/loading/index"
+  },
+  "navigationBarTitleText": "话题"
+}

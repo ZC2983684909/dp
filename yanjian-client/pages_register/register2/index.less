@@ -1,0 +1,228 @@
+/* pages_register/register/register2/index.wxss */
+.register2 {
+    .form {
+        padding: 10rpx 0;
+
+        .tit {
+            font-weight: bold;
+            font-size: 32rpx;
+            color: #000000;
+            padding-left: 74rpx;
+        }
+
+        .tip {
+            margin-top: 18rpx;
+            margin-bottom: 44rpx;
+            font-weight: 400;
+            font-size: 28rpx;
+            color: #8f8f8f;
+            padding-left: 74rpx;
+
+            text {
+                color: #42ce71;
+            }
+        }
+
+        .box1 {
+            height: 750rpx;
+            margin: 0 74rpx;
+            background: rgba(238, 238, 238, 0.29);
+            border-radius: 26rpx 26rpx 26rpx 26rpx;
+            border: 4rpx solid #ececec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .con {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                .plus {
+                    font-size: 80rpx;
+                    font-weight: bold;
+                    color: #000000;
+                }
+
+                .name {
+                    font-weight: bold;
+                    font-size: 26rpx;
+                    color: #000000;
+                }
+            }
+        }
+
+        .box2 {
+            padding: 0 66rpx;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24rpx;
+
+            .img {
+                width: 186rpx;
+                height: 226rpx;
+                border-radius: 26rpx 26rpx 26rpx 26rpx;
+                // border: 4rpx solid #ECECEC;
+                position: relative;
+
+                .vid {
+                    width: 186rpx;
+                    height: 226rpx;
+                    border-radius: 26rpx 26rpx 26rpx 26rpx;
+                }
+                .play{
+                  position: absolute;
+                  left: 50%;
+                  top: 50%;
+                  transform: translate(-50%,-50%);
+                }
+
+                .img1 {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 26rpx 26rpx 26rpx 26rpx;
+                }
+
+                .btn {
+                    position: absolute;
+                    left: 50%;
+                    bottom: 14rpx;
+                    transform: translateX(-50%);
+                    font-weight: 400;
+                    font-size: 20rpx;
+                    color: #ffffff;
+                    background: rgba(0, 0, 0, 0.5);
+                    padding: 4rpx 20rpx;
+                    border-radius: 18rpx 18rpx 18rpx 18rpx;
+                }
+
+                .close {
+                    position: absolute;
+                    top: -17rpx;
+                    right: -17rpx;
+                    width: 34rpx;
+                    height: 34rpx;
+                    background: #dfdfdf;
+                    border-radius: 50%;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+
+            .add {
+                width: 186rpx;
+                height: 226rpx;
+                background: rgba(238, 238, 238, 0.29);
+                border-radius: 26rpx 26rpx 26rpx 26rpx;
+                border: 4rpx solid #ececec;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                .con {
+                    display: flex;
+                    flex-direction: column;
+                    justify-items: center;
+                    align-items: center;
+                }
+
+                .plus {
+                    font-size: 40rpx;
+                }
+
+                .name {
+                    font-weight: bold;
+                    font-size: 22rpx;
+                    color: #b5b5b5;
+                }
+            }
+        }
+    }
+
+    .sheet {
+        height: 560rpx;
+        padding: 58rpx 52rpx;
+        position: relative;
+
+        .tit {
+            font-weight: bold;
+            font-size: 32rpx;
+            color: #000000;
+        }
+
+        .desc {
+            font-weight: 400;
+            font-size: 28rpx;
+            color: #8f8f8f;
+            margin-top: 18rpx;
+        }
+
+        .sheetImgs {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24rpx;
+
+            .item {
+                width: 206rpx;
+                height: 250rpx;
+                position: relative;
+
+                .im1 {
+                    width: 100%;
+                    height: 100%;
+                }
+
+                .t1,
+                .t2 {
+                    width: fit-content;
+                    white-space: nowrap;
+                    position: absolute;
+                    bottom: 20rpx;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    display: flex;
+                    align-items: center;
+
+                    image {
+                        width: 36rpx;
+                        height: 36rpx;
+                        margin-right: -36rpx;
+                        z-index: 2;
+                    }
+
+                    .s {
+                        height: 36rpx;
+                        font-weight: 400;
+                        font-size: 20rpx;
+                        color: #ffffff;
+                        background-color: rgba(0, 0, 0, 0.6);
+                        line-height: 36rpx;
+                        padding: 0 12rpx;
+                        padding-left: 42rpx;
+                        border-radius: 18rpx;
+                    }
+                }
+
+                .t2 {
+                    .s {
+                        background-color: rgba(0, 0, 0, 0.3);
+                    }
+                }
+            }
+        }
+
+        .btnBox {
+            padding: 10rpx 32rpx;
+            width: 100vw;
+            position: absolute;
+            z-index: 99;
+            left: 0;
+            bottom: 0rpx;
+        }
+    }
+}

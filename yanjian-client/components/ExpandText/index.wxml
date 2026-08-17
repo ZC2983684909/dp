@@ -1,0 +1,9 @@
+<view class="text_expansion">
+  <view class="text_expansion_text {{ isExpand||!isShowMore ? 'text_expansion_text_expand' : '' }}" style="font-size: {{size}};">
+    <text class="textCon">{{ text }}</text>
+    
+  </view>
+  <view wx:if="{{isShowMore&&isMore}}" class="text_expansion_button" style="background-color:{{bgColor}}" catch:tap="expansionClick">
+    {{ isExpand ? collapseText : expandText }}
+  </view>
+</view>

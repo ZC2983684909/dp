@@ -1,0 +1,94 @@
+# Local/example service configuration.
+# Put real values in an ignored local override such as .tools/application-local.yml.
+
+server:
+  port: 8086
+
+spring:
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: ${REDIS_PASSWORD:}
+  datasource:
+    druid:
+      url: jdbc:mysql://127.0.0.1:3306/yanjian_demo?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      username: ${DB_USERNAME:root}
+      password: ${DB_PASSWORD:}
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  accesskey: ${MINIO_ACCESS_KEY:minioadmin}
+  secretKey: ${MINIO_SECRET_KEY:}
+  bucketName: ${MINIO_BUCKET:yanjian}
+  url: ${MINIO_PUBLIC_URL:http://127.0.0.1:9000}
+
+tencentIo:
+  secretId: ${TENCENT_SECRET_ID:}
+  secretKey: ${TENCENT_SECRET_KEY:}
+  regionName: ${TENCENT_REGION:}
+  bucketName: ${TENCENT_BUCKET:}
+
+alisms:
+  accessKeyId: ${ALIYUN_ACCESS_KEY_ID:}
+  secret: ${ALIYUN_ACCESS_KEY_SECRET:}
+  signName: ${ALIYUN_SMS_SIGN_NAME:}
+  loginTemplateCode: ${ALIYUN_SMS_LOGIN_TEMPLATE:}
+  registerTemplateCode: ${ALIYUN_SMS_REGISTER_TEMPLATE:}
+  resetPasswordTemplateCode: ${ALIYUN_SMS_RESET_TEMPLATE:}
+  timeout: 120
+
+wxmfast:
+  config:
+    websocket:
+      port: 8087
+    auth:
+      authorizationCode: ${AUTHORIZATION_CODE:change-me}
+      env: ${APP_ENV:test}
+      wxapplet:
+        appId: ${WX_APPLET_APP_ID:}
+        secret: ${WX_APPLET_SECRET:}
+      wxpublic:
+        appId: ${WX_PUBLIC_APP_ID:}
+        secret: ${WX_PUBLIC_APP_SECRET:}
+    file:
+      static-path: ${STATIC_PATH:./upload}
+      objectServiceType: ${OBJECT_SERVICE_TYPE:tencentIo}
+    role:
+      username: ${ADMIN_USERNAME:admin}
+      password: ${ADMIN_PASSWORD:}
+      touristUsername: ${TOURIST_USERNAME:demo}
+      touristPassword: ${TOURIST_PASSWORD:}
+    pay:
+      wxapplet:
+        mchid: ${WECHAT_MCH_ID:}
+        privateKeyFromPath: ${WECHAT_PRIVATE_KEY_PATH:}
+        merchantSerialNumber: ${WECHAT_MERCHANT_SERIAL:}
+        apiV3Key: ${WECHAT_API_V3_KEY:}
+        publicKeyId: ${WECHAT_PUBLIC_KEY_ID:}
+        publicKeyPath: ${WECHAT_PUBLIC_KEY_PATH:}
+      notify-url: ${WECHAT_PAY_NOTIFY_URL:http://127.0.0.1:8086/base/pay/wxApplet/notify}
+      transferBillsNotifyUrl: ${WECHAT_TRANSFER_NOTIFY_URL:http://127.0.0.1:8086/base/pay/wxApplet/transferBillsNotify}
+
+wx:
+  template: ${WX_TEMPLATE_ID:}
+  messageToken: ${WX_MESSAGE_TOKEN:}
+  EncodingAESKey: ${WX_ENCODING_AES_KEY:}
+  qrCodeEnvVersion: ${WX_QR_CODE_ENV_VERSION:trial}
+
+wxpublic:
+  messageToken: ${WX_PUBLIC_MESSAGE_TOKEN:}
+  EncodingAESKey: ${WX_PUBLIC_ENCODING_AES_KEY:}
+
+tencent:
+  secretId: ${TENCENT_SECRET_ID:}
+  secretKey: ${TENCENT_SECRET_KEY:}
+  merchantId: ${TENCENT_FACE_MERCHANT_ID:}
+
+locationAnalysis:
+  SecretID: ${LOCATION_SECRET_ID:}
+  SecretKey: ${LOCATION_SECRET_KEY:}
+
+edu:
+  key: ${EDU_API_KEY:}
+
+weburl: ${WEB_URL:http://127.0.0.1:8086/}

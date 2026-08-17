@@ -1,0 +1,15 @@
+<!-- components/Article/index.wxml -->
+<view class="article">
+    <!-- 点赞时候周围出现粒子效果 -->
+    <view class="dots" wx:if="{{isLike&&isAnimating}}">
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+        <view class="dot"></view>
+    </view>
+    <image class="img1" style="width:{{size}};height:{{size}}" wx:if="{{!isLike}}" src="{{imgBaseURL?(imgBaseURL+'/images/1003.svg'):''}}" mode="" />
+    <image class="img2" style="width:{{size}};height:{{size}}" wx:else src="{{imgBaseURL?(imgBaseURL+'/images/1004.svg'):''}}" mode="" />
+</view>

@@ -1,0 +1,48 @@
+<!-- pages_index/post_moments/index.wxml -->
+<view class="post_moments">
+  <van-nav-bar custom-class="navbar" title="发布动态" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft"></van-nav-bar>
+  <view class="content">
+    <van-field value="{{ value }}" placeholder="分享生活、表达思考、提出困惑..." type="textarea" border="{{ false }}" autosize="{{autoSize}}" show-confirm-bar="{{false}}" custom-class="test" bind:change="iptChange" adjust-position="{{false}}" bind:focus="focusFn" focus="{{focus}}" bind:blur="blurFn" />
+    <!-- <van-uploader file-list="{{ fileList }}" image-fit="aspectFill" max-count="{{9}}" multiple="{{true}}" accept="media" bind:after-read="afterRead" bind:delete="delete"/> -->
+    <view class="imgs">
+      <view class="item" wx:for="{{fileList}}" wx:key="index">
+        <image class="con" wx:if="{{imgOrVideo=='image'}}" src="{{item.url}}" mode="aspectFill" data-index="{{index}}" bind:tap="preview"></image>
+        <video class="con" wx:if="{{imgOrVideo=='video'}}" object-fit="cover" src="{{item.url}}" show-center-play-btn="{{false}}" controls="{{false}}" data-index="{{index}}" bind:tap="preview"></video>
+        <!-- 模拟视频播放按钮 -->
+        <view class="play" wx:if="{{imgOrVideo=='video'}}" data-index="{{index}}" bind:tap="preview">
+          <van-icon name="play-circle-o" size="50rpx" color="#fff" />
+        </view>
+        <view class="del" data-index="{{index}}" bind:tap="delete">
+          <van-icon name="cross" size="20rpx" color="#fff" />
+        </view>
+      </view>
+      <view class="item itemAdd" wx:if="{{!imgOrVideo||(imgOrVideo=='video'&&!fileList.length)||(imgOrVideo=='image'&&fileList.length<9)}}" bind:tap="addUpload">
+        <view class="add">
+          <van-icon name="plus" size="50rpx" color="#C8C8C8" />
+        </view>
+      </view>
+    </view>
+    <view class="labels">
+      <view class="label addLabel" bind:tap="addLabel"># 添加话题</view>
+      <view class="label" wx:for="{{selectLabelList}}" wx:key="index">
+        <view class="tit"># {{item.title}}</view>
+        <view class="del" bind:tap="delLabel" data-index="{{index}}">×</view>
+      </view>
+    </view>
+  </view>
+  <view class="btn" style="bottom:{{h}}">
+    <van-button disabled="{{!value&&fileList.length<=0}}" custom-class="btnn" block round color="#2b2b2b" bind:tap="submit">
+      发布
+    </van-button>
+  </view>
+  <van-action-sheet show="{{ showSelectUpload }}" actions="{{ uploadActions }}" cancel-text="取消" bind:cancel="onCloseUpload" bind:close="onCloseUpload" bind:select="onSelectUpload" />
+  <van-action-sheet show="{{ showLabelList }}" title="选择参与话题" enhanced="{{true}}" show-scrollbar="{{false}}" close-on-click-overlay="{{true}}" bind:close="closeLabel">
+    <scroll-view class="list" show-scrollbar="{{fals}}" scroll-y="{{true}}" bindscrolltolower="bindscrolltolower">
+      <view class="item" wx:for="{{labelList}}" wx:key="index" data-info="{{item}}" bind:tap="selectLabel">
+        <view class="l"># {{item.title}}</view>
+        <view class="r">{{item.visitCountDesc}}浏览</view>
+      </view>
+    </scroll-view>
+  </van-action-sheet>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

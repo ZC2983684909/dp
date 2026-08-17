@@ -1,0 +1,111 @@
+<!--pages_index/screen_list/index.wxml-->
+<view class="screen_list">
+  <van-nav-bar custom-class="navbar" title="{{title}}" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft">
+  </van-nav-bar>
+  <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+    <empty wx:if="{{!list.length}}"></empty>
+    <block wx:else>
+      <view class="top"></view>
+      <view class="loading" wx:if="{{isLoading}}">
+        <view class="topLoad">
+          <van-loading color="#1989fa" />
+        </view>
+      </view>
+      <view class="pull" wx:if="{{isPull}}">
+        <van-icon name="down" />
+      </view>
+      
+      <view class="content">
+        <view class="item" wx:for="{{list}}" wx:key="id" bind:tap="{{type!=5&&'goPage'}}" data-id="{{item.id}}" data-path="/pages_index/friend_detail/index">
+          <image class="photo" src="{{item.photo}}" mode="aspectFill" />
+          <view class="info">
+            <view class="names">
+              <view class="name">{{item.nickName}}</view>
+              <view class="auth" wx:if="{{item.idAuth==3&&type!=5}}">
+                <image class="authImg" src="{{imgBaseURL?(imgBaseURL+'/images/12.svg'):''}}" mode="" />
+                <text>实名认证</text>
+              </view>
+              <view class="pb" wx:if="{{type==5}}" data-item="{{item}}" catch:tap="cancelPB">
+                <image class="pbImg" src="{{imgBaseURL?(imgBaseURL+'/images/92.svg'):''}}" mode="" />
+                <text>取消屏蔽</text>
+              </view>
+            </view>
+            <!-- <view class="edu">
+              <block wx:if="{{item.eduAuth==3}}">
+                <text>{{item.school||''}}</text>
+                <text wx:if="{{item.school&&item.education}}"> · </text>
+                <text>{{item.education||''}}</text>
+              </block>
+              <block wx:else>
+                <text style="color: #D0D0D0;">学历未认证</text>
+              </block>
+            </view> -->
+           <view class="sex">性别：{{item.sex}}</view>
+            <view class="time">
+              {{item.birthFormatDate}}{{item.age?' | '+item.age+'岁':''}}
+            </view>
+            <view class="add">
+              <view class="address">{{item.city?item.city:''}} {{item.city&&item.jobMes?' · ':''}} {{item.jobMes?item.jobMes:''}}</view>
+              <view class="money" style="margin-left: 8rpx;"> {{item.heightFormat?'| '+item.heightFormat:''}} {{item.heightFormat&&item.weightFormat?' · ':''}} {{item.weightFormat?item.weightFormat:''}}</view>
+            </view>
+            <!-- <view class="desc">
+              交友倾向：{{item.idealFriend}}
+            </view> -->
+          </view>
+          <view class="read" wx:if="{{item.visitStatus==0}}"></view>
+
+        </view>
+        <!-- <van-divider wx:if="{{type==1}}" contentPosition="center" customStyle="color: #B32F32; border-color: #E0E0E0; font-size: 26rpx;">
+          以上用户近期登陆平台，建议优先申请
+        </van-divider> -->
+        <view class="item" wx:for="{{noActiveList}}" wx:key="id" bind:tap="{{type!=5&&'goPage'}}" data-id="{{item.id}}" data-path="/pages_index/friend_detail/index">
+          <image class="photo" src="{{item.photo}}" mode="aspectFill" />
+          <view class="info">
+            <view class="names">
+              <text class="name">{{item.nickName}}
+              </text>
+              <view class="auth" wx:if="{{item.idAuth==3&&type!=5}}">
+                <image class="authImg" src="{{imgBaseURL?(imgBaseURL+'/images/12.svg'):''}}" mode="" />
+                <text>实名认证</text>
+              </view>
+              <view class="pb" wx:if="{{type==5}}" data-item="{{item}}" catch:tap="cancelPB">
+                <image class="pbImg" src="{{imgBaseURL?(imgBaseURL+'/images/92.svg'):''}}" mode="" />
+                <text>取消屏蔽</text>
+              </view>
+            </view>
+            <!-- <view class="edu">
+              <block wx:if="{{item.eduAuth==3}}">
+                <text>{{item.school||''}}</text>
+                <text wx:if="{{item.school&&item.education}}"> · </text>
+                <text>{{item.education||''}}</text>
+              </block>
+              <block wx:else>
+                <text style="color: #D0D0D0;">学历未认证</text>
+              </block>
+            </view> -->
+             <view class="sex">性别：{{item.sex}}</view>
+            <view class="time">
+              {{item.birthFormatDate}} | {{item.age}}
+            </view>
+            <view class="add">
+              <view class="address">{{item.city?item.city:''}} {{item.city&&item.jobMes?' · ':''}} {{item.jobMes?item.jobMes:''}}</view>
+              <view class="money" style="margin-left: 8rpx;"> | {{item.heightFormat?item.heightFormat:''}} {{item.heightFormat&&item.weightFormat?' · ':''}} {{item.weightFormat?item.weightFormat:''}}</view>
+            </view>
+            <!-- <view class="desc">
+              理想对象：{{item.idealFriend}}
+            </view> -->
+          </view>
+        </view>
+      </view>
+      <view class="loading" wx:if="{{isLoadingMore}}">
+        <van-loading color="#1989fa" />
+      </view>
+      <view class="noMore" wx:else>
+        {{type==3?'只显示最近一周访客记录':(type==2?'只显示最近两周的浏览记录':'暂无更多')}}
+      </view>
+    </block>
+
+  </scroll-view>
+  <my-message wx:if="{{showMsg}}" title="提示" message="确定对此用户取消屏蔽吗？" btnStr="确定" bind:onClose="onClose" bind:onConfirm="onConfirm"></my-message>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

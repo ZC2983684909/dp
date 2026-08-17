@@ -1,0 +1,40 @@
+<!--pages_my/apply_user_list/index.wxml-->
+<view class="apply_user_list">
+  <van-nav-bar custom-class="navbar" z-index="{{99}}" title="提现记录" fixed placeholder left-arrow border="{{false}}" bind:click-left="back">
+  </van-nav-bar>
+
+  <view class="content" style="height: {{scrollHeight+'px'}}">
+    <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+      <empty wx:if="{{!list.length}}"></empty>
+      <view wx:else class="con">
+        <view class="loading" wx:if="{{isLoading}}">
+          <van-loading color="#1989fa" />
+        </view>
+        <view class="pull" wx:if="{{isPull}}">
+          <van-icon name="down" />
+        </view>
+        <view class="list">
+          <view class="item" wx:for="{{list}}" wx:key="index" data-item="{{item}}" bind:tap="itemTap">
+            <view class="l">
+        提现金额：￥{{item.amount}}
+      </view>
+
+            <view class="r">
+            {{item.createTime}}
+            </view>
+          </view>
+        </view>
+
+        <view class="loading" wx:if="{{isLoadingMore}}">
+          <van-loading color="#1989fa" />
+        </view>
+        <view class="noMore" wx:else>
+          暂无更多
+        </view>
+      </view>
+
+    </scroll-view>
+
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

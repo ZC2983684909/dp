@@ -1,0 +1,67 @@
+<!--pages_index/screen/index.wxml-->
+<view class="screen">
+  <view class="top"></view>
+  <van-nav-bar custom-class="navbar" title="筛选" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft">
+  </van-nav-bar>
+  <view class="content">
+    <view class="box">
+      <view class="item">
+        <view class="label">城市</view>
+        <van-field value="{{ form.city }}" placeholder="不限" border="{{ false }}" custom-class="{{cityChange?'iptClass':'iptClass2'}}" input-class="ptclass" disabled="{{true}}" bind:click-input="changeshow1" />
+      </view>
+      <view class="item">
+        <view class="label">年龄</view>
+        <van-field value="{{ form.yearStr }}" placeholder="不限" border="{{ false }}" custom-class="iptClass" input-class="ptclass" input-class="ptclass" disabled="{{true}}" bind:click-input="changeshow2" />
+      </view>
+      <view class="item">
+        <view class="label">性别</view>
+        <van-field value="{{ form.sex }}" placeholder="不限" border="{{ false }}" custom-class="iptClass2" input-class="ptclass" disabled="{{true}}" bind:click-input="changeshowsex" />
+      </view>
+      <view class="item">
+          <view class="label">标签</view>
+          <van-field value="{{ form.otherLabel }}" placeholder="不限" border="{{ false }}" custom-class="iptClass" input-class="ptclass" disabled="{{true}}" bind:click-input="changeshow5" />
+        </view>
+      <view class="item">
+        <view class="label">相似度</view>
+        <van-field value="{{ form.similarityText }}" placeholder="不限" border="{{ false }}" custom-class="iptClass" input-class="ptclass" disabled="{{true}}" bind:click-input="changeshow3" />
+      </view>
+      <view class="item" style="justify-content: flex-start;gap: 20rpx;">
+        <view class="label">已实名用户</view>
+        <van-switch checked="{{ form.isIdAuth }}" active-color="#2B2B2B" inactive-color="#E2E2E2" size="40rpx" bind:change="changeSwitch" />
+      </view>
+       <view class="item" style="justify-content: flex-start;gap: 20rpx;">
+        <view class="label">原相机用户</view>
+        <van-switch checked="{{ form.isOriginalCamera }}" active-color="#2B2B2B" inactive-color="#E2E2E2" size="40rpx" bind:change="changeSwitch2" />
+      </view>
+      <view class="btns">
+         <my-fotter-btn bind:btnTap="submit">确认筛选</my-fotter-btn>
+      </view>
+    </view>
+    
+  </view>
+
+  <!-- 选择性别 -->
+  <van-action-sheet list-class="wrapper" show="{{ showSex }}" cancel-text="取消" bind:cancel="onClosesex" actions="{{ actionsSex }}" bind:close="onClosesex" bind:select="onSelectsex" />
+  <!-- 选择省市区-现居地 -->
+  <van-popup show="{{ show1 }}" round position="bottom" bind:close="onClose1">
+    <van-cascader wx:if="{{ show1 }}" title="请选择所在城市" options="{{ show1Options }}" field-names="{{ fieldNames }}" bind:close="onClose1" bind:change="onChange1" bind:finish="onFinish1" />
+  </van-popup>
+  <!-- 选择出生年份 -->
+  <van-popup show="{{ show2 }}" round position="bottom" bind:close="onClose2">
+    <view class="popupTopBtn">
+      <view class="l" bind:tap="onClose2">取消</view>
+      <view class="r" bind:tap="onClose2">确认</view>
+    </view>
+    <view style="display: flex; align-items: center;">
+      <van-picker style="width: 48vw;" default-index="{{year1Idx}}" columns="{{ actions2 }}" bind:change="onChangeYear1" />
+      <text>至</text>
+      <van-picker style="width: 48vw;" default-index="{{year2Idx}}" columns="{{ actions2 }}" bind:change="onChangeYear2" />
+    </view>
+  </van-popup>
+  <!-- 选择相似度 -->
+  <van-popup show="{{ show3 }}" round position="bottom" bind:close="onClose3">
+  <van-picker show-toolbar="{{true}}" default-index="{{0}}" columns="{{ similarityColumns }}" bind:cancel="onClose3" bind:confirm="similarityConfirm" />
+   </van-popup>
+   <my-vip-dialog wx:if="{{showVipDialog}}" current="{{2}}" bind:onClose="closeVipDialog"/>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

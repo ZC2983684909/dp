@@ -1,0 +1,224 @@
+<!-- pages_index/friend_detail/index.wxml -->
+<view class="friend_detail">
+  <van-nav-bar custom-class="navbar" title="用户详情" fixed :z-index="100" placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft"></van-nav-bar>
+  <view class="content">
+    <view class="photos">
+      <block wx:for="{{tuserInfo.personalPhoto}}" wx:key="index">
+        <view class="vidBox" wx:if="{{item.type=='video'}}" data-type="video" bind:tap="preview">
+          <video class="{{tuserInfo.seeCameraImg?'':'noCamera'}}" src="{{item.url}}" show-center-play-btn="{{false}}" object-fit="cover" controls="{{false}}"></video>
+          <!-- 模拟视频播放按钮 -->
+          <view class="play">
+            <van-icon name="play-circle-o" size="60rpx" color="#fff" data-type="video" bind:tap="preview" />
+          </view>
+          <view class="tagVideo" catch:tap="showMsgFn">原相机视频</view>
+        </view>
+        <view class="photoBox" wx:else>
+          <view class="xs" catch:tap="showTipFn">
+            <view class="str">相似度</view>
+            <view class="num">{{item.similarity}}%</view>
+          </view>
+          <image class="photo {{index%2==0&&index==(tuserInfo.personalPhoto.length-1)?'lastPhoto':''}}" src="{{item.url}}" mode="aspectFill" data-index="{{index}}" data-type="image" bind:tap="preview" />
+        </view>
+      </block>
+    </view>
+    <view class="status" wx:if="{{tuserInfo.applyStatus=='1'||tuserInfo.applyStatus=='2'||tuserInfo.applyStatus=='3'}}">
+      <view class="l">
+        <view class="one">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/1057.svg'):''}}" mode="" />
+          <text>你对Ta的资料很感兴趣</text>
+        </view>
+        <view class="two">
+          {{tuserInfo.applyStatus=='1'?' 认真看了你的主页，很想认识你🙋':tuserInfo.applyStatus==2?'你们已是好友':'对方觉得你们不合适'}}
+        </view>
+      </view>
+      <view class="r" bind:tap="goIm" wx:if="{{tuserInfo.applyStatus==2}}">
+        <van-icon name="arrow" color="#2B2B2B" size="28rpx" />
+      </view>
+    </view>
+    <view class="auth" wx:if="{{tuserInfo.idAuth==3||tuserInfo.similarity>70}}">
+      <view class="authItem" wx:if="{{tuserInfo.idAuth==3}}">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/1168.svg'):''}}" mode="" />
+        <view class="c">
+          <view class="n">实名认证</view>
+          <view class="s">已认证身份{{tuserInfo.idCard}}，年龄{{tuserInfo.age}}岁</view>
+        </view>
+      </view>
+      <view class="authItem" wx:if="{{tuserInfo.similarity>70}}">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/1167.svg'):''}}" mode="" />
+        <view class="c">
+          <view class="n">照片认证</view>
+          <view class="s">封面和实名认证通过ai对比，确认为本人照片</view>
+        </view>
+      </view>
+    </view>
+    <view class="info1">
+      <view class="one">
+        <view class="ava">
+          <image src="{{tuserInfo.avatar}}" mode="aspectFill" />
+          <view class="tag" wx:if="{{tuserInfo.isNew}}">新人</view>
+        </view>
+        <view class="other">
+          <view class="o1">
+            <view class="name">{{tuserInfo.nickName}}</view>
+            <view class="sex {{tuserInfo.sex=='男'?'sex1':'sex2'}}">
+              <image wx:if="{{tuserInfo.sex=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/16478_2.svg'):''}}" mode="" />
+              <image wx:else src="{{imgBaseURL?(imgBaseURL+'/images/16477.svg'):''}}" mode="" />
+            </view>
+          </view>
+          <view class="o2" >
+            <view class="l" wx:if="{{tuserInfo.idAuth==3}}">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/rzglhs.svg'):''}}" mode="" />
+              <text>已实名</text>
+            </view>
+            <view wx:if="{{tuserInfo.activeStatus!=4}}" class="online {{tuserInfo.activeStatus==1?'online1':tuserInfo.activeStatus==2?'online2':tuserInfo.activeStatus==3?'online3':''}}">● {{tuserInfo.activeStatus==1?'在线':tuserInfo.activeStatus==2?'刚刚活跃':tuserInfo.activeStatus==3?'最近活跃':''}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="two">
+        <view class="nums">
+          <view class="num">{{tuserInfo.starNum}}</view>
+          <view class="name">关注</view>
+        </view>
+        <view class="nums">
+          <view class="num">{{tuserInfo.starByNum}}</view>
+          <view class="name">粉丝</view>
+        </view>
+        <view class="nums">
+          <view class="num">{{tuserInfo.articleNum}}</view>
+          <view class="name">动态</view>
+        </view>
+        <view class="btn {{isMe!=2&&'btn1'}}" bind:tap="star">
+          <block wx:if="{{isMe==2}}">
+            <van-icon wx:if="{{!tuserInfo.isStar}}" name="plus" color="#fff" />
+            <text>{{tuserInfo.isStar?'已关注':'关注'}}</text>
+          </block>
+        </view>
+      </view>
+    </view>
+    <view class="info2">
+      <view class="one">
+        <view class="l">
+          <text wx:if="{{tuserInfo.informationList}}">{{tuserInfo.informationList}}</text>
+        </view>
+        <view class="r" bind:tap="onChangeShow2" wx:if="{{isMe==2}}">举报/拉黑</view>
+      </view>
+      <view class="two">
+        <view class="l">
+          <text wx:if="{{tuserInfo.informationBaseList}}">{{tuserInfo.informationBaseList}}</text>
+        </view>
+        <view class="r" wx:if="{{tuserInfo.distanceFormat}}">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16226.svg'):''}}" mode="" />
+          <text>相距 {{tuserInfo.distanceFormat}}</text>
+        </view>
+      </view>
+      <view class="three" wx:if="{{isMe==2}}">
+        <view class="l">
+          <text class="label">微信号：</text>
+          <text class="val" style="filter: {{tuserInfo.applyStatus==2?'blur(0px)':'blur(8rpx)'}};">{{tuserInfo.wechat}}</text>
+        </view>
+        <view class="r" wx:if="{{tuserInfo.applyStatus==2}}" bind:tap="copyFn">复制</view>
+        <view class="r" wx:else bind:tap="addWx">
+          {{(tuserInfo.applyStatus==0||tuserInfo.applyStatus==3||tuserInfo.applyStatus==4)?'立即解锁':(tuserInfo.applyStatus==1?'申请中':(tuserInfo.applyStatus==2?'已通过':''))}}
+        </view>
+      </view>
+    </view>
+    <view class="info3">
+      <view bind:tap="goPage" data-type="1" data-path="/pages_index/circle_of_friends/index">
+        <view class="tit">
+          <view class="name">Ta的朋友圈</view>
+          <view class="r">
+            <van-icon name="arrow" />
+          </view>
+        </view>
+        <view class="imgs" wx:if="{{tuserInfo.userArticleViewResponse.articleImg.length}}">
+          <block wx:for="{{tuserInfo.userArticleViewResponse.articleImg}}" wx:key="index">
+            <image wx:if="{{item.type == 'image'}}" src="{{item.img}}" mode="aspectFill" />
+            <view class="videoBox" wx:else>
+              <video src="{{item.img}}" show-center-play-btn="{{false}}" object-fit="cover" controls="{{false}}"></video>
+              <!-- 模拟视频播放按钮 -->
+              <view class="play">
+                <van-icon name="play-circle-o" size="40rpx" color="#fff" />
+              </view>
+            </view>
+          </block>
+        </view>
+        <view class="articleContent" wx:if="{{tuserInfo.userArticleViewResponse.articleContent}}">{{tuserInfo.userArticleViewResponse.articleContent}}</view>
+
+      </view>
+      <view wx:if="{{tuserInfo.selfDescription && tuserInfo.selfDescription !== 'null' && tuserInfo.selfDescription.trim() !== ''}}">
+        <view class="tit">
+          <view class="name">签名信息</view>
+        </view>
+        <view class="selfDescription">
+          <rich-text  nodes="{{tuserInfo.selfDescription}}"></rich-text>
+        </view>
+      </view>
+      <view class="tit" wx:if="{{tuserInfo.myFondTagsFormat.length}}">
+        <view class="name">兴趣标签</view>
+        <view class="r" bind:tap="isAllTagFn">
+          <text>{{isAllTag?'收起':'展开'}}</text>
+          <van-icon wx:if="{{isAllTag}}" name="arrow-up" color="#434343" size="26rpx" />
+          <van-icon wx:else name="arrow-down" color="#434343" size="26rpx" />
+        </view>
+      </view>
+      <view class="tags" wx:if="{{isAllTag&&tuserInfo.myFondTagsFormat.length}}">
+        <block wx:for="{{tuserInfo.myFondTagsFormat}}" wx:key="index">
+          <view class="c">
+            <image src="{{imgBaseURL?(imgBaseURL+'/images/tags/'+ item.imgUrl):''}}" mode="aspectFit" />
+            <view class="na">{{item.name}}</view>
+          </view>
+        </block>
+      </view>
+    </view>
+  </view>
+  <view class="imBtnBox" wx:if="{{isMe==2}}">
+    <view class="imBtn" bind:tap="goIm">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/16457.svg'):''}}" mode="" />
+      <text>私聊Ta</text>
+    </view>
+  </view>
+  <!-- 申请微信确认弹窗 -->
+  <apply-wx-dialog wx:if="{{ isShow1 }}" wechatOpen="{{wechatPreData.wechatOpen}}" price="{{wechatPreData.price}}" vipCount="{{wechatPreData.vipCount}}" balance="{{wechatPreData.balance}}" bind:btn1="wxBtn1" bind:btn2="wxBtn2" bind:close="onClose1"></apply-wx-dialog>
+  <!-- 选择是举报还是屏蔽 -->
+  <van-action-sheet show="{{ isShow2 }}" actions="{{ actions }}" cancel-text="取消" bind:close="onClose2" bind:select="onSelect2" bind:cancel="onClose2" />
+  <!-- 屏蔽用户弹窗 -->
+  <my-message wx:if="{{isShow3}}" title="提示" message="确定屏蔽Ta吗？" btnStr="确定" showBg="地球" bind:onClose="close3" bind:onConfirm="confirm3"></my-message>
+  <!-- 申请解锁私聊弹窗 -->
+  <apply-userChat-dialog wx:if="{{ isShow4 }}" price="{{userChatPreData.price}}" balance="{{userChatPreData.balance}}" vipCount="{{userChatPreData.vipCount}}" bind:btn1="userBtn1" bind:btn2="userBtn2" bind:close="onClose4"></apply-userChat-dialog>
+  <!-- 会员弹窗 -->
+  <my-vip-dialog wx:if="{{showVipDialog}}" current="{{5}}" bind:onClose="closeVipDialog"/>
+  <!-- 复制微信号的提示弹窗 -->
+  <add-wechat-dialog wx:if="{{showWechatDialog}}" weChat="{{tuserInfo.wechat}}" bind:onClose="closeWechat"></add-wechat-dialog>
+ <!-- 相似度弹窗说明 -->
+  <van-dialog use-slot title="相似度" show="{{ showTip }}" confirm-button-color="#6E95E1">
+    <view class="vandialogtip">
+     <view>相似度是指该照片和用户实名视频认证时截取的最佳帧经过ai对比后计算得出，推荐相似度大于等于70%时可判断为本人。</view>
+    </view>
+  </van-dialog>
+  <!-- 原相机 -->
+  <van-dialog use-slot title="原相机视频" show="{{ showTip2 }}" confirm-button-color="#6E95E1">
+    <view class="vandialogtip">
+     <view>原相机是指用户直接拍摄的视频，无法从相册中选中上传，展示用户最真实的一面。</view>
+    </view>
+  </van-dialog>
+ 
+  <my-http-message class="httpMessage"></my-http-message>
+  <canvas style="position: absolute; top: -1000px; left: -1000px; width: 640px; height: 640px; background: #000;" type='2d' id="myCanvas"></canvas>
+</view>
+<wxs module="friend_detail">
+  function replaceComma(str, str2) {
+    return str.split(str2)
+  }
+  function replaceEnter(str) {
+    console.log(JSON.stringify(str));
+    let str2 = JSON.stringify(str)
+    var reg = getRegExp('[\\r\\n]', 'g'); // 创建正则表达式对象
+    console.log(str2.replace(reg, "<br/>"));
+    // return str.replace(reg,"<br/>")
+    return str2
+  }
+  module.exports = {
+    replaceComma: replaceComma,
+    replaceEnter: replaceEnter
+  };
+</wxs>

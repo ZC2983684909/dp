@@ -1,0 +1,9 @@
+{
+  "component": true,
+  "usingComponents": {
+    "expand-text": "/components/ExpandText/index",
+    "subject-list": "/components/SubjectList/index",
+    "article": "/components/Article/index",
+    "van-icon": "@vant/weapp/icon/index"
+  }
+}

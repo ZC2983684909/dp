@@ -1,0 +1,27 @@
+function formatterStatus (status) {
+  console.log(status,"status");
+  var name = ''
+  switch (status) {
+    case "1":
+      name = "未认证"
+      break;
+    case "2":
+      name = "认证中"
+      break;
+    case "3":
+      name = "已认证"
+      break;
+    case "4":
+      name = "认证失败请重新认证"
+      break;
+    case "5":
+      name = "认证失败请重新认证"
+      break;
+    default:
+      break;
+  }
+  return name
+}
+module.exports = {
+  formatterStatus: formatterStatus
+};

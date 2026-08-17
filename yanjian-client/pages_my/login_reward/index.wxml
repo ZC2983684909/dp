@@ -1,0 +1,24 @@
+<!--pages_my/login_reward/index.wxml-->
+<view class="login_reward">
+  <view class="top"></view>
+  <van-nav-bar custom-class="navbar" title="登录奖励" border="{{false}}" fixed z-index="{{100}}" placeholder left-arrow bind:click-left="back" />
+  <view class="content">
+    <view class="con">
+      <view class="l">
+        <view class="o1">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/93.svg'):''}}" mode="" />
+          <view class="str">累计登录天数</view>
+        </view>
+        <view class="o2">{{count}}</view>
+      </view>
+      <view class="r" bind:tap="dh">兑换</view>
+      <!-- <view class="r" bind:tap="qd" >签到</view> -->
+    </view>
+  </view>
+  <view class="desc">
+    <view class="tit">规则说明</view>
+    <view class="d">1.用户累计登录7天（无须连续登录），可兑换1次申请次数；</view>
+    <view class="d">2.用户累计登录7天后，兑换之前，不再累加登录天数；</view>
+    <view class="d">3.用户兑换成功后，第二天开始重新累计登录天数；</view>
+  </view>
+</view>

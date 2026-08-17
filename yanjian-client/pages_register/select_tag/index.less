@@ -1,0 +1,184 @@
+/* pages_register/register/select_tag/index.wxss */
+.content {
+    height: 820rpx;
+    display: flex;
+    overflow: hidden;
+    border-top: 2rpx solid #f3f3f3;
+    .left {
+        width: 130rpx;
+        background-color: #f3f3f3;
+        text-align: center;
+        overflow-y: auto;
+
+        .item {
+            font-size: 28rpx;
+            color: #373737;
+            padding-top: 38rpx;
+            padding-bottom: 38rpx;
+            position: relative;
+
+            .line {
+                width: 6rpx;
+                height: 42rpx;
+                background-color: #000;
+                // margin: 0 auto;
+                // margin-top: 6rpx;
+                position: absolute;
+                top: 40rpx;
+            }
+
+            .item_select {
+                color: #4f6ce1;
+            }
+        }
+
+        .act {
+            background-color: #fff;
+            color: #000;
+        }
+    }
+
+    /* 隐藏滚动条 */
+    .left::-webkit-scrollbar {
+        display: none;
+    }
+
+    .right {
+        width: 620rpx;
+        max-height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: grid;
+        /* 启用 Grid 布局 */
+        grid-template-columns: repeat(4, 1fr);
+        /* 每行三个列，宽度相等 */
+        gap: 10px;
+        /* 设置网格间距，可以根据需要调整 */
+        justify-content: start;
+        /* 水平对齐到左侧 */
+        align-content: start;
+        /* 垂直对齐到顶部 */
+        padding: 32rpx;
+
+        .tag {
+            width: 126rpx;
+            height: 132rpx;
+            border-radius: 12rpx;
+            padding: 12rpx 0;
+            text-align: center;
+            background-color: #fff;
+            margin-bottom: 20rpx;
+
+            image {
+                width: 48rpx;
+                height: 60rpx;
+            }
+
+            .na {
+                font-weight: 400;
+                font-size: 28rpx;
+                color: #2b2b2b;
+            }
+        }
+
+        .tag_select {
+            background-color: #f4f4f4;
+        }
+    }
+}
+
+.footer {
+    .footer_con {
+        width: 100vw;
+        // height: 586rpx;
+        height: auto;
+        background: #ffffff;
+        box-shadow: 0rpx -6rpx 12rpx 2rpx rgba(128, 128, 128, 0.16);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 9;
+        padding: 32rpx 32rpx 62rpx 32rpx;
+
+        .my {
+            min-height: 200rpx;
+
+            .label {
+                font-weight: 400;
+                font-size: 28rpx;
+                color: #373737;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .con {
+                display: grid;
+                /* 启用 Grid 布局 */
+                grid-template-columns: repeat(5, 1fr);
+                /* 每行三个列，宽度相等 */
+                gap: 24rpx;
+                /* 设置网格间距，可以根据需要调整 */
+                justify-content: start;
+                /* 水平对齐到左侧 */
+                align-content: start;
+                margin-top: 34rpx;
+                overflow-x: hidden;
+                padding-top: 10rpx;
+                .tag_select {
+                    border: 2rpx solid #4f6ce1;
+                    background: #d8e0ff;
+                    color: #4f6ce1;
+                }
+
+                .tag {
+                    width: 118rpx;
+                    height: 118rpx;
+                    background: #ffffff;
+                    border-radius: 16rpx 16rpx 16rpx 16rpx;
+                    border: 2rpx solid #e8e8e8;
+                    text-align: center;
+                    margin-bottom: 20rpx;
+                    // border: 2rpx solid #4F6CE1;
+                    // background: #D8E0FF;
+                    // color: #4F6CE1;
+                    position: relative;
+                    image {
+                        width: 48rpx;
+                        height: 60rpx;
+                    }
+
+                    .na {
+                        font-weight: 400;
+                        font-size: 26rpx;
+                        color: #2b2b2b;
+                    }
+
+                    .close {
+                        width: 28rpx;
+                        height: 28rpx;
+                        border-radius: 50%;
+                        border: 2rpx solid #e6e6e6;
+                        background: #fff;
+                        position: absolute;
+                        right: -10rpx;
+                        top: -10rpx;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+            }
+            .noall {
+                overflow-x: auto;
+            }
+        }
+
+        .tip {
+            font-size: 24rpx;
+            color: #8f8f8f;
+            text-align: center;
+            margin: 22rpx 0 12rpx 0;
+        }
+    }
+}

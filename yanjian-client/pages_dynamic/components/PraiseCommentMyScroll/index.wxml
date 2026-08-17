@@ -1,0 +1,59 @@
+<!-- components/MyScroll/index.wxml -->
+<scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+  <empty wx:if="{{!list.length}}"></empty>
+  <view wx:else class="con">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="pull" wx:if="{{isPull}}">
+      <van-icon name="down" />
+    </view>
+    <!-- </template> -->
+    <view class="item1 {{index==list.length-1?'noB':''}}" wx:for="{{list}}" wx:key="id" >
+      <view class="l" data-info="{{item}}" bind:tap="goUserInfo">
+        <view class="avatr">
+          <image class="ava" src="{{item.headPortrait||imgBaseURL&&(imgBaseURL+'/images/1171.svg')}}" mode="aspectFill" />
+          <view class="read" wx:if="{{item.status==0}}"></view>
+        </view>
+      </view>
+      <view class="info" data-info="{{item}}" bind:tap="tapItem">
+        <view class="name">
+          {{item.nickName}}
+          <image class="gender" wx:if="{{item.gender=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/1001.svg'):''}}" alt="" />
+          <image class="gender" wx:else src="{{imgBaseURL?(imgBaseURL+'/images/1002.svg'):''}}" alt="" />
+        </view>
+        <view class="time">
+          {{item.type==1?'回复了你的评论':(item.type==2?'评论了你的动态':(item.type==3?'点赞了你的动态':'点赞了你的评论'))}} {{item.createTimeStr}}
+        </view>
+        <view class="con1" wx:if="{{type==1}}">
+          <view class="c1" data-item="{{item}}" catch:tap="reply">{{item.commentContent}}</view>
+          <view class="hy" data-item="{{item}}" catch:tap="reply">回复</view>
+          <image wx:if="{{!item.isLike}}" data-item="{{item}}" data-index="{{index}}" catch:tap="praise" src="{{imgBaseURL?(imgBaseURL+'/images/1003.svg'):''}}" mode="" />
+          <image wx:else data-item="{{item}}" data-index="{{index}}" catch:tap="praise" src="{{imgBaseURL?(imgBaseURL+'/images/1004.svg'):''}}" mode="" />
+        </view>
+        <view class="con2" wx:if="{{(item.type == 4 && item.commentContent) || ((item.type == 1 || item.type == 2 || item.type == 3) && item.content)}}">
+          <view class="co2" wx:if="{{item.type==4}}">{{item.commentContent}}</view>
+          <view class="c22">
+            <view class="line" wx:if="{{item.type!=2&&item.type!=3&&item.content}}"></view>
+            <view class="c2" >{{item.content}}</view>
+          </view>
+
+        </view>
+      </view>
+      <view class="r" data-info="{{item}}" bind:tap="tapItem">
+        <image wx:if="{{item.articleType=='image'}}" src="{{item.articleImg}}" mode="aspectFill" />
+        <view class="videoBox" wx:else>
+          <video src="{{item.articleImg}}" object-fit="cover" show-center-play-btn="{{false}}" controls="{{false}}"></video>
+          <!-- 模拟视频播放按钮 -->
+          <view class="play">
+            <van-icon name="play-circle-o" size="40rpx" color="#fff" />
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="loading" wx:if="{{isLoadingMore}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="noMore" wx:else>暂无更多</view>
+  </view>
+</scroll-view>

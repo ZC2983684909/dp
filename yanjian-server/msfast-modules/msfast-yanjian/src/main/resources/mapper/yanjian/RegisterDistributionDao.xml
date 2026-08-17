@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.RegisterDistributionDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.RegisterDistributionEntity" id="registerDistributionMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="distributionPersonId" column="distribution_person_id"/>
+    </resultMap>
+
+    <select id="indirectCount" resultType="long" parameterType="string">
+        select count(1) from register_distribution rd
+                                 left join register_distribution rdd on rd.distribution_person_id=rdd.user_id
+                                 left join t_user tu on tu.id = rd.user_id
+        where rd.type=2
+          and tu.id_auth = '3'
+          and tu.photo_auth = '3'
+          and tu.edu_auth = '3'
+          and rdd.distribution_person_id=#{userId}
+    </select>
+
+    <select id="getRegisterDistribution" resultType="string" parameterType="string">
+        select rd.id
+        from register_distribution rd
+                 left join register_distribution rdd on rd.distribution_person_id = rdd.user_id
+                 left join t_user tu on tu.id = rd.user_id
+        where rd.type = 2
+          and tu.id_auth = '3'
+          and tu.photo_auth = '3'
+          and tu.edu_auth = '3'
+          and rd.higher_reward_status = '0'
+          and rdd.distribution_person_id = #{userId}
+    </select>
+
+    <select id="getRegisterDistributionPay" resultType="string" parameterType="string">
+        select rd.id
+        from register_distribution rd
+                 left join register_distribution rdd on rd.distribution_person_id = rdd.user_id
+                 left join t_user tu on tu.id = rd.user_id
+        where rd.type = 2
+          and tu.id_auth = '3'
+          and tu.photo_auth = '3'
+          and tu.edu_auth = '3'
+          and rd.higher_pay_status = '0'
+          and rdd.distribution_person_id = #{userId}
+    </select>
+
+    <select id="distributionCount" resultType="long" parameterType="string">
+        select count(1) from register_distribution rd
+                                 left join t_user tu on tu.id = rd.user_id
+        where rd.type=2
+          and tu.id_auth = '3'
+          and tu.photo_auth = '3'
+          and tu.edu_auth = '3'
+          and rd.distribution_person_id=#{userId}
+    </select>
+</mapper>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.UserStarDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.UserStarEntity" id="userStarMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="starUserId" column="star_user_id"/>
+    </resultMap>
+
+
+    <resultMap id="starPageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.front.user.UserStarResponse">
+    </resultMap>
+
+    <select id="getPage" resultMap="starPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.star.UserStarRequest">
+
+        select tu.id, tu.avatar, tu.nick_name, tu.birth_date, tu.height, tu.education, us.read_status,tu.edu_auth,
+        tu.lately_time,
+        tu.create_time,
+        tu.city,
+        tu.id_auth,
+        <if test="ownerId!=null and ownerId!=''">
+            (select count(1) from user_star ust where ust.del_flag=0 and ust.user_id=#{ownerId} and ust.star_user_id=tu.id)>0 as isFriend,
+        </if>
+        tu.sex
+        <if test="lon!=null and lon!='' and lat!=null and lat!=''">
+            ,CASE
+            WHEN tu.lon IS NOT NULL AND tu.lat IS NOT NULL
+            THEN ST_Distance_Sphere(
+            POINT(#{lon}, #{lat}),
+            POINT(tu.lon, tu.lat)
+            )
+            ELSE NULL
+            END AS distance
+        </if>
+        ,us.id as starId
+        from user_star us
+        left join t_user tu on us.user_id = tu.id
+        <where>
+            us.del_flag = 0
+            and tu.del_flag = 0
+            <if test="ownerId!=null and ownerId!=''">
+                and us.star_user_id=#{ownerId}
+            </if>
+        </where>
+        order by us.create_time desc,us.id desc
+    </select>
+
+    <select id="mystarPage" resultMap="starPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.star.UserStarRequest">
+
+        select tu.id, tu.avatar, tu.nick_name, tu.birth_date, tu.height, tu.education,tu.edu_auth,
+        (select ua.`status` from user_apply ua where ua.del_flag=0 and ua.user_id=#{ownerId} and ua.apply_user_id=us.star_user_id limit 1) as applyStatus,
+        tu.lately_time,
+        tu.create_time,
+        tu.city,
+        tu.id_auth,
+        <if test="ownerId!=null and ownerId!=''">
+            (select count(1) from user_star ust where ust.del_flag=0 and ust.user_id=tu.id and ust.star_user_id=#{ownerId})>0 as isFriend,
+        </if>
+        tu.sex
+        <if test="lon!=null and lon!='' and lat!=null and lat!=''">
+            ,CASE
+            WHEN tu.lon IS NOT NULL AND tu.lat IS NOT NULL
+            THEN ST_Distance_Sphere(
+            POINT(#{lon}, #{lat}),
+            POINT(tu.lon, tu.lat)
+            )
+            ELSE NULL
+            END AS distance
+        </if>
+        from user_star us
+        left join t_user tu on us.star_user_id = tu.id
+        <where>
+            us.del_flag = 0
+            and tu.del_flag = 0
+            <if test="ownerId!=null and ownerId!=''">
+                and us.user_id=#{ownerId}
+            </if>
+        </where>
+        order by us.create_time desc
+    </select>
+
+    <select id="getCount" parameterType="string" resultType="long">
+        select count(1) from user_star us left join t_user tu on us.user_id=tu.id where us.del_flag=0 and tu.del_flag=0 and tu.id is not null and us.read_status='0' and us.star_user_id=#{id}
+    </select>
+
+</mapper>

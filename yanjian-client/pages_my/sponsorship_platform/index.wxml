@@ -1,0 +1,39 @@
+<!--pages_my/applayNum/index.wxml-->
+<view class="applayNum">
+  <van-nav-bar custom-class="navbar" title="赞助平台" fixed z-index="{{99}}" border="{{false}}" left-arrow bind:click-left="onClickLeft">
+  </van-nav-bar>
+  <view class="content">
+    <view class="bigBg">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/4002x2.png'):''}}" mode="" />
+    </view>
+    <view class="con">
+      <image class="bg" src="{{imgBaseURL?(imgBaseURL+'/images/511.svg'):''}}" mode="aspectFill" />
+      <image class="ava" src="{{userInfo.avatar}}" mode="aspectFill" />
+      <view class="name">{{userInfo.nickName}}</view>
+
+    </view>
+    <view class="nums">
+      <view class="item {{act==index?'actItem':''}}" wx:for="{{arr}}" wx:key="index" data-index="{{index}}" bind:tap="select">
+        <view class="one">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16547.svg'):''}}" mode="" />
+        </view>
+        <view class="two">
+          ￥{{item}}
+        </view>
+      </view>
+    </view>
+    <view></view>
+    <view class="tip">
+      <view class="l1">
+        <view>1.如果您喜欢、认同本平台的价值观</view>
+        <view>2.如果您从本平台交友、脱单</view>
+        <view>欢迎赞助我们!希望平台可以持续健康运营下去</view>
+      </view>
+      <view class="l2">点击购买即同意《<text data-path="/pages_my/privacyAgreement/index" bind:tap="goPage">隐私政策</text>》《<text data-path="/pages_my/userAgreement/index" bind:tap="goPage">服务协议</text>》</view>
+    </view>
+  </view>
+
+  <my-fotter-btn bind:btnTap="submit">赞助平台</my-fotter-btn>
+  <my-message wx:if="{{showMsg}}" openType="contact" title="提示" message="由于苹果相关规范，iOS暂不支持此功能!" btnStr="联系客服" bind:onClose="onClose"></my-message>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

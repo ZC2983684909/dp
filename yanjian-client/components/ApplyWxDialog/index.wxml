@@ -1,0 +1,32 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessage">
+  <view class="mask">
+    <view class="box">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/1271.png'):''}}" mode="aspectFit" />
+      <view class="content">
+        <view class="title">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/1272.svg'):''}}" mode="" />
+          <view class="tit1">{{wechatOpen?'解锁微信':'申请微信'}}</view>
+          <view class="tit2">{{wechatOpen?'解锁后即可查看':'申请通过后即可查看'}}</view>
+        </view>
+        <view class="msg">
+          <view class="msg1">开通VIP</view>
+          <view class="msg2">账户即可免费解锁对方微信 单次解锁消耗<text>{{price}}</text>颜币</view>
+        </view>
+        <view class="btn" bind:tap="btn1">
+          <text class="str">{{btnStr1}}</text>
+          <text class="ye">剩余{{vipCount}}次</text>
+        </view>
+        <view class="btn2" bind:tap="btn2">
+          <text class="str">{{btnStr2}}</text>
+          <text class="ye">余额{{balance}}</text>
+        </view>
+        
+      </view>
+      <view class="close" bind:tap="close">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/2.png'):''}}" mode="" />
+      </view>
+    </view>
+
+  </view>
+</view>

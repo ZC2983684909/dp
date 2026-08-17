@@ -1,0 +1,8 @@
+<!--components/MyFotterBtn/index.wxml-->
+<view class="footerBtn">
+  <view class="btnBox">
+    <van-button bind:tap="btnTap" open-type="{{openType}}" bindgetphonenumber="getPhoneNumber" custom-class="btn" block  round color="{{color}}">
+      <slot></slot>
+    </van-button>
+  </view>
+  </view>

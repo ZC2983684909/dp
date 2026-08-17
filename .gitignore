@@ -1,0 +1,19 @@
+.tools/
+
+# Local runtime output and generated files
+logs/
+**/logs/
+*.log
+**/target/
+**/dist/
+**/node_modules/
+**/upload/
+
+# WeChat Developer Tools local project files
+project.config.json
+project.private.config.json
+**/project.private.config.json
+
+# Local environment overrides
+.env.local
+.env.*.local

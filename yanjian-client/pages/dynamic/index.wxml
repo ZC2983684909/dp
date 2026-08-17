@@ -1,0 +1,203 @@
+<!-- pages/dynamic/index.wxml -->
+<view class="dynamic">
+  <van-nav-bar custom-class="navClass" z-index="{{99}}" fixed placeholder border="{{false}}">
+    <view class="leftNum" slot="left">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/16469.svg'):''}}" mode=""
+        data-path="/pages_dynamic/praise_comment_list/index" bind:tap="goCommentList" />
+      <view class="unreadCount" wx:if="{{unreadCountNum>0}}" catch:tap="goCommentList">{{unreadCountNum}}</view>
+    </view>
+    <view class="tabCon" slot="title">
+      <view class="tabs">
+        <view bind:tap="onChange" data-tab="全国" class="{{['tab',active=='全国'&&'actTab']}}">全国
+          <van-icon wx:if="{{active=='全国'}}" name="{{!showPopup?'arrow-down':'arrow-up'}}" catch:tap="onChange"
+            data-tab="全国" />
+        </view>
+        <view bind:tap="onChange" data-tab="同城" class="{{['tab',active=='同城'&&'actTab']}}">同城
+          <van-icon wx:if="{{active=='同城'}}" name="{{!showPopup?'arrow-down':'arrow-up'}}" catch:tap="onChange"
+            data-tab="同城" />
+        </view>
+      </view>
+      <view class="{{[active=='全国'?'line1':'line2']}}"></view>
+    </view>
+  </van-nav-bar>
+  <view class="content">
+    <view wx:if="{{showPopup}}" class="customPopup" catchtouchmove="catchTouchMove"
+      style="height: {{scrollHeight+'px'}};" catch:tap="closePopup">
+      <view class="btns" catch:tap="changeSex">
+        <view class="btn {{query1.sex==''?'btnAct':''}}" catch:tap="changeSex" data-sex="">全部</view>
+        <view class="btn {{query1.sex=='男'?'btnAct':''}}" catch:tap="changeSex" data-sex="男">
+          <image wx:if="{{query1.sex=='男'}}" class="img1" src="{{imgBaseURL?(imgBaseURL+'/images/articleman.png'):''}}" mode="" />
+          <image wx:else class="img1" src="{{imgBaseURL?(imgBaseURL+'/images/articlemanblack.png'):''}}" mode="" />
+          男生
+        </view>
+        <view class="btn {{query1.sex=='女'?'btnAct':''}}" catch:tap="changeSex" data-sex="女">
+          <image wx:if="{{query1.sex=='女'}}" class="img2" src="{{imgBaseURL?(imgBaseURL+'/images/articlewoman.png'):''}}" mode="" />
+          <image wx:else class="img2" src="{{imgBaseURL?(imgBaseURL+'/images/articlewomanblack.png'):''}}" mode="" />
+          女生
+        </view>
+      </view>
+      
+    </view>
+    <swiper class="swip" style="height: {{scrollHeight+'px'}};" current="{{currentIndex}}"
+      bindanimationfinish="swiperChange">
+      <swiper-item catchtouchmove="catchTouchMove">
+        <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}"
+          bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling"
+          bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore"
+          bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}"
+          refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}"
+          refresher-default-style="none" show-scrollbar="{{false}}">
+          <view class="con">
+            <view class="loading" wx:if="{{isLoading}}">
+              <van-loading color="#1989fa" />
+            </view>
+            <view class="pull" wx:if="{{isPull}}">
+              <van-icon name="down" />
+            </view>
+          </view>
+          <view class="labes">
+            <view class="top">
+              <view class="l">
+                <image src="{{imgBaseURL?(imgBaseURL+'/images/1144.svg'):''}}" />
+                <view class="name">话题广场</view>
+              </view>
+              <view class="r" bind:tap="goPage" data-path="/pages_dynamic/topic_list/index">
+                更多话题
+                <van-icon style="margin: 5rpx;" name="arrow" />
+              </view>
+            </view>
+            <swiper class="topSwiper" current="{{currentDot}}" indicator-dots="{{false}}" autoplay="{{false}}" circular
+              bindchange="onChangeDot">
+              <swiper-item wx:for="{{labelSwiper}}" wx:key="index">
+                <view class="swiperItem" bind:tap="goPage" data-path="/pages_dynamic/topic_detail/index"
+                  data-id="{{item.id}}">
+                  <image src="{{item.img}}" mode="aspectFill" />
+                  <view class="con">
+                    <view class="tit">
+                      <image src="{{imgBaseURL?(imgBaseURL+'/images/1147.svg'):''}}" mode="" />{{item.title}}
+                    </view>
+                    <view class="desc">{{item.descriptionInfo}}</view>
+                    <view class="num">
+                      <view class="n">{{item.visitCountDesc}}浏览</view>
+                      <!-- <view class="line"></view>
+                      <view class="n">{{item.discussCountDesc}}讨论</view> -->
+                    </view>
+                  </view>
+                </view>
+              </swiper-item>
+            </swiper>
+            <view class="indicator-container">
+              <scroll-view scroll-x class="indicator-scroll">
+                <view style="margin-left:300rpx;transform: translateX({{-indicatorStart*0.1}}px)">
+                  <block wx:for="{{labelSwiper}}" wx:key="index">
+                    <view wx:if="{{index >= indicatorStart && index < indicatorStart + 5}}"
+                      class="{{['indicator', currentDot === index ? 'active' : '',index === indicatorStart && indicatorStart > 0 ? 'mini-left' : '',index === indicatorStart + 4 && indicatorStart + 4 < dots - 1 ? 'mini-right' : '']}}">
+                    </view>
+                  </block>
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+          <block wx:for="{{list1}}" wx:key="id">
+            <dynamic-item info="{{item}}" bgColor="#fff" bind:edit="edit" data-id="{{item.id}}" data-item="{{item}}"
+              bind:share="share"></dynamic-item>
+          </block>
+          <empty wx:if="{{!list1.length}}"></empty>
+
+          <view class="loading" wx:if="{{isLoadingMore}}">
+            <van-loading color="#1989fa" />
+          </view>
+          <view class="noMore" wx:else>
+            <!-- 暂无更多 -->
+          </view>
+        </scroll-view>
+      </swiper-item>
+      <swiper-item catchtouchmove="catchTouchMove">
+        <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}"
+          bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling"
+          bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore"
+          bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}"
+          refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}"
+          refresher-default-style="none" show-scrollbar="{{false}}">
+          <view class="con">
+            <view class="loading" wx:if="{{isLoading}}">
+              <van-loading color="#1989fa" />
+            </view>
+            <view class="pull" wx:if="{{isPull}}">
+              <van-icon name="down" />
+            </view>
+          </view>
+          <view class="labes">
+            <view class="top">
+              <view class="l">
+                <image src="{{imgBaseURL?(imgBaseURL+'/images/1144.svg'):''}}" />
+                <view class="name">话题广场</view>
+              </view>
+              <view class="r" bind:tap="goPage" data-path="/pages_dynamic/topic_list/index">
+                更多话题
+                <van-icon style="margin: 5rpx;" name="arrow" />
+              </view>
+            </view>
+            <swiper class="topSwiper" current="{{currentDot}}" indicator-dots="{{false}}" autoplay="{{false}}" circular
+              bindchange="onChangeDot">
+              <swiper-item wx:for="{{labelSwiper}}" wx:key="index">
+                <view class="swiperItem" bind:tap="goPage" data-path="/pages_dynamic/topic_detail/index"
+                  data-id="{{item.id}}">
+                  <image src="{{item.img}}" mode="aspectFill" />
+                  <view class="con">
+                    <view class="tit">
+                      <image src="{{imgBaseURL?(imgBaseURL+'/images/1147.svg'):''}}" mode="" />{{item.title}}
+                    </view>
+                    <view class="desc">{{item.descriptionInfo}}</view>
+                    <view class="num">
+                      <view class="n">{{item.visitCountDesc}}浏览</view>
+                      <!-- <view class="line"></view>
+                      <view class="n">{{item.discussCountDesc}}讨论</view> -->
+                    </view>
+                  </view>
+                </view>
+              </swiper-item>
+            </swiper>
+            <view class="indicator-container">
+              <scroll-view scroll-x class="indicator-scroll">
+                <view style="margin-left:300rpx;transform: translateX({{-indicatorStart*0.1}}px)">
+                  <block wx:for="{{labelSwiper}}" wx:key="index">
+                    <view wx:if="{{index >= indicatorStart && index < indicatorStart + 5}}"
+                      class="{{['indicator', currentDot === index ? 'active' : '',index === indicatorStart && indicatorStart > 0 ? 'mini-left' : '',index === indicatorStart + 4 && indicatorStart + 4 < dots - 1 ? 'mini-right' : '']}}">
+                    </view>
+                  </block>
+                </view>
+              </scroll-view>
+            </view>
+          </view>
+          <block wx:for="{{list2}}" wx:key="id">
+            <dynamic-item info="{{item}}" bgColor="#fff" bind:edit="edit" data-id="{{item.id}}" data-item="{{item}}"
+              bind:share="share"></dynamic-item>
+          </block>
+          <empty wx:if="{{!list2.length}}"></empty>
+
+          <view class="loading" wx:if="{{isLoadingMore}}">
+            <van-loading color="#1989fa" />
+          </view>
+          <view class="noMore" wx:else>
+            <!-- 暂无更多 -->
+          </view>
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class="footerBtn2" style="height: auto;margin:0;">
+    <view class="btnBox2">
+      <van-button bind:tap="goPageSubmit" custom-class="btn" block round
+        color="#2b2b2b">
+        <van-icon name="plus" size="28rpx" custom-style="font-weight:600;margin-right:8rpx" />
+        去发布
+      </van-button>
+    </view>
+  </view>
+  <van-action-sheet show="{{ show }}" actions="{{ actions }}" safe-area-inset-bottom="{{false}}" cancel-text="取消"
+    bind:close="onClose" bind:select="onSelect" bind:cancel="onClose" />
+  <my-message wx:if="{{showMsg}}" title="提示" message="{{message}}" btnStr="确定" bind:onConfirm="onConfirmMsg"
+    bind:onClose="onCloseMsg"></my-message>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

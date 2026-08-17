@@ -1,0 +1,35 @@
+<!--pages_register/register/register3/index.wxml-->
+<view class="register3">
+  <van-nav-bar custom-class="navbar" title="实名认证" border="{{false}}" bind:click-left="back" left-arrow />
+  <view class="form">
+    <view class="item">
+      <view class="label">姓名</view>
+      <view class="con">
+        <van-field value="{{ userInfo.name}}" placeholder="请输入姓名" border="{{false}}" clearable="{{ true }}" bind:change="onChange1" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">身份证号码</view>
+      <view class="con">
+        <van-field value="{{ userInfo.idCard}}" placeholder="请输入身份证号码" border="{{false}}" clearable="{{ true }}" bind:change="onChange2" />
+      </view>
+    </view>
+    <view class="tip">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/16484.svg'):''}}" mode=""/>
+      <text>实名认证用于检测相册真实性，用户身份校验</text>
+    </view>
+    <view class="tip2" wx:if="{{cradStatus==1}}">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1231.svg'):''}}" mode=""/>
+      <text>身份认证成功！</text>
+    </view>
+    <view class="tip3" wx:if="{{cradStatus==0}}">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1230.svg'):''}}" mode=""/>
+      <text>身份认证失败！失败原因：{{errMsg}}</text>
+    </view>
+  </view>
+  <view wx:if="{{type!='身份认证'&&type!='重新认证'}}" class="skip" bind:tap="skipRegister">跳过</view>
+  <my-fotter-btn wx:if="{{type=='身份认证'}}" bind:btnTap="{{cradStatus!=1?'idAuth':'back'}}" >{{cradStatus==1?'认证完成':(cradStatus==0?'重新认证':'开始认证')}}</my-fotter-btn>
+  <my-fotter-btn wx:if="{{type=='重新认证'}}" bind:btnTap="{{flag==0?'idAuth':'back'}}" >{{flag==0?'重新认证':'认证完成'}}</my-fotter-btn>
+  <my-fotter-btn wx:if="{{type!='身份认证'&&type!='重新认证'}}" bind:btnTap="nextStep" >{{cradStatus==1?'开始邂逅':(cradStatus==0?'重新认证':'开始认证')}}</my-fotter-btn>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

@@ -1,0 +1,117 @@
+/* pages_my/apply_user_list/index.wxss */
+.apply_user_list {
+  background: #F3F3F3;
+  min-height: 100vh;
+
+  .navbar {
+    background: #F3F3F3;
+  }
+
+
+
+  .content {
+    padding: 12rpx 32rpx;
+
+    scroll-view {
+      .loading {
+        text-align: center;
+      }
+
+      .list {
+        .item {
+          height: 138rpx;
+          background: #FFFFFF;
+          border-radius: 24rpx 24rpx 24rpx 24rpx;
+          margin-bottom: 24rpx;
+          padding: 24rpx 24rpx;
+          display: flex;
+          align-items: center;
+          gap: 22rpx;
+
+          .ava {
+            width: 94rpx;
+            height: 90rpx;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+
+            /* 对内部图片应用模糊 */
+            image {
+              width: 100%;
+              height: 100%;
+              filter: blur(8px);
+              -webkit-filter: blur(8px);
+              /* 稍微放大图片来避免模糊后的透明边缘 */
+              transform: scale(1.1);
+            }
+          }
+
+          .r {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+
+            .l {
+              display: flex;
+              align-items: center;
+
+              .name-container {
+                filter: blur(5px);
+                -webkit-filter: blur(5px);
+                
+            }
+            .name {
+                font-weight: bold;
+                font-size: 28rpx;
+                color: #2B2B2B;
+                max-width: 200rpx;
+                margin-right: 16rpx;
+                overflow: hidden;
+                white-space: nowrap; 
+                word-break: break-all;
+                text-overflow: ellipsis; 
+            }
+            
+              .sex {
+                width: 32rpx;
+                height: 32rpx;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                image {
+                  width: 19rpx;
+                  height: 19rpx;
+                }
+              }
+
+              .sex1 {
+                background: #E6EBFF;
+              }
+
+              .sex2 {
+                background: #FFE6E6;
+              }
+            }
+
+            .time {
+              font-weight: bold;
+              font-size: 24rpx;
+              color: #2B2B2B;
+            }
+          }
+        }
+      }
+
+      .noMore {
+        text-align: center;
+        padding: 10rpx 0;
+      }
+
+      .pull {
+        text-align: center;
+      }
+    }
+  }
+}

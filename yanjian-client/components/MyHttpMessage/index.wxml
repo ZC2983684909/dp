@@ -1,0 +1,21 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessageHttp" hidden="{{!show}}">
+  <view class="mask">
+    <view class="box">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/dialogbg.png'):''}}" mode="aspectFill"/>
+      <view class="content">
+        <view class="title">{{title}}</view>
+        <view class="con">{{message}}</view>
+        <view class="btnBox">
+          <view class="btn" wx:if="{{showBtn}}" bind:tap="onConfirmFn">{{btnStr}}</view>
+          <view class="btn2" wx:if="{{showCancelBtn}}" bind:tap="onCloseFn">{{cancelBtn}}</view>
+        </view>
+        
+      </view>
+      <view wx:if="{{showClose}}" class="close" bind:tap="onCloseFn">
+      <van-icon name="cross" color="#fff" />
+    </view> 
+    </view>
+    
+  </view>
+</view>

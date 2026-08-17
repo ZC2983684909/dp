@@ -1,0 +1,35 @@
+<!--pages_register/select_sex/index.wxml-->
+<view class="select_sex">
+  <van-nav-bar custom-class="navbar" border="{{false}}" left-arrow bind:click-left="onClickLeft" />
+  <view class="content">
+    <image class="tit" src="{{imgBaseURL?(imgBaseURL+'/images/select_sex.png'):''}}" mode="" />
+    <view class="desc">便于为您推荐合适的用户，选择后不可修改</view>
+    <view class="con">
+      <view class="item1 {{sex=='女'?'act1':''}}" data-sex="女" bind:tap="selectSex">
+      <image wx:if="{{sex=='女'}}" class="s" src="{{imgBaseURL?(imgBaseURL+'/images/sjx.svg'):''}}" mode=""/>
+        <view class="c" wx:if="{{sex!='女'}}">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16460.svg'):''}}" mode="" />
+        </view>
+        <view class="c2" wx:else>
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16477.svg'):''}}" mode="" />
+        </view>
+      </view>
+      <view class="item2 {{sex=='男'?'act2':''}}" data-sex="男" bind:tap="selectSex">
+        <image wx:if="{{sex=='男'}}" class="s" src="{{imgBaseURL?(imgBaseURL+'/images/sjx.svg'):''}}" mode=""/>
+        <view class="c" wx:if="{{sex!='男'}}">
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16478.svg'):''}}" mode="" />
+        </view>
+        <view class="c2" wx:else>
+          <image src="{{imgBaseURL?(imgBaseURL+'/images/16478_2.svg'):''}}" mode="" />
+        </view>
+      </view>
+    </view>
+    <view class="sexs">
+      <view>我是女生</view>
+      <view>我是男生</view>
+    </view>
+  </view>
+
+  <my-fotter-btn bind:tap="start">开始邂逅</my-fotter-btn>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

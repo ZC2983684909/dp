@@ -1,0 +1,18 @@
+<view class="report">
+  <van-nav-bar custom-class="navbar" title="举报" border="{{false}}" bind:click-left="back" left-arrow />
+  <view class="form">
+    <view class="label">
+      举报
+    </view>
+    <van-field value="{{ form.content }}" placeholder="{{placeholder}}" border="{{ false }}" type="textarea" show-confirm-bar="{{false}}" input-class="iptClass" bind:change="onChange" />
+    <block>
+      <van-uploader file-list="{{ imgs }}" image-fit="aspectFill" upload-icon="plus" max-count="{{9}}" multiple bind:after-read="afterRead" bind:delete="delete" />
+      <view class="label">
+        举报图片
+      </view>
+    </block>
+    <my-fotter-btn bind:btnTap="submit">提交</my-fotter-btn>
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+
+</view>

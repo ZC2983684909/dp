@@ -1,0 +1,28 @@
+<view class="topic-detail">
+  <van-nav-bar title="话题详情" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft" />
+  <scroll-view scroll-y="true" class="content">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <block wx:elif="{{subject}}">
+      <view class="subject-card">
+        <image wx:if="{{subject.img}}" class="cover" src="{{subject.img}}" mode="aspectFill" />
+        <view class="subject-main">
+          <view class="title">{{subject.title}}</view>
+          <view class="desc">{{subject.descriptionInfo}}</view>
+          <view class="meta">{{subject.visitCountDesc}} 浏览</view>
+        </view>
+        <van-button size="small" round plain type="primary" loading="{{isStarLoading}}" bind:tap="toggleStar">
+          {{subject.isStar ? '已关注' : '关注话题'}}
+        </van-button>
+      </view>
+      <view class="article-title">相关动态</view>
+      <block wx:for="{{list}}" wx:key="id">
+        <dynamic-item info="{{item}}" bgColor="#fff" />
+      </block>
+      <empty wx:if="{{!list.length}}" msg="暂无相关动态" />
+    </block>
+    <empty wx:else msg="话题不存在或已删除" />
+  </scroll-view>
+  <my-http-message class="httpMessage" />
+</view>

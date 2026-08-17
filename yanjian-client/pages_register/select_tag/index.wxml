@@ -1,0 +1,52 @@
+<!--pages_register/register/select_tag/index.wxml-->
+<view class="select_tag" >
+  <van-nav-bar catchtouchmove="preventTouchMove" custom-class="navbar" title="选择标签" border="{{false}}" left-arrow bind:click-left="onClickLeft" />
+  <view class="content" style="height:65vh">
+    <view class="left">
+      <view wx:for="{{tags}}" wx:key="name" data-id="{{item.name}}" class="item {{actLeft==item.name?'act':''}}" bind:tap="changeRoot">
+        <text>{{item.name}}</text>
+        <view class="line" wx:if="{{actLeft==item.name}}"></view>
+      </view>
+    </view>
+    <view class="right">
+      <view class="tag {{tag.includes(myTagsId,item.name) ? 'tag_select' : ''}}" wx:for="{{childTags}}" wx:key="name" data-id="{{item.name}}" data-item="{{item}}" bindtap="changeChild">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/tags/'+ item.imgUrl):''}}" mode="aspectFit" />
+        <view class="na">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="footer" catchtouchmove="preventTouchMove">
+    <view class="footer_con">
+      <!-- <block wx:if="{{type!=3}}"> -->
+      <block>
+        <view class="my">
+          <view class="label">
+            <view class="str">已选标签（{{myTags.length}}/{{maxNum}}）</view>
+            <view bind:tap="moreFn" wx:if="{{myTags.length>5}}">{{!isAll?'展开':'收起'}}
+              <van-icon wx:if="{{!isAll}}" name="arrow-up" />
+              <van-icon wx:else name="arrow-down" />
+            </view>
+          </view>
+          <view class="con {{!isAll?'noall':''}}" style="grid-template-columns:{{!isAll&&myTags.length>=5?'repeat('+myTags.length+', 1fr)':'repeat(5, 1fr)'}};">
+            <view class="tag" wx:for="{{myTags}}" wx:key="name" data-id="{{item.name}}" data-item="{{item}}" bind:tap="changeMy">
+              <image src="{{imgBaseURL?(imgBaseURL+'/images/tags/'+ item.imgUrl):''}}" mode="aspectFit" />
+              <view class="na">{{item.name}}</view>
+              <view class="close" data-id="{{item.name}}" catch:tap="delMy">
+                <van-icon name="cross" size="16rpx" color="#E6E6E6" />
+              </view>
+            </view>
+          </view>
+        </view>
+      </block>
+      <van-button custom-class="btn" block round color="#2B2B2B" bind:tap="submit">
+        确定
+      </van-button>
+    </view>
+  </view>
+  <my-http-message class="httpMessage"></my-http-message>
+  <wxs module="tag">
+    module.exports.includes = function (array, searchElement) {
+      return array.indexOf(searchElement) !== -1
+    }
+  </wxs>
+</view>

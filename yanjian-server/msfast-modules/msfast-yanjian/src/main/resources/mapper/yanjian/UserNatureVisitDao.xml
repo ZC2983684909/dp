@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.UserNatureVisitDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.UserNatureVisitEntity" id="userNatureVisitMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="userId" column="user_id"/>
+        <result property="visitUserId" column="visit_user_id"/>
+        <result property="num" column="num"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+    <delete id="deleteNatureVisit">
+        delete from user_nature_visit
+    </delete>
+    <update id="updateNatureVisit">
+        update t_user set nature_sort=(CASE
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) &lt; 18 THEN 7
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 18 AND 21 THEN 6
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 22 AND 25 THEN 5
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 26 AND 29 THEN 4
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 30 AND 33 THEN 3
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 34 AND 37 THEN 2
+        WHEN id_auth='3' and TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 38 AND 41 THEN 1
+                                           ELSE 0 END)
+    </update>
+</mapper>

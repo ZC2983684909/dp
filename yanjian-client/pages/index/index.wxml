@@ -1,0 +1,52 @@
+<!--index.wxml-->
+<view class="index">
+  <van-nav-bar custom-class="navClass" z-index="{{99}}" fixed placeholder border="{{false}}">
+    <view class="address" slot="left" data-path="/pages_index/screen/index" bind:tap="goScreen">
+      <image src="{{imgBaseURL?(imgBaseURL+'/images/1341.png'):''}}" mode="" />
+      <text>{{params.city}}</text>
+    </view>
+    <view class="tabCon" slot="title">
+      <view class="tabs">
+        <view wx:for="{{tabs}}" wx:key="index" bind:tap="onChangeTab" data-index="{{index}}" class="{{['tab',activeTab==index&&'actTab']}}">{{item}}</view>
+      </view>
+      <view class="{{[activeTab=='0'?'line1':(activeTab=='1'?'line2':'line3')]}}"></view>
+    </view>
+  </van-nav-bar>
+  <view class="content" style="height: {{scrollHeight+'px'}}">
+    <swiper class="swip" style="height: {{scrollHeight+'px'}}" current="{{activeTab}}" bindanimationfinish="swiperChange">
+      <swiper-item>
+        <IndexScroll class="scroll1" scrollHeight="{{scrollHeight}}" params="{{params}}" sortType="distance" bind:showSimilarityTip="showSimilarityTip" bind:itemTap="itemTap" bind:openVip="openVip">
+        </IndexScroll>
+      </swiper-item>
+      <swiper-item>
+        <IndexScroll class="scroll1" scrollHeight="{{scrollHeight}}" params="{{params}}" sortType="recommend" bind:showSimilarityTip="showSimilarityTip" bind:itemTap="itemTap" bind:openVip="openVip">
+        </IndexScroll>
+      </swiper-item>
+      <swiper-item>
+        <IndexScroll scrollHeight="{{scrollHeight}}" params="{{params}}" sortType="last" bind:showSimilarityTip="showSimilarityTip" bind:itemTap="itemTap" bind:openVip="openVip">
+        </IndexScroll>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 选择省市区-倾向地 -->
+  <van-popup show="{{ show4 }}" round position="bottom" bind:close="onClose4">
+    <van-tree-select main-active-class="activeClass" content-active-class="activeClass2" items="{{ show4Options }}" main-active-index="{{ mainActiveIndex }}" active-id="{{ activeId }}" bind:click-nav="onClickNav4" bind:click-item="onClickItem4" />
+  </van-popup>
+  <!-- 首页活动信息提示窗口 -->
+  <view class="popup" wx:if="{{(showPopupIdx+1)<=popupList.length}}">
+    <view class="con" style="width:{{popupList[showPopupIdx].attr.width?popupList[showPopupIdx].attr.width+'rpx':'500rpx'}};">
+      <image src="{{popupList[showPopupIdx].image}}" mode="widthFix" 	show-menu-by-longpress="{{true}}" bind:tap="popupJump" />
+      <view class="close" bind:tap="closePopup">
+        <van-icon name="cross" color="#fff" />
+      </view>
+    </view>
+  </view>
+<!-- 相似度弹窗说明 -->
+  <van-dialog use-slot title="相似度" show="{{ showTip }}" confirm-button-color="#6E95E1">
+    <view class="vandialogtip">
+     <view>相似度是指该照片和用户实名视频认证时截取的最佳帧经过ai对比后计算得出，推荐相似度大于等于70%时可判断为本人。</view>
+    </view>
+  </van-dialog>
+  <my-vip-dialog wx:if="{{showVipDialog}}" current="{{4}}" bind:onClose="closeVipDialog"/>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

@@ -1,0 +1,58 @@
+<!--pages/message/index.wxml-->
+<view class="message">
+  <van-nav-bar custom-class="navbar" title="消息" fixed placeholder border="{{false}}" bind:click-left="onClickLeft">
+  </van-nav-bar>
+  <view class="content" style="height: {{scrollHeight+'px'}}">
+    <scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+      <empty wx:if="{{!list.length}}" msg="{{isLogin?'暂无消息':'登录后才能查看『消息』哦'}}" showLoginBtn="{{!isLogin}}"></empty>
+      <view wx:else class="con">
+        <view class="loading" wx:if="{{isLoading}}">
+          <van-loading color="#1989fa" />
+        </view>
+        <view class="pull" wx:if="{{isPull}}">
+          <van-icon name="down" />
+        </view>
+        <view class="list">
+          <view class="box" wx:for="{{list}}" wx:key="index" >
+            <van-swipe-cell right-width="{{ 65 }}" data-item="{{item}}" bind:click="delete">
+              <view class="item">
+                <view class="l">
+                  <image class="ava" src="{{item.headPortrait}}" mode="aspectFill" />
+                  <view class="tag" wx:if="{{item.unreadCount}}">{{item.unreadCount}}</view>
+                  <view class="online" wx:if="{{item.online}}">● 在线</view>
+                </view>
+
+                <view class="r">
+                  <view class="one">
+                    <view class="name">{{item.nickName}}
+                      <view class="sex {{item.sex=='男'?'sex1':'sex2'}}">
+                        <image wx:if="{{item.sex=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/16478_2.svg'):''}}" mode="" />
+                        <image wx:else src="{{imgBaseURL?(imgBaseURL+'/images/16477.svg'):''}}" mode="" />
+                      </view>
+                    </view>
+                    <view class="time">{{item.latelyTime}}</view>
+                  </view>
+                  <view class="msg">
+                    {{item.messageDescribeFormat=='image'?'【图片】':item.messageDescribe}}
+                  </view>
+                
+                </view>
+              </view>
+              <view slot="right" class="delBtn">删除</view>
+            </van-swipe-cell>
+          </view>
+        </view>
+      </view>
+      <view class="loading" wx:if="{{isLoadingMore}}">
+        <van-loading color="#1989fa" />
+      </view>
+      <view class="noMore" wx:else>
+        <!-- 暂无更多消息 -->
+      </view>
+    </scroll-view>
+
+  </view>
+  <my-message wx:if="{{showMsg}}" title="提示" message="{{message}}" btnStr="确定" bind:onConfirm="onConfirm" bind:onClose="onClose"></my-message>
+  <see-hello-msg wx:if="{{showSeeHello}}" message="{{seeHelloData.detail.applyDesc||'暂无'}}" bind:onClose="closeSeeHello" bind:onReject="seeHelloReject" bind:onResolve="seeHelloResolve"></see-hello-msg>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

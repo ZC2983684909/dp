@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.TUserDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.TUserEntity" id="tUserMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="avatar" column="avatar"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="sex" column="sex"/>
+        <result property="birthDate" column="birth_date"/>
+        <result property="height" column="height"/>
+        <result property="homeTown" column="home_town"/>
+        <result property="jobMes" column="job_mes"/>
+        <result property="salarys" column="salarys"/>
+        <result property="openId" column="open_id"/>
+        <result property="phone" column="phone"/>
+        <result property="idAuth" column="id_auth"/>
+        <result property="eduAuth" column="edu_auth"/>
+        <result property="status" column="status"/>
+        <result property="school" column="school"/>
+        <result property="education" column="education"/>
+        <result property="latelyTime" column="lately_time"/>
+        <result property="residentialCity" column="residential_city"/>
+        <result property="invisible" column="invisible"/>
+        <result property="similarity" column="similarity"/>
+        <result property="fondTags" column="fond_tags"
+                typeHandler="com.wxmblog.yanjian.common.handle.LabelTypeHandler"/>
+        <result property="personalPhoto" column="personal_photo"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+        <result property="cameraImg" column="camera_img"/>
+        <result property="profileId" column="profile_id"/>
+    </resultMap>
+
+
+    <resultMap id="userPageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.front.user.UserInfoPageResponse">
+        <result property="personalPhoto" column="personal_photo"
+                typeHandler="com.wxmblog.yanjian.common.handle.PhotoListHandler"/>
+    </resultMap>
+
+    <select id="getPage" resultMap="userPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.user.UserInfoPageRequest">
+        select t.id,
+        t.avatar,
+        t.nick_name,
+        t.sex,
+        t.birth_date,
+        t.birth_date as birthFormatDate,
+        t.height,
+        t.home_town,
+        t.residential_city,
+        t.job_mes,
+        t.salarys,
+        t.personal_photo,
+        t.id_auth,
+        t.edu_auth,
+        t.school,
+        t.education,
+        t.user_type,
+        t.lately_time,
+        t.create_time,
+        t.city,
+        t.main_city,
+        t.county
+        <if test="lon!=null and lon!='' and lat!=null and lat!=''">
+            ,CASE
+            WHEN t.lon IS NOT NULL AND t.lat IS NOT NULL
+            THEN ST_Distance_Sphere(
+            POINT(#{lon}, #{lat}),
+            POINT(t.lon, t.lat)
+            )
+            ELSE NULL
+            END AS distance
+        </if>
+        <choose>
+            <when test="mainCity==true and city!=null and city!=''">
+                ,CASE
+                WHEN t.city=#{city} and t.main_city=true
+                THEN 1
+                WHEN t.city=#{city}
+                THEN 2
+                ELSE 3
+                END AS citySort
+            </when>
+            <when test="mainCity==false and city!=null and city!='' and (county==null or county=='')">
+                ,CASE
+                WHEN t.city=#{city} and t.main_city=true
+                THEN 1
+                WHEN t.city=#{city}
+                THEN 2
+                ELSE 3
+                END AS citySort
+            </when>
+            <when test="mainCity==false and city!=null and city!='' and county!=null and county!=''">
+                ,CASE
+                WHEN t.city=#{city} and t.county=#{county}
+                THEN 1
+                WHEN t.city=#{city}
+                THEN 2
+                ELSE 3
+                END AS citySort
+            </when>
+            <otherwise>
+                ,1 AS citySort
+            </otherwise>
+        </choose>
+        /*,case when t.lately_time is not null and DATEDIFF(NOW(), t.lately_time)&lt;=180
+        then 1
+        else 2
+        end AS latelySort*/
+        ,1 as latelySort
+        from t_user t
+        <where>
+            t.del_flag = 0
+            and t.`status` = 'ENABLE' and t.invisible='2' and t.photo_auth in ('2','3') and t.recommend='1'
+            <if test="residentialCity!=null and residentialCity!=''">
+                and (t.residential_city like #{residentialCity} or t.user_type='2' or t.tend_live_city like
+                #{residentialCity})
+            </if>
+            <if test="minAge">
+                and DATE_FORMAT(birth_date, '%Y') &gt;= #{minAge}
+            </if>
+            <if test="maxAge">
+                and DATE_FORMAT(birth_date, '%Y') &lt;= #{maxAge}
+            </if>
+            <if test="minHeight">
+                and t.height &gt;= #{minHeight}
+            </if>
+            <if test="maxHeight">
+                and t.height &lt;= #{maxHeight}
+            </if>
+            <if test="similarity!=null">
+                and t.similarity &gt;= #{similarity}
+            </if>
+            <if test="isIdAuth!=null and isIdAuth==true">
+                and t.id_auth = '3'
+            </if>
+            <if test="isOriginalCamera!=null and isOriginalCamera==true">
+                and t.camera_img is not null
+            </if>
+            <if test="tendLiveCity!=null and tendLiveCity!=''">
+                and t.tend_live_city like #{tendLiveCity}
+            </if>
+            <if test="labelList!=null and labelList.size>0">
+                and
+                <foreach collection="labelList" item="label" open="(" separator="and" close=")">
+                    t.fond_tags like '%${label}%'
+                </foreach>
+            </if>
+            <if test="isStudy!=null and isStudy==true">
+                and t.job_mes = '学生'
+            </if>
+            <if test="isStudy!=null and isStudy==false">
+                and t.job_mes != '学生'
+            </if>
+            <if test="education!=null and education!=''">
+                and t.education = #{education}
+            </if>
+            <if test="homeTown!=null and homeTown!=''">
+                and t.home_town like #{homeTown}
+            </if>
+            <if test="ownerId!=null and ownerId!=''">
+                and (select count(1) from user_shield ush where ush.user_id=t.id and ush.shield_id=#{ownerId} and
+                ush.del_flag=0)=0
+                and t.id != #{ownerId}
+            </if>
+            <if test="sex!=null and sex!=''">
+                and t.sex = #{sex}
+            </if>
+            <if test="idList!=null and idList.size>0">
+                and t.id in
+                <foreach collection="idList" item="iditem" open="(" separator="," close=")">
+                    #{iditem}
+                </foreach>
+            </if>
+            <if test="noIdList!=null and noIdList.size>0">
+                and t.id not in
+                <foreach collection="noIdList" item="iditem" open="(" separator="," close=")">
+                    #{iditem}
+                </foreach>
+            </if>
+        </where>
+        <choose>
+            <when test="sortType!=null and sortType=='recommend'">
+                order by citySort asc,t.sort desc,latelySort asc,t.nature_sort desc,t.id desc
+            </when>
+            <when test="sortType!=null and sortType=='last'">
+                order by t.create_time desc,t.id desc
+            </when>
+            <when test="sortType!=null and sortType=='distance' and lon!=null and lon!='' and lat!=null and lat!=''">
+                order by latelySort asc,distance IS NULL,
+                distance ASC,t.id desc
+            </when>
+            <otherwise>
+                order by t.sort desc,t.lately_time desc,t.id desc
+            </otherwise>
+        </choose>
+
+    </select>
+
+    <select id="browsePage" resultMap="userPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.user.UserInfoPageRequest">
+        select t.id,
+        t.avatar,
+        t.nick_name,
+        t.sex,
+        t.birth_date,
+        t.birth_date as birthFormatDate,
+        t.height,
+        t.personal_photo,
+        t.id_auth,
+        uv.num as browseCount,
+        t.lately_time,
+        t.create_time,
+        t.city
+        <if test="lon!=null and lon!='' and lat!=null and lat!=''">
+            ,CASE
+            WHEN t.lon IS NOT NULL AND t.lat IS NOT NULL
+            THEN ST_Distance_Sphere(
+            POINT(#{lon}, #{lat}),
+            POINT(t.lon, t.lat)
+            )
+            ELSE NULL
+            END AS distance
+        </if>
+        from user_visit uv left join t_user t on uv.visit_user_id = t.id
+        where
+        t.del_flag = 0 and uv.del_flag = 0
+        and t.`status` = 'ENABLE'
+        and uv.user_id = #{ownerId}
+        order by uv.modify_time desc
+    </select>
+
+    <select id="browsePageCount" resultType="long" parameterType="string">
+        select count(1)
+        from user_visit uv
+                 left join t_user t on uv.visit_user_id = t.id
+        where t.del_flag = 0
+          and uv.del_flag = 0
+          and t.`status` = 'ENABLE'
+          and uv.user_id = #{ownerId}
+    </select>
+
+
+    <select id="visitPageCount" resultType="long" parameterType="string">
+        select count(1)
+        from user_visit uv
+                 left join t_user t on uv.user_id = t.id
+        where t.del_flag = 0
+          and uv.del_flag = 0
+          and t.`status` = 'ENABLE'
+          and uv.visit_user_id = #{ownerId}
+    </select>
+
+    <select id="visitPage" resultMap="userPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.user.UserInfoPageRequest">
+        select t.id,
+        t.avatar,
+        t.nick_name,
+        t.sex,
+        t.birth_date,
+        t.birth_date as birthFormatDate,
+        t.height,
+        t.personal_photo,
+        t.id_auth,
+        uv.num as browseCount,
+        uv.status as visitStatus,
+        uv.id as visitId,
+        t.lately_time,
+        t.create_time,
+        t.city
+        <if test="lon!=null and lon!='' and lat!=null and lat!=''">
+            ,CASE
+            WHEN t.lon IS NOT NULL AND t.lat IS NOT NULL
+            THEN ST_Distance_Sphere(
+            POINT(#{lon}, #{lat}),
+            POINT(t.lon, t.lat)
+            )
+            ELSE NULL
+            END AS distance
+        </if>
+        from user_visit uv left join t_user t on uv.user_id = t.id
+        where t.del_flag = 0
+        and uv.del_flag = 0
+        and t.`status` = 'ENABLE'
+        and uv.visit_user_id = #{ownerId}
+        order by uv.modify_time desc, uv.id desc
+    </select>
+
+
+    <select id="applyPage" resultMap="userPageResponse" parameterType="string">
+
+        select t.id,
+               t.avatar,
+               t.nick_name,
+               t.sex,
+               t.birth_date,
+               t.birth_date as birthFormatDate,
+               t.height,
+               t.home_town,
+               t.residential_city,
+               t.job_mes,
+               t.salarys,
+               t.wechat,
+               t.self_description,
+               t.personal_photo,
+               t.ideal_friend,
+               t.id_auth,
+               t.edu_auth,
+               t.school,
+               t.education
+        from user_apply uv
+                 left join t_user t on uv.apply_user_id = t.id
+        where t.del_flag = 0
+          and uv.del_flag = 0
+          and t.`status` = 'ENABLE'
+          and uv.user_id = #{ownerId}
+        order by uv.modify_time desc
+    </select>
+
+    <select id="applyPageCount" resultType="long" parameterType="string">
+
+        select count(1)
+        from user_apply uv
+                 left join t_user t on uv.apply_user_id = t.id
+        where t.del_flag = 0
+          and uv.del_flag = 0
+          and t.`status` = 'ENABLE'
+          and uv.user_id = #{ownerId}
+    </select>
+
+
+    <resultMap id="userAdminPageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.admin.user.UserPageResponse">
+    </resultMap>
+
+    <select id="getExaminePage" resultMap="userAdminPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.avatar,
+        fu.nick_name,
+        fu.sex,
+        fu.residential_city,
+        fu.id_auth as waitApprovedStatus,
+        fu.user_type,
+        fu.lately_time
+        from
+        t_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null and authStatus!=''">
+                and fu.id_auth=#{authStatus}
+            </if>
+            <if test="userType!=null and userType!=''">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+
+    <resultMap id="identityResponse"
+               type="com.wxmblog.yanjian.common.rest.response.admin.user.UserIdentityPageResponse">
+    </resultMap>
+    <select id="getIdentityPage" resultMap="identityResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.head_portrait,
+        fu.nick_name,
+        fu.gender,
+        fu.city,
+        fu.additional->>'$.identityAuth' as identityAuth,
+        fu.user_type,
+        fu.lately_time
+        from
+        fr_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null">
+                and fu.additional->>'$.identityAuth'=#{authStatus}
+            </if>
+            <if test="userType!=null">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+    <resultMap id="educationPage"
+               type="com.wxmblog.yanjian.common.rest.response.admin.user.UserEducationPageResponse">
+    </resultMap>
+    <select id="getUserEducationPage" resultMap="educationPage"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.user.UserPageRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.avatar,
+        fu.nick_name,
+        fu.sex,
+        fu.residential_city,
+        fu.edu_auth,
+        fu.user_type,
+        fu.lately_time
+        from
+        t_user fu
+        <where>
+            fu.del_flag=0
+            <if test="authStatus!=null and authStatus!=''">
+                and fu.edu_auth=#{authStatus}
+            </if>
+            <if test="userType!=null and userType!=''">
+                and fu.user_type=#{userType}
+            </if>
+        </where>
+        order by fu.lately_time desc
+    </select>
+
+    <resultMap id="userInfoPage"
+               type="com.wxmblog.yanjian.common.rest.response.admin.user.UserInfoAdminPageResponse">
+    </resultMap>
+    <select id="getUserInfoPage" resultMap="userInfoPage"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.user.UserInfoRequest">
+        select
+        fu.id,
+        fu.create_time,
+        fu.status,
+        fu.avatar as headPortrait,
+        fu.nick_name,
+        fu.sex as gender,
+        fu.residential_city as city,
+        fu.user_type,
+        fu.lately_time,
+        fu.id_auth as authStatus,
+        fu.edu_auth,
+        fu.photo_auth,
+        fu.phone,
+        rd.distribution_person_id,
+        rd.type,
+        rd.pay_status,
+        rd.higher_pay_status,
+        rd.reward_status,
+        rd.higher_reward_status,
+        tuu.phone as distributionPhone,
+        case when rd.type='1' then dp.`name` when rd.type='2' then tuu.nick_name end as distributionName,
+        tuuu.nick_name as distributionLastNickName,
+        tuuu.phone as distributionLastPhone,
+        (select count(1) from register_distribution srd left join t_user su on srd.user_id=su.id
+        where srd.type=2 and srd.distribution_person_id=fu.id) as distributionCount,
+        (select count(1) from register_distribution ssrd
+        left join t_user ssu on ssrd.user_id=ssu.id
+        left join register_distribution ssrdd on ssrd.distribution_person_id=ssrdd.user_id
+        where ssrd.type=2 and ssrdd.distribution_person_id=fu.id) as nextDistributionCount,
+        (select sum(wr.amount) from withdrawal_record wr where wr.del_flag=0 and wr.user_id=fu.id) as amount
+        from
+        t_user fu
+        left join register_distribution rd on fu.id=rd.user_id
+        left join register_distribution rddd on rd.distribution_person_id=rddd.user_id
+        left join t_user tuu on tuu.id=rd.distribution_person_id
+        left join t_user tuuu on tuuu.id=rddd.distribution_person_id
+        left join distribution_person dp on dp.id=rd.distribution_person_id
+        <where>
+            fu.del_flag=0
+            <if test="userType!=null and userType!=''">
+                and fu.user_type=#{userType}
+            </if>
+            <if test="nickName!=null and nickName!=''">
+                and fu.nick_name like #{nickName}
+            </if>
+            <if test="userId!=null and userId!=''">
+                and fu.id=#{userId}
+            </if>
+            <if test="gender!=null and gender!=''">
+                and fu.sex=#{gender}
+            </if>
+            <if test="city!=null and city!=''">
+                and fu.residential_city like #{city}
+            </if>
+            <if test="status!=null">
+                and fu.status=#{status}
+            </if>
+
+            <if test="authStatus!=null and authStatus!=''">
+                and fu.id_auth=#{authStatus}
+            </if>
+            <if test="createTimeStart!=null and createTimeStart!=''">
+                <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+            </if>
+            <if test="createTimeEnd!=null and createTimeEnd!=''">
+                <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+            </if>
+            <if test="latelyTimeStart!=null and latelyTimeStart!=''">
+                <![CDATA[ and DATE_FORMAT(fu.lately_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{latelyTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+            </if>
+            <if test="latelyTimeEnd!=null and latelyTimeEnd!=''">
+                <![CDATA[ and DATE_FORMAT(fu.lately_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{latelyTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+            </if>
+            <if test="phone!=null and phone!=''">
+                and fu.phone like #{phone}
+            </if>
+            <if test="distributionPhone!=null and distributionPhone!=''">
+                and tuu.phone like #{distributionPhone}
+            </if>
+            <if test="distributionName!=null and distributionName!=''">
+                and (tuu.nick_name like #{distributionName} or dp.`name` like #{distributionName})
+            </if>
+            <if test="shareType!=null and shareType!=''">
+                and rd.type=#{shareType}
+            </if>
+            <if test="distributionLastPhone!=null and distributionLastPhone!=''">
+                and tuuu.phone like #{distributionLastPhone}
+            </if>
+        </where>
+        order by fu.lately_time desc,fu.id desc
+    </select>
+
+    <resultMap id="genderPie"
+               type="com.wxmblog.yanjian.common.rest.response.admin.statistic.ProportionResponse">
+    </resultMap>
+    <select id="getGenderPie" resultMap="genderPie">
+        select count(1) as value,
+	case
+		fu.sex when '男' then '男'
+		when '女' then '女'
+		else '其他'
+        end
+        as name
+from
+	t_user fu
+group by
+	fu.sex,
+	fu.del_flag,
+	fu.user_type
+having
+	fu.del_flag = 0
+	and fu.user_type = '1'
+    </select>
+
+    <select id="getCityBar" resultMap="genderPie">
+        select count(1) as value,
+	 ifnull(fu.city,'其他') as name
+        from
+            t_user fu
+        group by
+            fu.city,
+            fu.del_flag,
+            fu.user_type
+        having
+            fu.del_flag = 0
+           and fu.user_type = '1'
+        order by count(1) desc limit 10
+    </select>
+
+    <select id="getUserRegisterStatistic" resultMap="genderPie"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.statistic.UserRegisterStatisticRequest">
+
+        select
+        count(1) as value,
+        DATE_FORMAT(fu.create_time, '%Y-%m-%d') as name
+        from
+        (select fu.create_time from t_user fu where
+        fu.del_flag = 0
+        and fu.user_type = '1'
+        <if test="createTimeStart!=null and createTimeStart!=''">
+            <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')>=  DATE_FORMAT(#{createTimeStart}, '%Y-%m-%d 00:00:00') ]]>
+        </if>
+        <if test="createTimeEnd!=null and createTimeEnd!=''">
+            <![CDATA[ and DATE_FORMAT(fu.create_time, '%Y-%m-%d %T')<=  DATE_FORMAT(#{createTimeEnd}, '%Y-%m-%d 23:59:59') ]]>
+        </if>
+        ) fu
+        group by
+        DATE_FORMAT(fu.create_time, '%Y-%m-%d')
+        order by DATE_FORMAT(fu.create_time, '%Y-%m-%d') asc
+    </select>
+
+    <select id="getGiftUserList" resultType="string">
+        select tu.id
+        from t_user tu
+        where tu.del_flag = 0
+          and tu.`status` = 'ENABLE'
+          and tu.lately_time >= DATE_SUB(CURDATE(), INTERVAL 60 DAY)
+        order by tu.create_time asc,tu.id asc
+    </select>
+
+    <select id="getApplyReminderList" resultType="string">
+        select ua.id
+        from user_apply ua
+                 left join t_user tu on tu.id = ua.apply_user_id
+        where ua.del_flag = 0
+          and ua.`status` = '1'
+          and ua.create_time &lt;= DATE_SUB(CURDATE(), INTERVAL 1 DAY)
+          and tu.`status` = 'ENABLE'
+          and tu.invisible = '2'
+        order by ua.create_time asc, ua.id asc
+    </select>
+
+    <select id="getVisitReminderList" resultType="string">
+        select ua.visit_user_id
+        from user_visit ua
+        left join t_user tu on tu.id = ua.visit_user_id
+        where ua.del_flag = 0
+        and ua.`status` = '0'
+        and tu.lately_time >= DATE_SUB(CURDATE(), INTERVAL 60 DAY)
+        and tu.lately_time 	&lt;= DATE_SUB(CURDATE(), INTERVAL 3 DAY)
+        and tu.`status` = 'ENABLE'
+        and tu.invisible = '2'
+        and ua.num>2
+        group by ua.visit_user_id
+        order by ua.visit_user_id asc
+    </select>
+
+
+    <resultMap id="complaintPageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.admin.user.ComplaintPageResponse">
+    </resultMap>
+
+    <select id="complaintPage" resultMap="complaintPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.admin.user.UserPageRequest">
+        SELECT
+        c.id,
+        c.create_time,
+        c.modify_time,
+        tu.nick_name,
+        tu.phone,
+        case c.type when '1' then tu2.nick_name when '2' then tu3.nick_name when '3' then tu4.nick_name end AS
+        complaint_nick_name,
+        case c.type when '1' then tu2.phone when '2' then tu3.phone when '3' then tu4.phone end as complaint_phone,
+        ar.content as articleContent,
+        ar.img as articleImg,
+        ac.content as commentContent,
+        c.type,
+        c.content,
+        c.`status`
+        FROM
+        complaint c
+        LEFT JOIN t_user tu ON c.user_id = tu.id
+        LEFT JOIN t_user tu2 ON tu2.id = c.complaint_id
+        left join article ar on ar.id =c.complaint_id
+        left join article_comment ac on ac.id=c.complaint_id
+        left join t_user tu3 on ar.user_id=tu3.id
+        left join t_user tu4 on ac.user_id=tu4.id
+        <where>
+            c.del_flag=0
+            <if test="authStatus!=null and authStatus!=''">
+                and c.`status`=#{authStatus}
+            </if>
+        </where>
+        ORDER BY
+        c.create_time desc,
+        c.id DESC
+
+    </select>
+
+    <select id="visitUnreadCount" resultType="long" parameterType="string">
+        select count(1)
+        from user_visit uv
+                 left join t_user t on uv.user_id = t.id
+        where t.del_flag = 0
+          and uv.del_flag = 0
+          and t.`status` = 'ENABLE'
+          and uv.visit_user_id = #{ownerId}
+          and uv.`status` = '0'
+        order by uv.modify_time desc, uv.id desc
+    </select>
+
+    <select id="sharePage" resultType="com.wxmblog.yanjian.common.rest.response.front.user.SharePageResponse">
+
+        select u.avatar, u.nick_name,u.sex,rd.create_time,rd.id
+        from register_distribution rd
+                 left join t_user u on rd.user_id = u.id
+        where rd.type = 2
+          and rd.del_flag = 0
+          and rd.distribution_person_id = #{ownerId}
+        order by rd.create_time desc, rd.id desc
+    </select>
+
+    <select id="sharePersonPage" resultType="com.wxmblog.yanjian.common.rest.response.front.user.SharePageResponse">
+        select u.avatar, u.nick_name, u.id_auth, u.photo_auth, u.edu_auth
+        from register_distribution rd
+                 left join t_user u on rd.user_id = u.id
+                 left join register_distribution rdd on rd.distribution_person_id = rdd.user_id
+        where rd.type = 2
+          and rdd.distribution_person_id = #{ownerId}
+        order by rd.create_time desc, rd.id desc
+    </select>
+
+    <select id="getUserNumber" parameterType="string"
+            resultType="com.wxmblog.yanjian.common.rest.response.front.user.PersonalCenterResponse">
+        select (select count(1)
+                from user_star us
+                         left join t_user tu on us.user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.read_status = '0'
+                  and us.star_user_id = #{ownerId})  as unreadStarMe,
+               (select count(1)
+                from user_star us
+                         left join t_user tu on us.user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.star_user_id = #{ownerId})  as starMe,
+               (select count(1)
+                from user_star us
+                         left join t_user tu on us.user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.user_id = #{ownerId})       as myStar,
+               (select count(1)
+                from user_apply us
+                         left join t_user tu on us.user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.apply_read_status = '0'
+                  and us.apply_user_id = #{ownerId}) as unreadApplyMe,
+               (select count(1)
+                from user_apply us
+                         left join t_user tu on us.user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.apply_user_id = #{ownerId}) as applyMe,
+               (select count(1)
+                from user_apply us
+                         left join t_user tu on us.apply_user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.apply_wait_status = '0'
+                  and us.user_id = #{ownerId})       as unreadMyApply,
+               (select count(1)
+                from user_apply us
+                         left join t_user tu on us.apply_user_id = tu.id
+                where us.del_flag = 0
+                  and tu.del_flag = 0
+                  and tu.`status` = 'ENABLE'
+                  and us.user_id = #{ownerId})       as myApply,
+               (select count(1)
+                from user_visit uv
+                         left join t_user t on uv.user_id = t.id
+                where t.del_flag = 0
+                  and uv.del_flag = 0
+                  and t.`status` = 'ENABLE'
+                  and uv.visit_user_id = #{ownerId}
+                  and uv.`status` = '0')             as visitUnreadCount
+    </select>
+
+    <select id="getDistance" resultType="java.math.BigDecimal"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.user.DistanceRequest">
+        select ST_Distance_Sphere(
+                       POINT(#{lonA}, #{latA}),
+                       POINT(#{lonB}, #{latB})
+               )
+    </select>
+
+    <select id="getShareCount" resultType="com.wxmblog.yanjian.common.rest.response.front.user.ShareResponse"
+            parameterType="string">
+        select (select IFNULL(count(1), 0)
+                from register_distribution rd
+                where rd.distribution_person_id = #{ownerId}
+                  and rd.type = 2
+                  and rd.del_flag = 0)  as inviteCount
+             , (select IFNULL(sum(da.amount), 0)
+                from distribution_amount da
+                         left join user_apply_order uao on da.order_id = uao.id
+                where da.user_id = #{ownerId}
+                  and da.type = 1
+                  and uao.`status` = 2
+                  and da.del_flag = 0
+                  and uao.del_flag = 0) as amount
+             , (select IFNULL(ABS(sum(da.amount))
+                           , 0)
+                from distribution_amount da
+                where da.user_id = #{ownerId}
+                  and da.type = 2
+                  and da.del_flag = 0)  as withdrawAmount
+             , (select IFNULL(sum(da.amount)
+                           , 0)
+                from distribution_amount da
+                         left join user_apply_order uao on da.order_id = uao.id
+                where da.user_id = #{ownerId}
+                  and da.del_flag = 0
+                  and uao.del_flag = 0
+                  and da.type = 1
+                  and uao.`status` = 2
+                  and da.create_time &lt;= DATE_SUB(NOW()
+                    , INTERVAL 3 DAY))  as surplusTotalAmount
+    </select>
+
+</mapper>

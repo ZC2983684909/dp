@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "my-message": "/components/MyMessage/index",
+    "van-action-sheet": "@vant/weapp/action-sheet/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "apply-wx-dialog": "/components/ApplyWxDialog/index",
+    "apply-userChat-dialog": "/components/ApplyUserChatDialog",
+    "my-vip-dialog": "/components/MyVipDialog/index",
+    "add-wechat-dialog": "/components/AddWechatDialog/index"
+  }
+}

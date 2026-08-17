@@ -1,0 +1,106 @@
+<!-- pages_register/register/register2/index.wxml -->
+<view class="register2">
+  <van-nav-bar custom-class="navbar" title="完善资料" border="{{false}}" bind:click-left="back" left-arrow />
+  <view class="form">
+    <view class="tit">上传您的个人封面</view>
+    <view class="tip">
+      请至少上传1张本人
+      <text>真实照片</text>
+      ，否则部分功能将受限
+    </view>
+    <view class="box1" wx:if="{{!userInfo.personalPhoto.length&&!userInfo.cameraImg}}" bind:tap="showFn">
+      <view class="con">
+        <view class="plus">
+          <van-icon name="plus" />
+        </view>
+        <view class="name">添加个人封面</view>
+      </view>
+    </view>
+    <view class="box2" wx:else>
+      <block wx:if="{{userInfo.personalPhoto.length>=1}}">
+        <view class="img">
+          <image class="img1" src="{{userInfo.personalPhoto[0]}}" mode="aspectFill" />
+          <view class="btn" bind:tap="chooseImg" data-count="{{1}}" data-index="{{0}}">替换</view>
+          <view class="close" data-index="{{0}}" bind:tap="removeImg">
+            <van-icon name="cross" color="#979797" size="18rpx" />
+          </view>
+        </view>
+      </block>
+      <view class="img" wx:if="{{userInfo.cameraImg}}">
+        <video class="vid" object-fit="cover"  src="{{userInfo.cameraImg}}" show-center-play-btn="{{false}}" controls="{{false}}" ></video>
+        <!-- 模拟视频播放按钮 -->
+        <view class="play">
+          <van-icon name="play-circle-o" size="50rpx" color="#fff" />
+        </view>
+        <view class="btn" bind:tap="chooseVideo">替换</view>
+          <view class="close" bind:tap="removeVideo">
+            <van-icon name="cross" color="#979797" size="18rpx" />
+          </view>
+      </view>
+      <block wx:for="{{userInfo.personalPhoto}}" wx:key="item">
+        <view class="img" wx:if="{{index>0}}">
+          <image class="img1" src="{{item}}" mode="aspectFill" />
+          <view class="btn" bind:tap="chooseImg" data-count="{{1}}" data-index="{{index}}">替换</view>
+          <view class="close" data-index="{{index}}" bind:tap="removeImg">
+            <van-icon name="cross" color="#979797" size="18rpx" />
+          </view>
+        </view>
+      </block>
+      <view class="add" wx:if="{{userInfo.personalPhoto.length<9}}" bind:tap="chooseImg">
+        <view class="con">
+          <view class="plus">
+            <van-icon color="#B5B5B5" name="plus" />
+          </view>
+          <view class="name">{{userInfo.personalPhoto.length>0?'添加生活照':'添加个人封面'}}</view>
+        </view>
+      </view>
+      <view class="add" wx:if="{{!userInfo.cameraImg}}" bind:tap="chooseVideo">
+        <view class="con">
+          <view class="plus">
+            <van-icon color="#B5B5B5" name="plus" />
+          </view>
+          <view class="name">原相机视频</view>
+        </view>
+      </view>
+      
+      
+      
+    </view>
+  </view>
+  <van-action-sheet show="{{ show }}" bind:click-overlay="clickOverlay">
+    <view class="sheet">
+      <view class="tit">上传清晰的本人照片</view>
+      <view class="desc">展示你真实有趣的一面</view>
+      <view class="sheetImgs">
+        <view class="item">
+          <image class="im1" src="{{imgBaseURL?(imgBaseURL+'/images/394.png'):''}}" mode="aspectFit" />
+          <view class="t1">
+            <image src="{{imgBaseURL?(imgBaseURL+'/images/1226.svg'):''}}" mode="" />
+            <view class="s">半身/全身</view>
+          </view>
+        </view>
+        <view class="item">
+          <image class="im1" src="{{imgBaseURL?(imgBaseURL+'/images/395.png'):''}}" mode="" />
+          <view class="t2">
+            <image src="{{imgBaseURL?(imgBaseURL+'/images/1227.svg'):''}}" mode="" />
+            <view class="s">人脸不清晰</view>
+          </view>
+        </view>
+        <view class="item">
+          <image class="im1" src="{{imgBaseURL?(imgBaseURL+'/images/396.png'):''}}" mode="" />
+          <view class="t2">
+            <image src="{{imgBaseURL?(imgBaseURL+'/images/1227.svg'):''}}" mode="" />
+            <view class="s">非人物照片</view>
+          </view>
+        </view>
+      </view>
+      <view class="btnBox">
+        <van-button bind:tap="chooseImg" data-count="{{9}}" custom-class="btn2" block round color="#2B2B2B">
+          从相册中选择
+        </van-button>
+      </view>
+    </view>
+  </van-action-sheet>
+  <my-fotter-btn bind:btnTap="nextStep">下一步</my-fotter-btn>
+  <my-http-message class="httpMessage"></my-http-message>
+</view>

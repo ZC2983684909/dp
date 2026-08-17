@@ -1,0 +1,60 @@
+<scroll-view scroll-y="true" style="height: {{scrollHeight+'px'}};" enhanced show-scrollbar="{{false}}" bindscrolltolower="loadMoreData" bindrefresherpulling="bindrefresherpulling" bindrefresherrefresh="bindrefresherrefresh" bindrefresherrestore="bindrefresherrestore" bindrefresherabort="bindrefresherabort" refresher-triggered="{{refresherTriggered}}" refresher-enabled="{{true}}" refresher-threshold="{{0}}" scroll-top="{{scrollTop}}" refresher-default-style="none" show-scrollbar="{{false}}">
+  <empty wx:if="{{!list.length}}"></empty>
+  <view wx:else class="con">
+    <view class="loading" wx:if="{{isLoading}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="pull" wx:if="{{isPull}}">
+      <van-icon name="down" />
+    </view>
+    <view class="list">
+      <view class="item" wx:for="{{list}}" wx:key="index" data-item="{{item}}" bind:tap="itemTap">
+        <view class="ava">
+          <image src="{{item.avatar}}" mode="aspectFill" />
+          <view class="dot" wx:if="{{item.readStatus==0}}"></view>
+        </view>
+        <view class="r">
+          <view class="one">
+            <view class="name">{{item.nickName}}</view>
+            <view class="sex {{item.sex=='男'?'sex1':'sex2'}}">
+              <image wx:if="{{item.sex=='男'}}" src="{{imgBaseURL?(imgBaseURL+'/images/16478_2.svg'):''}}" mode="" />
+              <image wx:else src="{{imgBaseURL?(imgBaseURL+'/images/16477.svg'):''}}" mode="" />
+            </view>
+            <view class="auth" wx:if="{{item.idAuth==3}}">
+              <image class="ico" src="{{imgBaseURL?(imgBaseURL+'/images/rzgl.svg'):''}}" mode="" />
+              <text>已实名</text>
+            </view>
+          </view>
+          <view class="two">
+            <view class="other">
+              <text wx:if="{{item.age}}">{{item.age}}岁</text>
+              <text class="line" wx:if="{{item.city}}">/</text>
+              <text class="city" wx:if="{{item.city}}">{{item.city}} </text>
+              <text class="line" wx:if="{{item.distanceFormat}}">/</text>
+              <text wx:if="{{item.distanceFormat}}">{{item.distanceFormat}}</text>
+            </view>
+            <view wx:if="{{item.activeStatus!=4}}" class="online {{item.activeStatus==1?'online1':item.activeStatus==2?'online2':item.activeStatus==3?'online3':''}}">● {{item.activeStatus==1?'在线':item.activeStatus==2?'刚刚活跃':item.activeStatus==3?'最近活跃':''}}</view>
+          </view>
+          <view class="three" wx:if="{{item.status==1&&type=='申请我的'}}">
+            <view class="btn" data-info="{{item}}" catch:tap="seeHello">查看招呼</view>
+            <view class="btn" data-info="{{item}}" catch:tap="reject">婉拒</view>
+            <view class="btn btn2" data-info="{{item}}" catch:tap="reslove">通过</view>
+          </view>
+          <view class="status" wx:if="{{type=='我的申请'||item.status!=1}}">
+            <text class="s1" wx:if="{{item.status==1||item.status==2||item.status==4}}">{{item.status==1?'申请中':item.status==2?'已通过':item.status==4?'已过期':''}}</text>
+            <text class="s2">{{item.status==3?'已拒绝':''}}</text>
+            <text class="s2">{{item.otherReadStatus==0?'未读':''}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{isLoadingMore}}">
+      <van-loading color="#1989fa" />
+    </view>
+    <view class="noMore" wx:else>
+      暂无更多
+    </view>
+  </view>
+ 
+</scroll-view>

@@ -1,0 +1,17 @@
+<!--components/MyMessage/index.wxml-->
+<view class="myMessage">
+  <view class="mask">
+    <view class="box">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/dialogbg.png'):''}}" mode="aspectFill" />
+      <view class="content">
+        <view class="title">提示</view>
+        <view class="con">{{message}}</view>
+        <view class="btns">
+          <view class="btn2" bind:tap="onConfirm">{{btnStr}}</view>
+          <view class="btn" bind:tap="onClose">我再想想</view>
+        </view>
+      </view>
+    </view>
+
+  </view>
+</view>

@@ -1,0 +1,90 @@
+/* pages_register/register/register3/index.wxss */
+
+.register3 {
+  .form {
+    padding: 10rpx 74rpx;
+
+    .item {
+      margin-bottom: 36rpx;
+
+      .label {
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #000000;
+        display: flex;
+        align-items: center;
+      }
+
+      .label::before {
+        content: '';
+        display: inline-block;
+        width: 12rpx;
+        height: 12rpx;
+        background: #42CE71;
+        border-radius: 50%;
+        margin-right: 12rpx;
+      }
+
+      .con {
+        border-bottom: 2rpx solid #B5B5B5;
+
+        .van-cell {
+          padding-left: 0;
+          padding-right: 0;
+        }
+      }
+    }
+
+    .tip {
+      display: flex;
+      align-items: center;
+      gap: 12rpx;
+
+      image {
+        width: 28rpx;
+        height: 28rpx;
+      }
+
+      text {
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #2B2B2B;
+      }
+    }
+
+    .tip2,
+    .tip3 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12rpx;
+      margin-top: 46rpx;
+
+      image {
+        width: 28rpx;
+        height: 28rpx;
+      }
+
+      text {
+        font-weight: 400;
+        font-size: 28rpx;
+        color: #42CE71;
+      }
+    }
+
+    .tip3 text {
+      color: #FF6A6A;
+    }
+  }
+
+  .skip {
+    font-weight: 400;
+    font-size: 28rpx;
+    color: #2B2B2B;
+    position: fixed;
+    bottom: 150rpx;
+    left: 50%;
+    transform: translateX(-50%);
+
+  }
+}

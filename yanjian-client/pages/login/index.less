@@ -1,0 +1,62 @@
+/* pages/login/index.wxss */
+.login {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+
+    .bg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .b {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 400rpx;
+        .btn {
+            width: 480rpx;
+            height: 98rpx;
+            margin-top: 68rpx;
+            margin-bottom: 32rpx;
+
+            .btncon {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                image {
+                    width: 52rpx;
+                    height: 42rpx;
+                }
+
+                .btnStr {
+                    margin-left: 18rpx;
+                    font-size: 28rpx;
+                    color: #ffffff;
+                }
+            }
+        }
+
+        .foo {
+            width: fit-content;
+            white-space: nowrap;
+            margin: 0 auto;
+            .van-checkbox {
+                font-size: 24rpx;
+                text {
+                    color: #a7a7a7;
+                }
+                .l {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

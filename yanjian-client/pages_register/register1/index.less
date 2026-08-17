@@ -1,0 +1,81 @@
+/* pages_register/register/register1/index.wxss */
+.register1 {
+    .form {
+        padding: 10rpx 74rpx;
+
+        .tit {
+            font-weight: bold;
+            font-size: 48rpx;
+            color: #000000;
+            margin-bottom: 36rpx;
+        }
+
+        .item {
+            margin-bottom: 36rpx;
+
+            .label {
+                font-weight: 400;
+                font-size: 28rpx;
+                color: #000000;
+                display: flex;
+                align-items: center;
+            }
+
+            .label::before {
+                content: "";
+                display: inline-block;
+                width: 12rpx;
+                height: 12rpx;
+                background: #42ce71;
+                border-radius: 50%;
+                margin-right: 12rpx;
+            }
+
+            .con {
+                border-bottom: 2rpx solid #b5b5b5;
+                .c {
+                    height: 84rpx;
+                    display: flex;
+                    align-items: center;
+                    .c1:nth-child(1) {
+                        text-align: start;
+                    }
+                    .c1 {
+                        max-width: 100rpx;
+                        min-width: 80rpx;
+                        color: #b5b5b5;
+                        text-align: end;
+                        font-size: 32rpx;
+                    }
+                    .c2 {
+                        margin-left: 10rpx;
+                    }
+                }
+                .van-cell {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+
+        .item2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 36rpx;
+            .label {
+                font-weight: 400;
+                font-size: 28rpx;
+                color: #2b2b2b;
+                display: flex;
+                align-items: center;
+                gap: 10rpx;
+                image {
+                    width: 28rpx;
+                    height: 28rpx;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}

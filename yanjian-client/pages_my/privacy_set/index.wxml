@@ -1,0 +1,13 @@
+<!--pages_my/privacySet/index.wxml-->
+<view>
+  <van-nav-bar custom-class="navbar" title="隐私设置" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <van-cell-group>
+  <van-cell title="屏蔽列表" is-link border="{{false}}"  data-path="/pages_index/screen_list/index?type=5" bind:tap="goPage"/>
+  <van-cell title="{{userInfo.invisible==2?'设为隐身':'设为公开'}}" is-link border="{{false}}" bind:tap="setting" />
+  <van-cell title="退出登录" is-link border="{{false}}" bind:tap="exit" />
+  <van-cell title="账户注销" is-link border="{{false}}" bind:tap="remove" />
+</van-cell-group>
+<privacy-setting wx:if="{{showPrivacy}}" message="{{message}}" btnStr="{{btnStr}}" bind:onClose="closeSet" bind:onConfirm="confirmSet"></privacy-setting>
+<!-- 账户注销弹窗 -->
+<privacy-setting wx:if="{{showPrivacy2}}" message="注销后将清除全部个人信息，再次登录需要重新注册，请谨慎操作，建议暂时隐身。" btnStr="确定注销" bind:onClose="closeSet2" bind:onConfirm="confirmSet2"></privacy-setting>
+</view>

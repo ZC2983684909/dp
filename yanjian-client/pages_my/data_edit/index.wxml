@@ -1,0 +1,264 @@
+<!-- pages_my/data_edit/index.wxml -->
+<view class="data_edit">
+  <van-nav-bar custom-class="navbar" title="完善资料" border="{{false}}" fixed z-index="{{100}}" placeholder left-arrow bind:click-left="back" />
+  <view class="form">
+    <view class="item item2">
+      <view class="label">
+        相册
+        <view class="noAuth" wx:if="{{userInfo.warning}}">
+          <van-icon color="#DD6B6A" size="23rpx" name="warn-o" />
+          <text class="str">{{userInfo.warning}}</text>
+        </view>
+      </view>
+      <view class="content2">
+        <view class="btn" bind:tap="goPage" data-path="{{'/pages_index/friend_detail/index?id='+ userInfo.id+'&isMe=1'}}">
+          预览主页
+        </view>
+      </view>
+    </view>
+    <view class="cust">
+      <view class="desc">相册首张照片会作为封面，请上传竖版半身或全身照(面部无遮挡，将自动审核)。其余照片可上传生活照或风景照，至少一张照片。</view>
+      <view class="photo">
+        <!-- 封面图片 -->
+        <block wx:if="{{photoListFM.length > 0}}">
+          <view class="img cover-img">
+            <image class="img1" src="{{photoListFM[0].url}}" mode="aspectFill" />
+            <view class="btn" bind:tap="showFn" data-count="{{1}}" data-type="cover" data-index="{{0}}">替换</view>
+            <view class="close" data-index="{{0}}" data-type="cover" bind:tap="removeImg">
+              <van-icon name="cross" color="#979797" size="18rpx" />
+            </view>
+          </view>
+        </block>
+        <view class="add cover-add" wx:if="{{photoListFM.length === 0}}" bind:tap="showFn" data-type="cover">
+          <view class="con">
+            <view class="plus">
+              <van-icon color="#B5B5B5" name="plus" />
+            </view>
+            <view class="name">封面</view>
+          </view>
+        </view>
+        
+        <!-- 原相机视频（如果有，放在第二位） -->
+        <view class="img video-img" wx:if="{{userInfo.cameraImg}}">
+          <video class="vid" object-fit="cover" src="{{userInfo.cameraImg}}" show-center-play-btn="{{false}}" controls="{{false}}" bind:tap="preview"></video>
+          <!-- 模拟视频播放按钮 -->
+          <view class="play" bind:tap="preview">
+            <van-icon name="play-circle-o" size="50rpx" color="#fff" />
+          </view>
+          <view class="btn" bind:tap="uploadVideo">替换</view>
+          <view class="close" bind:tap="deleteVideo">
+            <van-icon name="cross" color="#979797" size="18rpx" />
+          </view>
+        </view>
+        
+        <!-- 生活照 -->
+        <block wx:for="{{photoList}}" wx:key="index">
+          <view class="img" wx:if="{{index > 1 && item.url}}">
+            <image class="img1" src="{{item.url}}" mode="aspectFill" />
+            <view class="btn" bind:tap="showFn" data-count="{{1}}" data-type="photo" data-index="{{index - 2}}">替换</view>
+            <view class="close" data-index="{{index - 2}}" data-type="photo" bind:tap="removeImg">
+              <van-icon name="cross" color="#979797" size="18rpx" />
+            </view>
+          </view>
+        </block>
+        
+        <!-- 添加生活照按钮 -->
+        <view class="add" wx:if="{{showAddPhotoBtn}}" bind:tap="showFn" data-type="photo">
+          <view class="con">
+            <view class="plus">
+              <van-icon color="#B5B5B5" name="plus" />
+            </view>
+            <view class="name">{{photoCount > 0 ? '添加生活照' : '生活照'}}</view>
+          </view>
+        </view>
+        
+        <!-- 添加原相机视频按钮（如果没有原相机视频） -->
+        <view class="add video-add" wx:if="{{!userInfo.cameraImg}}" bind:tap="uploadVideo">
+          <view class="con">
+            <view class="plus">
+              <van-icon color="#B5B5B5" name="plus" />
+            </view>
+            <view class="name">原相机视频</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">昵称</view>
+      <view class="content">
+        <van-field placeholder="请输入昵称" value="{{ userInfo.nickName }}" input-align="right" border="{{ false }}" bind:change="iptChange1" input-class="iptClass" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>性别</text>
+        <text class="tip">*无法修改</text>
+      </view>
+      <view class="content" bind:tap="changeShow1">
+        <view class="val {{!userInfo.sex?'noval':''}}">{{userInfo.sex||'请选择性别'}}</view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>出生年月</text>
+        <text class="tip">*需要与身份证一致</text>
+      </view>
+      <view class="content" bind:tap="changeshow2">
+        <view class="val {{!userInfo.birthDate?'noval':''}}">
+          {{userInfo.birthFormatDate||'请选择出生日期'}}
+        </view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>身高</text>
+      </view>
+      <view class="content" bind:tap="changeshow3">
+        <view class="val {{!userInfo.height?'noval':''}}">
+          {{userInfo.height?userInfo.height+'cm':"请选择身高"}}
+        </view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>体重</text>
+      </view>
+      <view class="content" bind:tap="changeshow4">
+        <view class="val {{!userInfo.weight?'noval':''}}">
+          {{userInfo.weight?userInfo.weight+'KG':"请选择体重"}}
+        </view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>签名</text>
+      </view>
+      <view class="content" bind:tap="goPage" data-path="/pages_register/signature/index" data-type="1">
+        <view class="val {{!userInfo.selfDescription?'noval':''}}">
+          {{userInfo.selfDescription||'签名'}}
+        </view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>个人标签</text>
+      </view>
+      <view class="content" bind:tap="goPage" data-path="/pages_register/select_tag/index">
+        <view class="val {{!userInfo.fondTags.myLabel?'noval':''}}">
+          <view class="texts" wx:if="{{userInfo.fondTags.myLabel}}">
+            <view class="txt" wx:for="{{data_edit2.replaceComma(userInfo.fondTags.myLabel,',')}}" wx:key="index">
+              <view class="line" wx:if="{{index>0}}">|</view>
+              <view class="t">{{item}}</view>
+            </view>
+          </view>
+          <text wx:else>请选择</text>
+        </view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>职业</text>
+      </view>
+      <view class="content" bind:tap="changeshow7">
+        <view class="val {{!userInfo.jobMes?'noval':''}}">{{userInfo.jobMes||'请选择'}}</view>
+        <van-icon color="#CFCFCF" name="arrow" />
+      </view>
+    </view>
+    <van-divider />
+    <view class="title">个人信息</view>
+    <view class="item">
+      <view class="label">
+        <text>微信号</text>
+      </view>
+      <view class="content">
+        <van-field value="{{ userInfo.wechat }}" placeholder="用户申请后，您通过了才会显示" border="{{ false }}" input-align="right" custom-class="ptclass" input-class="iptClass" bind:change="iptChange2" />
+      </view>
+    </view>
+    <view class="item3">
+      <view class="label">
+        <text>是否直接解锁微信</text>
+        <image bind:tap="showTipFn" src="{{imgBaseURL?(imgBaseURL+'/images/1228.svg'):''}}" mode="" />
+      </view>
+      <view class="con">
+        <text>否</text>
+        <van-switch checked="{{ userInfo.wechatOpen }}" active-color="#2B2B2B" inactive-color="#E2E2E2" size="40rpx" bind:change="onChangeSwitch" />
+        <text>是</text>
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>手机号</text>
+      </view>
+      <view class="content">
+        <van-field value="{{ userInfo.phone }}" placeholder="只有在特别紧急情况时才会短信通知您。感谢信任！" input-align="right" border="{{ false }}" readonly="{{true}}" custom-class="ptclass" input-class="iptClass" use-button-slot />
+        <view class="rightBtn" slot="button">
+          <button open-type="getPhoneNumber" bind:getphonenumber="getPhoneNumber">获取手机号</button>
+        </view>
+      </view>
+    </view>
+    <view class="item">
+      <view class="label">
+        <text>邀请码</text>
+      </view>
+      <view class="content">
+        <van-field value="{{ userInfo.distributionCode }}" placeholder="邀请码" border="{{ false }}" input-align="right" readonly="{{true}}" custom-class="ptclass" input-class="iptClass" use-button-slot />
+        <view slot="button" class="rightBtn2" bind:tap="copy">复制</view>
+      </view>
+    </view>
+  </view>
+  <my-fotter-btn catchtouchmove="preventTouchMove" bind:btnTap="submit">保存</my-fotter-btn>
+  <!-- 相册上传弹窗 -->
+  <van-action-sheet show="{{ show }}" actions="{{ photoActions }}" cancel-text="取消" bind:cancel="clickOverlay" bind:select="onSelectPhotoSource" />
+  <!-- 选择性别 -->
+  <van-action-sheet show="{{ show1 }}" actions="{{ actions1 }}" cancel-text="取消" bind:cancel="onClose1" bind:close="onClose1" bind:select="onSelect1" />
+  <!-- 选择年龄 -->
+  <van-action-sheet show="{{ show2 }}">
+    <van-datetime-picker type="year-month" bind:cancel="onClose2" value="{{ currentDate }}" bind:confirm="onConfirm2" min-date="{{ minDate }}" formatter="{{ formatter }}" />
+  </van-action-sheet>
+  <!-- 选择身高 -->
+  <van-popup show="{{ show3 }}" round position="bottom" bind:close="onClose3">
+    <view class="popupTopBtn">
+      <view class="l" bind:tap="onClose3">取消</view>
+      <view class="r" bind:tap="onSelect3">确认</view>
+    </view>
+    <van-picker class="picker3" default-index="{{20}}" columns="{{ actions3 }}" />
+  </van-popup>
+  <!-- 选择体重 -->
+  <van-popup show="{{ show4 }}" round position="bottom" bind:close="onClose4">
+    <view class="popupTopBtn">
+      <view class="l" bind:tap="onClose4">取消</view>
+      <view class="r" bind:tap="onSelect4">确认</view>
+    </view>
+    <van-picker class="picker4" default-index="{{20}}" columns="{{ actions4 }}" />
+  </van-popup>
+  <!-- 选择职业 -->
+  <van-popup show="{{ show7 }}" round position="bottom" bind:close="onClose7">
+    <view class="popupTopBtn">
+      <view class="l" bind:tap="onClose7">取消</view>
+      <view class="r" bind:tap="onSelect7">确认</view>
+    </view>
+    <van-picker class="picker7" columns="{{ actions7 }}" />
+  </van-popup>
+</view>
+<van-dialog use-slot title="是否直接解锁微信" show="{{ showTip }}" confirm-button-color="#6E95E1">
+  <view class="vandialogtip">
+    <view>直接解锁微信时他人无需向你发起申请即可直接解锁微信号，不直接解锁微信时他人需向你发起申请，待你同意后才可解锁你的微信。</view>
+  </view>
+</van-dialog>
+<my-message wx:if="{{showMsg}}" title="提示" message="保存成功" btnStr="确定" bind:onConfirm="onCloseMsg" bind:onClose="onCloseMsg"></my-message>
+<my-http-message class="httpMessage"></my-http-message>
+<wxs src="../../utils/formatterStatus.wxs" module="data_edit"></wxs>
+<wxs module="data_edit2">
+  function replaceComma(str, str2) {
+    return str.split(str2)
+  }
+  module.exports = {
+    replaceComma: replaceComma
+  };
+</wxs>

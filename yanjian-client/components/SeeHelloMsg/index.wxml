@@ -1,0 +1,19 @@
+<view class="SeeHelloMsg">
+  <view class="mask">
+    <view class="box">
+      <image class="message1" src="{{imgBaseURL?(imgBaseURL+'/images/dialogbg.png'):''}}" mode="aspectFill" />
+      <view class="content">
+        <view class="title">查看招呼</view>
+        <view class="con">{{message}}</view>
+        <view class="btns">
+          <view class="btn2" bind:tap="onReject">婉拒</view>
+          <view class="btn" bind:tap="onResolve">通过</view>
+        </view>
+      </view>
+      <view class="close" bind:tap="onClose">
+        <image src="{{imgBaseURL?(imgBaseURL+'/images/2.png'):''}}" mode="" />
+      </view>
+    </view>
+
+  </view>
+</view>

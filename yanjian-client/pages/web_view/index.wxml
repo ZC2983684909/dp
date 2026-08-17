@@ -1,0 +1,5 @@
+<!--pages/web_view/index.wxml-->
+<view class="box">
+<web-view src="{{link}}"/>
+
+</view>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.ArticleDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.ArticleEntity" id="articleMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="content" column="content"/>
+        <result property="img" column="img" typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+        <result property="userId" column="user_id"/>
+        <result property="open" column="open"/>
+        <result property="likeCount" column="like_count"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="sort" column="sort"/>
+        <result property="city" column="city"/>
+        <result property="type" column="type"/>
+    </resultMap>
+
+
+    <resultMap id="articleInfoResponse"
+               type="com.wxmblog.yanjian.common.rest.response.front.article.ArticleInfoResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+
+    <!--朋友圈 动态列表-->
+    <select id="articleInfo" resultMap="articleInfoResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.article.ArticleInfoRequest">
+        SELECT
+        ar.id,
+        ar.user_id,
+        fu.avatar,
+        fu.sex,
+        fu.nick_name as nickName,
+        ar.type,
+        ar.city,
+        ar.content,
+        ar.img,
+        ar.like_count,
+        ar.comment_count,
+        ar.create_time,
+        fu.job_mes,
+        fu.birth_date,
+        case when (select count(1) from user_to_like ut where ut.del_flag=0 and ut.praise_type='ARTICLE' and
+        ut.target_id=ar.id and ut.user_id=#{userId})=0 then false else true end as isLike
+        FROM
+        article ar
+        LEFT JOIN t_user fu ON ar.user_id = fu.id
+        <where>
+            ar.id=#{id}
+        </where>
+        order by ar.id desc
+    </select>
+
+    <resultMap id="userArticlePageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.front.article.UserArticlePageResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+    <!--朋友圈 用户朋友圈列表-->
+    <select id="getUserArticle" resultMap="userArticlePageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.article.UserArticleRequest">
+        select ar.id,
+               ar.content,
+               ar.img,
+               ar.like_count,
+               ar.comment_count as commentCount,
+               ar.create_time,
+               CASE
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'ARTICLE'
+                           AND ut.target_id = ar.id
+                           AND ut.user_id = #{ownerId}) = 0 then false
+                   else true end as isLike,
+               CASE
+                   WHEN ar.user_id = #{ownerId} then true
+                   ELSE FALSE
+                   END           AS isDelete,
+            ar.open,
+            ar.city,
+            ar.type
+        FROM article ar
+        <where>
+             ar.del_flag = 0
+            and ar.user_id = #{userId}
+        <if test="ownerId==null or ownerId!=userId">
+            and ar.open = 1
+        </if>
+        </where>
+        ORDER BY ar.create_time desc, ar.id DESC
+
+    </select>
+
+    <resultMap id="articlePageResponse"
+               type="com.wxmblog.yanjian.common.rest.response.front.article.ArticlePageResponse">
+        <result property="img" column="img"
+                typeHandler="com.wxmblog.base.common.handler.BaseStringListTypeHandler"/>
+    </resultMap>
+    <!--朋友圈 动态列表-->
+    <select id="getArticlePage" resultMap="articlePageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.article.ArticlePageRequest">
+        select ar.id,
+        ar.content,
+        tu.id as userId,
+        tu.avatar as headPortrait,
+        tu.sex as gender,
+        tu.nick_name as nickName,
+        tu.job_mes,
+        tu.birth_date,
+        ar.img,
+        ar.like_count,
+        ar.comment_count as commentCount,
+        ar.create_time,
+        CASE
+        WHEN (SELECT count(1)
+        FROM user_to_like ut
+        WHERE ut.del_flag = 0
+        AND ut.praise_type = 'ARTICLE'
+        AND ut.target_id = ar.id
+        AND ut.user_id = #{ownerId}) = 0 then false
+        else true end as isLike,
+        CASE
+        WHEN ar.user_id = #{ownerId} then true
+        ELSE FALSE
+        END AS isDelete,
+        ar.open,
+        ar.city,
+        ar.type
+        FROM article ar
+        left join t_user tu on ar.user_id=tu.id
+        <where>
+            ar.del_flag = 0 and tu.del_flag=0 and tu.status='ENABLE'
+            and ar.open = 1
+            and (ar.recommend='1' or ar.user_id = #{ownerId})
+            <if test="city!=null and city!=''">
+                and ar.city=#{city}
+            </if>
+            <if test="subjectId!=null and subjectId!=''">
+                and (select count(1) from article_to_subject ats where del_flag = 0 and ats.article_id=ar.id and
+                ats.subject_id=#{subjectId})>0
+            </if>
+            <if test="articleId!=null and articleId!=''">
+                and ar.id=#{articleId}
+            </if>
+            <if test="sex!=null and sex!=''">
+                and (tu.sex = #{sex} or ar.id = #{articleId} or ar.sort=99)
+            </if>
+        </where>
+        <choose>
+            <when test="sortType != null and sortType=='comp'">
+                ORDER BY (IFNULL(ar.like_count, 0) + IFNULL(ar.comment_count, 0)) desc,ar.create_time DESC, ar.id DESC
+            </when>
+            <when test="sortType != null and sortType=='nowtime'">
+                ORDER BY
+                ar.create_time DESC, ar.id DESC
+            </when>
+            <otherwise>
+                ORDER BY
+                ar.sort DESC, ar.create_time DESC, ar.id DESC
+            </otherwise>
+        </choose>
+
+
+    </select>
+
+
+    <!--朋友圈 动态评论列表-->
+    <select id="getCommentPage" resultType="com.wxmblog.yanjian.common.rest.response.front.article.ArticleCommentPageResponse"
+            parameterType="com.wxmblog.yanjian.common.rest.request.front.article.ArticleCommentPageRequest">
+
+        SELECT ac.id,
+               ac.user_id,
+               fu.avatar          as headPortrait,
+               fu.sex             as gender,
+               fu.nick_name       as nickName,
+               concat(
+                       fu.residential_city,
+                       '·',
+                       fu.job_mes
+               )                  as information,
+               ac.content,
+               ac.like_count,
+               CASE
+
+                   WHEN (SELECT count(1)
+                         FROM user_to_like ut
+                         WHERE ut.del_flag = 0
+                           AND ut.praise_type = 'COMMENT'
+                           AND ut.target_id = ac.id
+                           AND ut.user_id = #{userId}) = 0 then false
+                   else true end  as isLike,
+               ac.create_time,
+               CASE
+
+                   WHEN ac.user_id = #{userId} then true
+                   else false end as deleteBtn,
+               ac.anonymous,
+               ac.comment_id,
+               acc.content        as replyContent,
+               tuu.nick_name      as replyNickName,
+               acc.user_id as replyUserId
+        FROM article_comment ac
+                 LEFT JOIN t_user fu ON ac.user_id = fu.id
+                 left join article_comment acc on ac.comment_id = acc.id
+                 left join t_user tuu on acc.user_id = tuu.id
+        WHERE ac.del_flag = 0
+          and fu.del_flag = 0
+          and fu.status = 'ENABLE'
+          and ac.article_id =
+              #{articleId}
+        ORDER BY ac.create_time DESC,
+                 ac.id
+                DESC
+    </select>
+
+    <select id="subjectPage" resultType="com.wxmblog.yanjian.common.rest.response.front.article.SubjectPageResponse">
+        SELECT
+            asu.id,
+            asu.title,
+            asu.img,
+            asu.description_info,
+            asu.visit_count,
+            asu.discuss_count
+        FROM
+            article_subject asu
+        WHERE
+            asu.del_flag = 0
+        ORDER BY
+            asu.sort ASC,
+            asu.id DESC
+    </select>
+
+</mapper>

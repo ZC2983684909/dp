@@ -1,0 +1,112 @@
+/* components/MyMessage/index.wxss */
+.myMessage {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  .mask {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .box {
+      width: 582rpx;
+      height: 653rpx;
+      background: #FFFFFF;
+      border-radius: 24rpx;
+      position: relative;
+
+      .message1,
+      .content {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+
+      .content {
+        z-index: 1;
+        text-align: center;
+
+        .title {
+          font-size: 40rpx;
+          font-weight: 600;
+          margin-top: 60rpx;
+        }
+
+        .money {
+          margin-top: 24rpx;
+
+          .m1 {
+            font-weight: 800;
+            font-size: 56rpx;
+            color: #4F6CE1;
+          }
+        }
+
+        .other {
+          margin-top: 40rpx;
+          image {
+            width: 36rpx;
+            height: 36rpx;
+            vertical-align: middle;
+          }
+
+          text {
+            font-weight: 400;
+            font-size: 28rpx;
+            color: #4A4A4A;
+            margin-left: 18rpx;
+          }
+        }
+
+        .con {
+          padding: 0 50rpx;
+          font-size: 28rpx;
+          line-height: 50rpx;
+          margin-top: 26rpx;
+        }
+
+        .btn {
+          bottom: 40rpx;
+          width: 392rpx;
+          height: 84rpx;
+          background: linear-gradient(86deg, #4F6CE1 0%, #594FE1 100%);
+          border-radius: 42rpx;
+          margin: 0 auto;
+          color: #fff;
+          line-height: 84rpx;
+          margin-top: 60rpx;
+        }
+
+        .btn2 {
+          width: 392rpx;
+          height: 84rpx;
+          border-radius: 42rpx;
+          margin: 0 auto;
+          color: #4F6CE1;
+          line-height: 84rpx;
+          border: 2rpx solid #4F6CE1;
+          margin-top: 28rpx;
+        }
+      }
+    }
+
+    .close {
+      position: absolute;
+      width: fit-content;
+      bottom: 320rpx;
+
+      image {
+        width: 64rpx;
+        height: 64rpx;
+      }
+    }
+  }
+
+}

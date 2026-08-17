@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wxmblog.yanjian.dao.UserProfileDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.wxmblog.yanjian.entity.UserProfileEntity" id="userProfileMap">
+        <result property="id" column="id"/>
+        <result property="creator" column="creator"/>
+        <result property="createTime" column="create_time"/>
+        <result property="modifyer" column="modifyer"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="version" column="version"/>
+        <result property="selfDescription" column="self_description"/>
+        <result property="idealFriend" column="ideal_friend"/>
+        <result property="unionId" column="union_id"/>
+        <result property="idCard" column="id_card"/>
+        <result property="name" column="name"/>
+        <result property="invisibleDate" column="invisible_date"/>
+        <result property="realPhoto" column="real_photo"/>
+        <result property="publicOpenId" column="public_open_id"/>
+        <result property="imgBase64" column="img_base64"/>
+        <result property="fakeWechat" column="fake_wechat"/>
+        <result property="hasInvalidInfo" column="has_invalid_info"/>
+        <result property="distributionCode" column="distribution_code"/>
+        <result property="wechat" column="wechat"/>
+        <result property="applyCount" column="apply_count"/>
+        <result property="address" column="address"/>
+        <result property="tendLiveCity" column="tend_live_city"/>
+        <result property="wechatOpen" column="wechat_open"/>
+        <result property="violationMsg" column="violation_msg"/>
+        <result property="warningMsg" column="warning_msg"/>
+    </resultMap>
+
+
+</mapper>

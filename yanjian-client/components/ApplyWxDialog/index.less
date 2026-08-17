@@ -1,0 +1,175 @@
+/* components/MyMessage/index.wxss */
+.myMessage {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+
+    .mask {
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .box {
+            width: 505rpx;
+            height: 649rpx;
+            border-radius: 48rpx 48rpx 48rpx 48rpx;
+            position: relative;
+            // 背景设置渐变色，从上到下色值是#C7EDD8，#FEFEFE
+            background: linear-gradient(180deg, #c7edd8, #fefefe);
+
+            .message1,
+            .content {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            .content {
+                z-index: 1;
+                text-align: center;
+
+                .title {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12rpx;
+                    margin-top: 54rpx;
+
+                    image {
+                        width: 32rpx;
+                        height: 32rpx;
+                    }
+
+                    .tit1 {
+                        font-weight: bold;
+                        font-size: 30rpx;
+                        color: #2b2b2b;
+                    }
+
+                    .tit2 {
+                        font-weight: 400;
+                        font-size: 24rpx;
+                        color: #2b2b2b;
+                    }
+                }
+
+                .msg {
+                    width: 312rpx;
+                    margin: 0 auto;
+                    margin-top: 98rpx;
+
+                    .msg1 {
+                        font-weight: bold;
+                        font-size: 32rpx;
+                        color: #2b2b2b;
+                    }
+
+                    .msg2 {
+                        margin-top: 20rpx;
+                        font-weight: 400;
+                        font-size: 26rpx;
+                        color: #2b2b2b;
+                        line-height: 40rpx;
+
+                        text {
+                            font-weight: bold;
+                            font-size: 32rpx;
+                            color: #42ce71;
+                        }
+                    }
+                }
+
+                // .btn {
+                //   bottom: 40rpx;
+                //   width: 392rpx;
+                //   height: 84rpx;
+                //   background: linear-gradient(86deg, #42CE71 0%, #45E9A7 100%);
+                //   border-radius: 42rpx;
+                //   margin: 0 auto;
+                //   color: #fff;
+                //   line-height: 84rpx;
+                //   margin-top: 60rpx;
+                // }
+                .btn {
+                    bottom: 40rpx;
+                    width: 392rpx;
+                    height: 84rpx;
+                    background: linear-gradient(
+                        86deg,
+                        #42ce71 0%,
+                        #45e9a7 100%
+                    );
+                    border-radius: 42rpx;
+                    margin: 0 auto;
+                    color: #fff;
+                    line-height: 84rpx;
+                    margin-top: 60rpx;
+                    position: relative;
+                    top: 0;
+                    .ye {
+                        position: absolute;
+                        top: -10rpx;
+                        right: 10rpx;
+                        height: 36rpx;
+                        padding: 0 20rpx;
+                        background: #ffd490;
+                        border-radius: 18rpx 18rpx 18rpx 0rpx;
+                        font-weight: 400;
+                        font-size: 20rpx;
+                        color: #2b2b2b;
+                        text-align: center;
+                        line-height: 36rpx;
+                    }
+                }
+
+                .btn2 {
+                    width: 392rpx;
+                    height: 84rpx;
+                    border-radius: 42rpx;
+                    margin: 0 auto;
+                    color: #ffffff;
+                    background-color: #2b2b2b;
+                    line-height: 84rpx;
+                    margin-top: 28rpx;
+                    position: relative;
+
+                    .ye {
+                        position: absolute;
+                        top: -10rpx;
+                        right: 10rpx;
+                        height: 36rpx;
+                        padding: 0 20rpx;
+                        background: #ffd490;
+                        border-radius: 18rpx 18rpx 18rpx 0rpx;
+                        font-weight: 400;
+                        font-size: 20rpx;
+                        color: #2b2b2b;
+                        text-align: center;
+                        line-height: 36rpx;
+                    }
+                }
+            }
+        }
+
+        .close {
+            position: absolute;
+            // top: 560rpx;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 99;
+            bottom: -120rpx;
+
+            image {
+                width: 64rpx;
+                height: 64rpx;
+            }
+        }
+    }
+}

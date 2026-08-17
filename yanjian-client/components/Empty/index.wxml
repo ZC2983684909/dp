@@ -1,0 +1,6 @@
+<!--components/Empty/index.wxml-->
+<view class="empty" style="height: {{height}};">
+  <image src="{{imgBaseURL?(imgBaseURL+'/images/13432x.png'):''}}" mode=""/>
+  <view class="s">{{msg}}</view>
+  <view class="btn" wx:if="{{showLoginBtn}}" bind:tap="login">点此登录</view>
+</view>
