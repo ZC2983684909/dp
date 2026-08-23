@@ -7,7 +7,7 @@ Page({
         text: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; padding: 0px;">
 
   <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">一、平台核心定位</h2>
-  <p style="margin-bottom: 16px;">[颜见] 是一款以 “兴趣为纽带、线下为场景” 的社交服务平台，致力于打破线上社交的虚拟壁垒，为有共同兴趣爱好的用户搭建从线上匹配到线下互动的桥梁，打造真实、多元、安全的兴趣社交生态。</p>
+  <p style="margin-bottom: 16px;">[有趣的搭子] 是一款以 “兴趣为纽带、线下为场景” 的社交服务平台，致力于打破线上社交的虚拟壁垒，为有共同兴趣爱好的用户搭建从线上匹配到线下互动的桥梁，打造真实、多元、安全的兴趣社交生态。</p>
   <p style="margin-bottom: 16px;">平台不局限于泛泛的线上聊天，而是聚焦 “兴趣垂直领域” 与 “线下真实连接”，覆盖运动（如徒步、羽毛球、骑行）、文化（如读书会、手作、观影）、生活（如烘焙、宠物、露营）等多类兴趣场景，让用户基于共同热爱找到同频伙伴，将线上的兴趣共鸣转化为线下的真实社交体验。</p>
 
   <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">二、平台打造初衷</h2>
@@ -38,9 +38,9 @@ Page({
   <p style="margin-bottom: 16px;">我们相信，当用户因兴趣在平台相聚，不仅能收获朋友，更能发现生活的更多可能性 —— 这正是平台始终坚守的初衷。</p>
 
   <h2 style="font-size: 20px; font-weight: 600; margin-bottom: 16px;">三、平台愿景</h2>
-  <p style="margin-bottom: 16px;">未来，[颜见] 将继续深耕 “线下兴趣交友” 领域，不断优化兴趣匹配算法、丰富线下活动场景（如联动线下商户推出主题体验课、与公益组织合作发起兴趣公益活动），同时持续升级安全与隐私保护机制，让更多用户能 “因热爱相遇，因真诚相伴”，打造国内领先的、有温度的兴趣社交平台。</p>
+  <p style="margin-bottom: 16px;">未来，[有趣的搭子] 将继续深耕 “线下兴趣交友” 领域，不断优化兴趣匹配算法、丰富线下活动场景（如联动线下商户推出主题体验课、与公益组织合作发起兴趣公益活动），同时持续升级安全与隐私保护机制，让更多用户能 “因热爱相遇，因真诚相伴”，打造国内领先的、有温度的兴趣社交平台。</p>
 
-  <p style="margin-top: 16px; font-weight: 600; color: #333;"><strong>感谢您选择 [颜见]，愿我们共同构建一个真实、有趣、安心的社交空间。</strong></p>
+  <p style="margin-top: 16px; font-weight: 600; color: #333;"><strong>感谢您选择 [有趣的搭子]，愿我们共同构建一个真实、有趣、安心的社交空间。</strong></p>
 
 </div>`,
     },

@@ -2,10 +2,13 @@
   <van-nav-bar title="{{nickName || '私聊'}}" fixed placeholder border="{{false}}" left-arrow bind:click-left="onClickLeft">
     <view slot="right" class="status {{connected ? 'online' : ''}}">{{connected ? '在线' : '连接中'}}</view>
   </van-nav-bar>
-  <scroll-view scroll-y="true" class="messages" scroll-into-view="{{scrollIntoView}}">
+  <scroll-view scroll-y="true" class="messages" scroll-into-view="{{scrollIntoView}}" bindscrolltoupper="loadOlderMessages" upper-threshold="60">
+    <view class="history-loading" wx:if="{{loadingHistory}}"><van-loading size="20" color="#999" /> 加载聊天记录...</view>
     <empty wx:if="{{!list.length}}" msg="暂无消息，开始聊天吧" />
     <view wx:for="{{list}}" wx:key="id" id="msg-{{item.id}}" class="row {{item.mine ? 'mine' : ''}}">
       <view class="bubble">{{item.content}}</view>
+      <view class="send-status" wx:if="{{item.mine && item.status === 'sending'}}">发送中</view>
+      <view class="send-status failed" wx:if="{{item.mine && item.status === 'failed'}}">发送失败</view>
     </view>
   </scroll-view>
   <view class="composer">

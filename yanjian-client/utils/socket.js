@@ -71,7 +71,10 @@ class SocketManager {
             this.isConnecting = false;
             const msgData = {
                 messageType: "CONNECT",
-                info: this.ownerId,
+                info: JSON.stringify({
+                    userId: this.ownerId,
+                    token: wx.getStorageSync("token") || "",
+                }),
             };
             console.log("发送连接请求");
             this.sendMessage(msgData);
@@ -90,6 +93,14 @@ class SocketManager {
                 // 收到消息
                 const msgData = JSON.parse(res.data);
                 console.log("收到消息：", JSON.stringify(msgData));
+
+                if (msgData.type === "ERROR") {
+                    wx.showToast({
+                        title: msgData.message || "聊天服务异常",
+                        icon: "none",
+                    });
+                    return;
+                }
 
                 // 检查是否为服务端确认消息
                 if (msgData.type === "sendConfirmation") {
@@ -252,21 +263,11 @@ class SocketManager {
             this.sendMessage(
                 sendMessage,
                 (sentMsg) => {
-                    console.log(`消息发送到服务端成功，等待确认: ${tempMsgNo}`);
-
-                    // 添加到待确认消息队列
-                    this.addPendingMessage(tempMsgNo, {
-                        resolve: () => {
-                            if (successCallback) successCallback(sentMsg);
-                            resolve(sentMsg);
-                        },
-                        reject: (error) => {
-                            if (failCallback) failCallback(error);
-                            reject(error);
-                        },
-                        msgData: msgData,
-                        retryCount: 0,
-                    });
+                    // 当前服务端会持久化并转发消息，但不会向发送方返回 sendConfirmation。
+                    // 以微信 WebSocket 发送成功作为本次提交成功，避免客户端无限重试。
+                    console.log(`消息已提交到服务端: ${tempMsgNo}`);
+                    if (successCallback) successCallback(sentMsg);
+                    resolve(sentMsg);
                 },
                 (error) => {
                     console.error(`消息发送失败: ${tempMsgNo}`, error);

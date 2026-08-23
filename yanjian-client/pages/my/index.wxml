@@ -136,7 +136,7 @@
         </view>
         <view class="item" data-path="/pages_my/aboutUsSub/index" bind:tap="goPage">
           <image src="{{imgBaseURL?(imgBaseURL+'/images/102.png'):''}}" mode="" />
-          <view class="name">关于颜见</view>
+          <view class="name">关于有趣的搭子</view>
         </view>
         <!-- <view class="item" data-path="/pages_my/login_reward/index" bind:tap="goPage">
           <image src="{{imgBaseURL?(imgBaseURL+'/images/1178.svg'):''}}" mode="" />

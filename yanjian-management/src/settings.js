@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '颜见后台管理',
+  title: '有趣的搭子后台管理',
 
   /**
    * @type {boolean} true | false

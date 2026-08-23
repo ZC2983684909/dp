@@ -1,6 +1,6 @@
 <!--pages_my/aboutUsSub/index.wxml-->
 <view>
-  <van-nav-bar custom-class="navbar" title="关于颜见" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
+  <van-nav-bar custom-class="navbar" title="关于有趣的搭子" border="{{false}}" fixed placeholder left-arrow bind:click-left="back" />
   <van-cell-group>
   <van-cell title="规则和处罚" is-link border="{{false}}"  data-path="/pages_my/rulesAndPenalties/index" bind:tap="goPage"/>
   <van-cell title="用户协议" is-link border="{{false}}" data-path="/pages_my/userAgreement/index" bind:tap="goPage" />

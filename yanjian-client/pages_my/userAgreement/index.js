@@ -5,7 +5,7 @@ Page({
      */
     data: {
         text: `<div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333; padding: 0;">
-        <p style="margin-bottom: 12px;">感谢您选择颜见App。为使用本平台提供的各项服务，您应当事先认真阅读并充分理解本协议的所有内容，尤其是其中与您的权益和义务密切相关的条款，包括但不限于违约责任、账号管理、隐私保护等。</p>
+        <p style="margin-bottom: 12px;">感谢您选择有趣的搭子App。为使用本平台提供的各项服务，您应当事先认真阅读并充分理解本协议的所有内容，尤其是其中与您的权益和义务密切相关的条款，包括但不限于违约责任、账号管理、隐私保护等。</p>
         <p style="margin-bottom: 12px;">当您完成身份认证时，即表示您已阅读、理解并同意接受本协议所有条款的约束。如果您不同意本协议的任何内容，请立即停止使用本平台服务。本协议将不定期更新，更新后的版本自公布之日起立即生效，并代替原有版本。如您继续使用本平台服务，即视为同意接受更新后的协议；如您不同意，请停止使用本平台服务。</p>
     
         <h3 style="font-size: 18px; font-weight: bold; margin-top: 24px; margin-bottom: 12px;">一、账号注册</h3>
@@ -115,7 +115,7 @@ Page({
             <li style="margin-bottom: 4px;">文字、图片、图文等信息、消息或相关链接页面；</li>
             <li style="margin-bottom: 4px;">其他使用账号或本服务所产生的内容。</li>
         </ol>
-        <p style="margin-bottom: 8px;">2. 用户不得利用"颜见App"账号或本服务制作、上载、复制、发布、传播以下法律、法规和政策明令禁止的违法内容：</p>
+        <p style="margin-bottom: 8px;">2. 用户不得利用"有趣的搭子App"账号或本服务制作、上载、复制、发布、传播以下法律、法规和政策明令禁止的违法内容：</p>
         <ol style="list-style-type: decimal; margin-left: 4px; margin-bottom: 8px;">
             <li style="margin-bottom: 4px;">反对宪法所确定的基本原则的；</li>
             <li style="margin-bottom: 4px;">危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的；</li>
@@ -128,7 +128,7 @@ Page({
             <li style="margin-bottom: 4px;">不遵守法律法规底线、社会主义制度底线、国家利益底线、公民合法权益底线、社会公共秩序底线、道德风尚底线和信息真实性底线（"七条底线"）的；</li>
             <li style="margin-bottom: 4px;">其他法律、行政法规禁止的内容。</li>
         </ol>
-        <p style="margin-bottom: 8px;">3. 用户不得利用"颜见App"账号或本服务制作、上载、复制、发布、传播以下干扰"颜见App"正常运营或侵犯其他用户或第三方合法权益的内容：</p>
+        <p style="margin-bottom: 8px;">3. 用户不得利用"有趣的搭子App"账号或本服务制作、上载、复制、发布、传播以下干扰"有趣的搭子App"正常运营或侵犯其他用户或第三方合法权益的内容：</p>
         <ol style="list-style-type: decimal; margin-left: 4px; margin-bottom: 8px;">
             <li style="margin-bottom: 4px;">含有任何性或性暗示的；</li>
             <li style="margin-bottom: 4px;">含有辱骂、恐吓、威胁内容的；</li>
@@ -141,21 +141,21 @@ Page({
     
         <h3 style="font-size: 18px; font-weight: bold; margin-top: 24px; margin-bottom: 12px;">六、使用规则</h3>
         <p style="margin-bottom: 8px;">1. 用户通过本服务所传送、发布的任何内容，不代表也不得被视为代表本平台的观点、立场或政策，本平台对此不承担任何责任。</p>
-        <p style="margin-bottom: 8px;">2. 用户不得利用"颜见App"账号或本服务从事以下行为：</p>
+        <p style="margin-bottom: 8px;">2. 用户不得利用"有趣的搭子App"账号或本服务从事以下行为：</p>
         <ol style="list-style-type: decimal; margin-left: 4px; margin-bottom: 8px;">
             <li style="margin-bottom: 4px;">提交、发布虚假信息，或盗用他人头像、资料，冒充或利用他人名义；</li>
             <li style="margin-bottom: 4px;">强制或诱导其他用户分享信息；</li>
             <li style="margin-bottom: 4px;">编造并利用虚假信息或隐瞒真相以误导、欺骗他人；</li>
             <li style="margin-bottom: 4px;">利用技术手段批量注册或建立虚假账号；</li>
             <li style="margin-bottom: 4px;">从事任何违法犯罪活动或实施违背社会道德和公序良俗的行为；</li>
-            <li style="margin-bottom: 4px;">利用"颜见App"账号出售、泄露嘉宾信息；</li>
-            <li style="margin-bottom: 4px;">利用"颜见App"账号向他人推销"可代其向指定客户联系"的服务（包括但不限于猎头、广告营销等）；</li>
+            <li style="margin-bottom: 4px;">利用"有趣的搭子App"账号出售、泄露嘉宾信息；</li>
+            <li style="margin-bottom: 4px;">利用"有趣的搭子App"账号向他人推销"可代其向指定客户联系"的服务（包括但不限于猎头、广告营销等）；</li>
             <li style="margin-bottom: 4px;">制作、发布与上述行为相关的方法或工具，或对这类方法、工具进行运营或传播，无论是否出于商业目的；</li>
-            <li style="margin-bottom: 4px;">其他违反法律法规规定、侵犯其他用户合法权益、干扰"颜见App"正常运营或未经本平台明示授权的行为。</li>
+            <li style="margin-bottom: 4px;">其他违反法律法规规定、侵犯其他用户合法权益、干扰"有趣的搭子App"正常运营或未经本平台明示授权的行为。</li>
         </ol>
         <p style="margin-bottom: 8px;">若用户有上述任何行为，本平台有权删除相关不良或违法信息，封禁或注销用户账号，并保留追究用户法律责任的权利。若因用户的违法行为或违约行为使本平台或第三人遭受损失，用户应当予以赔偿，包括但不限于律师费、交通费、公证费和合理的调查费用等。</p>
         <p style="margin-bottom: 8px;">3. 若用户投诉他人存在违法或违反本协议的行为，投诉者应当对其投诉内容的真实性负责。若投诉内容不实并损害他人合法权益，则由投诉者独立承担全部法律责任；若给本平台造成损失，投诉者亦须对本平台进行相应赔偿。</p>
-        <p style="margin-bottom: 8px;">4. 用户应对其利用"颜见App"账号或本服务发布、传播的信息的真实性、合法性、无害性、准确性、有效性等承担全部责任，因该等信息产生的任何法律责任由用户自行承担，与本平台无关。若因此给本平台或第三方造成损害，用户应依法予以赔偿。</p>
+        <p style="margin-bottom: 8px;">4. 用户应对其利用"有趣的搭子App"账号或本服务发布、传播的信息的真实性、合法性、无害性、准确性、有效性等承担全部责任，因该等信息产生的任何法律责任由用户自行承担，与本平台无关。若因此给本平台或第三方造成损害，用户应依法予以赔偿。</p>
         <p style="margin-bottom: 8px;">5. 本平台所提供的服务中可能包括广告，您同意在使用过程中本平台和第三方供应商、合作伙伴可向您展示广告。您应对广告内容及相关链接的真实性和可靠性自行判断并承担责任。除法律法规明确规定外，如您通过上述广告或链接网站购买商品或服务，其交易仅在您与商品或服务提供方之间进行，与本平台无关。本平台对用户和该商品或服务的提供方之间的交易不承担任何责任。</p>
         <p style="margin-bottom: 8px;">6. 除非本平台另行书面许可，用户不得从事以下行为：</p>
         <ol style="list-style-type: decimal; margin-left: 4px; margin-bottom: 8px;">
@@ -217,7 +217,7 @@ Page({
         <p style="margin-bottom: 8px;">用户可随时通过"隐私设置"中的注销功能申请注销账号，账号注销成功后，本协议终止。</p>
         <p style="margin-bottom: 8px;">终止后，如法律另有规定或根据本协议其他条款另行约定的，本平台仍可在合理范围内保留或使用用户的信息。</p>
     
-        <p style="font-size: 12px; color: #666; margin-top: 24px; margin-bottom: 0;">本协议的最终解释权归颜见App所有。</p>
+        <p style="font-size: 12px; color: #666; margin-top: 24px; margin-bottom: 0;">本协议的最终解释权归有趣的搭子App所有。</p>
     </div>`,
     },
 

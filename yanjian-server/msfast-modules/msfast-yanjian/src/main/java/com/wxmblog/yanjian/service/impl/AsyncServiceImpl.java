@@ -348,7 +348,7 @@ public class AsyncServiceImpl implements AsyncService {
         messageInfo.setSendPortrait(tUserEntity.getAvatar());
         messageInfo.setTempMsgNo(UUID.randomUUID().toString().replace("-", ""));
         messageInfo.setMsgType(MsgSendType.INNER_MSG);
-        messageInfo.setContent("您好，欢迎来到颜见，我是您的专属客服，有什么问题都可以向我咨询");
+        messageInfo.setContent("您好，欢迎来到有趣的搭子，我是您的专属客服，有什么问题都可以向我咨询");
         messageService.send(messageInfo);
     }
 

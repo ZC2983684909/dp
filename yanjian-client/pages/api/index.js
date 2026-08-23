@@ -227,6 +227,16 @@ export const getImList = (params) => {
     });
 };
 
+// 获取与指定用户的聊天记录
+export const getImInfo = (sendUserId, params) => {
+    return request({
+        url: `/imMessage/info/${sendUserId}`,
+        method: "GET",
+        data: params,
+        isMessage: false,
+    });
+};
+
 // 删除IM消息
 export const deleteIm = (sendUserId) => {
     return request({

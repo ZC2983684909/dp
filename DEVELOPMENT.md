@@ -1,4 +1,4 @@
-# 颜见项目开发文档
+# 有趣的搭子项目开发文档
 
 本文档用于本地开发、联调和提交代码。项目包含微信小程序客户端、Spring Boot 服务端和 Vue 管理后台。
 
@@ -18,7 +18,7 @@ yan-jian/
 
 - 小程序 HTTP API：默认端口 `8088`
 - 小程序 WebSocket/IM：默认端口 `8087`
-- 管理后台通过 `BACKGROUND_APPLICATION_URL` 访问服务端
+- 管理后台开发环境通过 `BACKGROUND_APPLICATION_URL` 由 Vue CLI 代理服务端；生产构建通过 `VUE_APP_BACKEND_APPLICATION_URL` 访问公网 HTTPS 服务端
 - 数据库使用 MySQL，缓存和部分实时状态使用 Redis
 - 图片和文件使用 MinIO 或腾讯云 COS，二选一
 
@@ -135,6 +135,14 @@ npm run dev
 ```dotenv
 BACKGROUND_APPLICATION_URL=http://127.0.0.1:8088
 ```
+
+管理后台部署到 Vercel 时，将项目根目录设置为 `yanjian-management`，构建命令设置为 `npm run build:prod`，输出目录设置为 `dist`，并配置：
+
+```dotenv
+VUE_APP_BACKEND_APPLICATION_URL=https://你的公网后端域名
+```
+
+`yanjian-management/vercel.json` 已包含前端路由回退配置。公网后端必须使用 HTTPS，不能填写 `localhost` 或局域网地址。
 
 生产构建：
 

@@ -178,8 +178,8 @@ public class AuthorityServiceImpl extends IAuthorityServiceImpl<LoginRequest, Us
             throw new JrsfException(BaseUserExceptionEnum.USER_EXIST_EXCEPTION);
         }
 
-        if (request.getNickName().contains("颜见")) {
-            throw new JrsfException(BaseExceptionEnum.UNKNOWN_EXCEPTION).setMsg("昵称请勿使用颜见");
+        if (request.getNickName().contains("有趣的搭子")) {
+            throw new JrsfException(BaseExceptionEnum.UNKNOWN_EXCEPTION).setMsg("昵称请勿使用有趣的搭子");
         }
         frUserEntity.setPhotoAuth("1");
         frUserEntity.setIdAuth("1");

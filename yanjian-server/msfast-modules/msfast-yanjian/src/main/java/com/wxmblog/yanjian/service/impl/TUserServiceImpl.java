@@ -444,8 +444,8 @@ public class TUserServiceImpl extends ServiceImpl<TUserDao, TUserEntity> impleme
             }
         }
 
-        if (StringUtils.isNotBlank(request.getNickName()) && request.getNickName().contains("颜见")) {
-            throw new JrsfException(BaseExceptionEnum.UNKNOWN_EXCEPTION).setMsg("昵称请勿使用颜见");
+        if (StringUtils.isNotBlank(request.getNickName()) && request.getNickName().contains("有趣的搭子")) {
+            throw new JrsfException(BaseExceptionEnum.UNKNOWN_EXCEPTION).setMsg("昵称请勿使用有趣的搭子");
         }
 
         BeanUtils.copyProperties(request, tUserEntity);

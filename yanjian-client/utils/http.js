@@ -61,7 +61,10 @@ export default function request(params) {
         header["Coordinates"] = location.join(",");
     }
 
-    if ((method === "POST" || method === "PUT") && isLoading) {
+    const shouldShowLoading =
+        (method === "POST" || method === "PUT") && isLoading;
+
+    if (shouldShowLoading) {
         wx.showLoading({});
     }
 
@@ -82,7 +85,9 @@ export default function request(params) {
                 data,
                 timeout,
                 success(response) {
-                    wx.hideLoading();
+                    if (shouldShowLoading) {
+                        wx.hideLoading();
+                    }
                     const res = response.data;
 
                     if (res.code === 200) {
@@ -192,7 +197,9 @@ export default function request(params) {
                     }
                 },
                 fail(err) {
-                    wx.hideLoading();
+                    if (shouldShowLoading) {
+                        wx.hideLoading();
+                    }
                     if (err.errMsg.indexOf("request:fail") !== -1) {
                         wx.showToast({
                             title: "网络异常",

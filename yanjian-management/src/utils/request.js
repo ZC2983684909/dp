@@ -5,7 +5,9 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.BACKGROUND_APPLICATION_URL, // url = base url + request url
+  // Vercel builds inject VUE_APP_* variables into the browser bundle. Keep the
+  // base URL empty when developing locally so Vue CLI's /api proxy is used.
+  baseURL: process.env.VUE_APP_BACKEND_APPLICATION_URL || process.env.VUE_APP_BASE_API || '', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })

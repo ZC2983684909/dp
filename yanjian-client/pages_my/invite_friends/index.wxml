@@ -91,7 +91,7 @@
         <image class="posterUrl" src="{{posterUrl}}" mode="aspectFill"/>
         <view class="conn">
           <view class="l">
-            <view class="t">颜见小程序</view>
+            <view class="t">有趣的搭子小程序</view>
             <view class="d1">实名认证 真人真颜</view>
             <view class="d2">线下陪伴 兴趣社交</view>
             <view class="d3">长按扫码 立即体验</view>

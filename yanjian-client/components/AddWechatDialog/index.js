@@ -11,7 +11,7 @@ Component({
         },
         message: {
             type: String,
-            value: "添加微信好友时<br/>请备注“颜见”更容易通过哦",
+            value: "添加微信好友时<br/>请备注“有趣的搭子”更容易通过哦",
         },
         weChat: {
             type: String,

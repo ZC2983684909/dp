@@ -19,5 +19,10 @@ public interface UserChatService extends IService<UserChatEntity> {
     ServiceR<ApplyChatPreResponse> chatPre(String userId);
 
     ServiceR<Void> applyChat(ApplyWxRequest request);
+
+    /**
+     * 校验两个用户是否已解锁聊天且未互相拉黑。
+     */
+    boolean canChat(String sendUserId, String acceptUserId);
 }
 

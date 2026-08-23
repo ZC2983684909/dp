@@ -103,13 +103,9 @@
         margin-top: 16rpx;
         padding-left: 90rpx;
 
-        image {
+        .dynamic-media {
             width: 188rpx;
             height: 188rpx;
-            border-radius: 12rpx;
-        }
-
-        video {
             border-radius: 12rpx;
         }
 
@@ -163,16 +159,14 @@
                 align-items: center;
                 width: 100rpx;
 
-                image {
+                .pl {
                     width: 36rpx;
                     height: 36rpx;
-                }
-
-                .pl {
                     margin-right: 10rpx;
                 }
 
-                text {
+                .count,
+                .mint {
                     font-weight: 600;
                     font-size: 24rpx;
                     color: #434343;
@@ -192,11 +186,11 @@
         }
     }
 
-    button::after {
+    .share-button::after {
         border: none;
     }
 
-    button {
+    .share-button {
         background-color: #fff;
         font-size: 24rpx;
         padding: 0;

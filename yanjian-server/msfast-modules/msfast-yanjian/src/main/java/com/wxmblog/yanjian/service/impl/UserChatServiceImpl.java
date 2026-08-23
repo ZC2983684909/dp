@@ -22,6 +22,7 @@ import com.wxmblog.yanjian.entity.*;
 import com.wxmblog.yanjian.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wxmblog.yanjian.dao.UserChatDao;
@@ -35,6 +36,9 @@ import java.util.List;
 
 @Service("userChatService")
 public class UserChatServiceImpl extends ServiceImpl<UserChatDao, UserChatEntity> implements UserChatService {
+
+    @Value("${wxmfast.config.auth.dev-mode:false}")
+    private boolean devMode;
 
     @Autowired
     private UserAccountService userAccountService;
@@ -60,6 +64,13 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatDao, UserChatEntity
         ApplyChatPreResponse response = new ApplyChatPreResponse();
         response.setBalance(userAccountService.getBalance(TokenUtils.getOwnerId()));
         response.setIsVip(userVipService.isVip(TokenUtils.getOwnerId()));
+
+        if (devMode) {
+            response.setPrice(0);
+            response.setIsVip(true);
+            response.setVipCount(999L);
+            return ServiceR.ok(response);
+        }
 
         String applyAmount = msfConfigService.getValueByCode("applyAmount");
         if (StringUtils.isNotBlank(applyAmount)) {
@@ -110,8 +121,18 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatDao, UserChatEntity
         if ("1".equals(ownerUser.getInvisible())) {
             throw new JrsfException(UserExceptionEnum.USER_IS_INVISIBLE);
         }
+
+        Wrapper<UserChatEntity> existingChatWrapper = new QueryWrapper<UserChatEntity>().lambda()
+                .eq(UserChatEntity::getUserId, TokenUtils.getOwnerId())
+                .eq(UserChatEntity::getApplyUserId, request.getApplyUserId());
+        if (this.count(existingChatWrapper) > 0) {
+            return ServiceR.ok();
+        }
+
         BigDecimal price = new BigDecimal("0");
-        if ("2".equals(request.getApplyWay())) {
+        if (devMode) {
+            request.setApplyWay("0");
+        } else if ("2".equals(request.getApplyWay())) {
 
             if (!Boolean.TRUE.equals(userVipService.isVip(TokenUtils.getOwnerId()))) {
                 return ServiceR.fail(UserExceptionEnum.NOT_VIP_USER_EXCEPTION);
@@ -163,16 +184,18 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatDao, UserChatEntity
             userAccountService.save(userAccountEntity);
         }
 
-        List<SmsData> smsDataList = new ArrayList<>();
-        smsDataList.add(new SmsData("name", ownerUser.getNickName()));
-        MessageSendServcie messageSendServcie = SpringUtils.getBean(MessageSendServcie.class);
-        messageSendServcie.sendMessage(new SendUserMessageVo(userChatEntity.getApplyUserId(),
-                SendUserMessageTypeEnum.MESSAGE,
-                SendUserMessageEnum.UNLOCK_PRIVATE_MESSAGE,
-                "期待与你聊天",
-                smsDataList,
-                false
-                ));
+        if (!devMode) {
+            List<SmsData> smsDataList = new ArrayList<>();
+            smsDataList.add(new SmsData("name", ownerUser.getNickName()));
+            MessageSendServcie messageSendServcie = SpringUtils.getBean(MessageSendServcie.class);
+            messageSendServcie.sendMessage(new SendUserMessageVo(userChatEntity.getApplyUserId(),
+                    SendUserMessageTypeEnum.MESSAGE,
+                    SendUserMessageEnum.UNLOCK_PRIVATE_MESSAGE,
+                    "期待与你聊天",
+                    smsDataList,
+                    false
+                    ));
+        }
 
         //查询用户是否是充值vip或是充值颜币后第一次解锁用户微信
         RewardSendVo rewardSendVo = new RewardSendVo();
@@ -180,8 +203,34 @@ public class UserChatServiceImpl extends ServiceImpl<UserChatDao, UserChatEntity
         rewardSendVo.setPayUserId(userChatEntity.getUserId());
         rewardSendVo.setApplyUserId(userChatEntity.getApplyUserId());
         rewardSendVo.setType("2");
-        asyncService.reward(rewardSendVo);
+        if (!devMode) {
+            asyncService.reward(rewardSendVo);
+        }
 
         return ServiceR.ok();
+    }
+
+    @Override
+    public boolean canChat(String sendUserId, String acceptUserId) {
+        if (StringUtils.isBlank(sendUserId) || StringUtils.isBlank(acceptUserId)
+                || sendUserId.equals(acceptUserId)) {
+            return false;
+        }
+
+        Wrapper<UserChatEntity> chatWrapper = new QueryWrapper<UserChatEntity>().lambda()
+                .eq(UserChatEntity::getUserId, sendUserId)
+                .eq(UserChatEntity::getApplyUserId, acceptUserId);
+        if (this.count(chatWrapper) == 0) {
+            return false;
+        }
+
+        Wrapper<UserShieldEntity> shieldWrapper = new QueryWrapper<UserShieldEntity>().lambda()
+                .and(wrapper -> wrapper
+                        .eq(UserShieldEntity::getUserId, sendUserId)
+                        .eq(UserShieldEntity::getShieldId, acceptUserId))
+                .or(wrapper -> wrapper
+                        .eq(UserShieldEntity::getUserId, acceptUserId)
+                        .eq(UserShieldEntity::getShieldId, sendUserId));
+        return userShieldService.count(shieldWrapper) == 0;
     }
 }

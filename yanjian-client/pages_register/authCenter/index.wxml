@@ -54,7 +54,7 @@
     </view>
    
     <view class="bottomTip">
-      颜见承诺100%保障你的隐私信息安全
+      有趣的搭子承诺保障你的隐私信息安全
     </view>
   </view>
   <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:close="onClose" bind:cancel="onClose" bind:select="onSelect" />

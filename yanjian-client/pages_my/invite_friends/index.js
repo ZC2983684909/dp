@@ -446,7 +446,7 @@ Page({
         ctx.setFillStyle("#333333");
         ctx.setFontSize(18);
         ctx.setTextAlign("left");
-        ctx.fillText("颜见小程序", 20, bottomY + 30);
+        ctx.fillText("有趣的搭子小程序", 20, bottomY + 30);
         // 绘制描述文字
         ctx.setFillStyle("#666666");
         ctx.setFontSize(14);
